@@ -144,10 +144,10 @@ CITIES.forEach(c => {
   if (c === prefs.city) opt.selected = true;
   citySel.appendChild(opt);
 });
-document.getElementById('distance-filter').value = prefs.distance || 25;
+document.getElementById('distance-filter').value = prefs.dist || 25;
 
 let activeCity = prefs.city || 'London';
-let activeDist = prefs.distance || 25;
+let activeDist = prefs.dist || 25;
 let activeCat  = 'All';
 
 function setCat(cat, el) {
@@ -171,7 +171,7 @@ function renderEvents() {
     return true;
   });
 
-  const list = document.getElementById('events-list');
+  const list = document.getElementById('events-container');
 
   if (items.length === 0) {
     list.innerHTML = `
