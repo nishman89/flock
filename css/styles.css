@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ── PWA / iOS overscroll fix ───────────────────────────── */
-html { height: 100%; overscroll-behavior: none }
+html { height: 100%; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100% }
 body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent }
 
 /* ── iOS install banner ─────────────────────────────────── */
@@ -550,6 +550,7 @@ body {
 /* ══════════════════════════════════════════════════════════
    MY EVENTS PAGE
 ══════════════════════════════════════════════════════════ */
+.my-list { padding: 16px }
 .my-event-card {
   background: var(--card); border-radius: var(--r);
   border: 1.5px solid var(--border);
@@ -688,7 +689,7 @@ body {
   .profile-body { padding: 0 28px 28px }
 
   /* My events list wider */
-  .page-wrap .my-list { padding: 20px 28px }
+  .page-wrap .my-list { padding: 20px 28px; max-width: 560px }
   .page-wrap .my-list > p { font-size: 14px }
 
   /* ── inv-wrap desktop ─────────────────────────────────── */
@@ -815,8 +816,7 @@ body {
   .profile-hero { padding: 36px 40px 32px }
   .profile-body { max-width: 680px; padding: 0 40px 40px }
 
-  /* My events page */
-  .page-main .my-list { padding: 20px 32px }
+  /* My events page - handled by .page-wrap .my-list above */
 
   /* Desktop basket / checkout */
   .page-main .basket-wrap { max-width: 100%; padding: 28px 40px }

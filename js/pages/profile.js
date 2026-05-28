@@ -55,7 +55,7 @@ function render() {
         <div class="interest-tags">
           ${interests.map(i => {
             const match = INTERESTS.find(x => x.label === i);
-            return `<span class="interest-tag">${match ? match.emoji + ' ' : ''}${i}</span>`;
+            return `<span class="interest-tag">${match ? match.e + ' ' : ''}${i}</span>`;
           }).join('')}
         </div>
       </div>
