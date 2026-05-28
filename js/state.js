@@ -75,7 +75,7 @@ const Flock = {
     this.setProfile(JAGS.profile);
     this.setInterests(JAGS.interests);
     this.setPrefs(JAGS.prefs);
-    if (!localStorage.getItem('flock_nish_seeded')) {
+    if (!localStorage.getItem('flock_nish_seeded_v4')) {
       // Nish is a member of 4 Flocks
       localStorage.setItem('flock_my_flocks', JSON.stringify(['FL001','FL004','FL024','FL025']));
       // And attending specific Roosts within those Flocks
@@ -85,7 +85,7 @@ const Flock = {
         'FL024_M1': true,   // Mario Kart Grand Prix Night
         'FL025_M1': true,   // Nintendo Direct Watch Party
       }));
-      localStorage.setItem('flock_nish_seeded', '1');
+      localStorage.setItem('flock_nish_seeded_v4', '1');
     }
     this.setOnboarded();
   },
