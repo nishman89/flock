@@ -7,8 +7,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Flock">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="Make friends through shared events">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
@@ -16,16 +14,15 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div class="auth-shell">
+<div class="auth-shell" id="login-page">
 
   <div class="auth-hero">
     <div class="auth-logo-wrap">
-      <!-- Bird / flock SVG logo -->
       <svg width="52" height="41" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
-  <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
-  <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
-</svg>
+        <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+        <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+        <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+      </svg>
     </div>
     <h1>Flock</h1>
     <p>Make friends through shared events</p>
@@ -37,27 +34,28 @@
 
     <form id="login-form" novalidate>
       <div class="field">
-        <label for="username">Username</label>
-        <input type="text" id="username" data-test="username" placeholder="Enter your username" autocomplete="username" inputmode="text">
-        <span class="field-error" id="err-user">Please enter your username</span>
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" name="username"
+               placeholder="Enter your username" autocomplete="username" inputmode="text">
+        <span class="field-error" id="err-login-username">Please enter your username</span>
       </div>
       <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" data-test="password" placeholder="Enter your password" autocomplete="current-password">
-        <span class="field-error" id="err-pass">Please enter your password</span>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password"
+               placeholder="Enter your password" autocomplete="current-password">
+        <span class="field-error" id="err-login-password">Please enter your password</span>
       </div>
-      <div class="field-error" id="err-creds" style="margin-bottom:12px;display:none">
-        ❌ Incorrect username or password
+      <div class="field-error" id="login-error" style="margin-bottom:12px;display:none;padding:9px 12px;background:#FEF2F2;border-radius:8px;border:1px solid #FECACA">
+        Incorrect username or password
       </div>
-      <button type="submit" class="btn btn-primary" data-test="login-button">Sign In</button>
+      <button type="submit" id="login-submit-btn" class="btn btn-primary">Sign In</button>
     </form>
 
     <div class="auth-link">
-      Don't have an account? <a href="signup.html">Sign up</a>
+      Don't have an account? <a href="signup.html" id="go-to-signup">Sign up</a>
     </div>
 
-    <!-- Dev hint -->
-    <div style="margin-top:20px;padding:12px;background:#FFF8EF;border-radius:10px;border:1px solid #FDE8D0;text-align:center">
+    <div id="demo-hint" style="margin-top:20px;padding:12px;background:#FFF8EF;border-radius:10px;border:1px solid #FDE8D0;text-align:center">
       <span style="font-size:12px;color:#A8784A;font-weight:500">Demo: <strong style="color:#C2410C">jags</strong> / <strong style="color:#C2410C">choongh</strong></span>
     </div>
   </div>
@@ -65,34 +63,39 @@
 
 <script src="js/state.js"></script>
 <script>
-  'use strict';
-  // Skip login if already authed
-  if (Flock.getUser()) {
-    window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
+'use strict';
+if (Flock.getUser()) {
+  window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
+}
+
+document.getElementById('login-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value;
+  const errU = document.getElementById('err-login-username');
+  const errP = document.getElementById('err-login-password');
+  const errG = document.getElementById('login-error');
+
+  errU.classList.remove('show'); errP.classList.remove('show'); errG.style.display = 'none';
+
+  let ok = true;
+  if (!u) { errU.classList.add('show'); ok = false; }
+  if (!p) { errP.classList.add('show'); ok = false; }
+  if (!ok) return;
+
+  if (u.toLowerCase() === 'jags' && p === 'choongh') {
+    Flock.login('jags');
+    Flock.seedJags();          // pre-load Jags' profile every login
+    window.location.href = 'home.html';
+  } else {
+    errG.style.display = 'block';
   }
+});
 
-  document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
-    const errU = document.getElementById('err-user');
-    const errP = document.getElementById('err-pass');
-    const errC = document.getElementById('err-creds');
-    errU.classList.remove('show'); errP.classList.remove('show'); errC.style.display='none';
-
-    let ok = true;
-    if (!u) { errU.classList.add('show'); ok = false; }
-    if (!p) { errP.classList.add('show'); ok = false; }
-    if (!ok) return;
-
-    if (u === 'jags' && p === 'choongh') {
-      Flock.login(u);
-      window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
-    } else {
-      errC.style.display = 'block';
-    }
-  });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('login-error').style.display = 'none';
+});
 </script>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
 </body>
 </html>

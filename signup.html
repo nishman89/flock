@@ -7,8 +7,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Flock">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="Make friends through shared events">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
@@ -16,53 +14,130 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div class="auth-shell">
+<div class="auth-shell" id="signup-page">
 
   <div class="auth-hero">
     <div class="auth-logo-wrap">
       <svg width="52" height="41" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
-  <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
-  <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
-</svg>
+        <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+        <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+        <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+      </svg>
     </div>
-    <h1>Flock</h1>
-    <p>Join the flock. Make local friends.</p>
+    <h1>Join Flock</h1>
+    <p>Find your people through shared events</p>
   </div>
 
   <div class="auth-card">
     <h2>Create your account ✨</h2>
-    <p class="sub">Fill in your details to get started</p>
+    <p class="sub">Just a few details to get you started</p>
 
-    <div class="poc-notice">
+    <!-- POC notice -->
+    <div class="poc-notice" id="poc-banner">
       <span class="poc-notice-icon">🚧</span>
-      <p><strong>Not yet implemented</strong> — this is a proof of concept. Sign up functionality will be available in a future release. Use the demo login to explore the app.</p>
+      <p><strong>Proof of concept</strong> — your account is stored locally in this browser only and is not saved to any server. Data may be lost if you clear your browser storage.</p>
     </div>
 
-    <div class="field">
-      <label>Full Name</label>
-      <input type="text" placeholder="e.g. Jags Choongh" disabled>
-    </div>
-    <div class="field">
-      <label>Email Address</label>
-      <input type="email" placeholder="e.g. jags@email.com" disabled>
-    </div>
-    <div class="field">
-      <label>Username</label>
-      <input type="text" placeholder="Choose a username" disabled>
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" placeholder="Create a password" disabled>
-    </div>
+    <form id="signup-form" novalidate>
+      <div class="field">
+        <label for="signup-fullname">Full Name</label>
+        <input type="text" id="signup-fullname" name="fullname"
+               placeholder="e.g. Priya Sharma" autocomplete="name">
+        <span class="field-error" id="err-signup-fullname">Please enter your full name</span>
+      </div>
+      <div class="field">
+        <label for="signup-username">Username</label>
+        <input type="text" id="signup-username" name="username"
+               placeholder="Choose a unique username" autocomplete="username" inputmode="text">
+        <span class="field-error" id="err-signup-username">Please enter a valid username</span>
+      </div>
+      <div class="field">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" name="password"
+               placeholder="At least 6 characters" autocomplete="new-password">
+        <span class="field-error" id="err-signup-password">Password must be at least 6 characters</span>
+      </div>
+      <div class="field">
+        <label for="signup-confirm">Confirm Password</label>
+        <input type="password" id="signup-confirm" name="confirm"
+               placeholder="Repeat your password" autocomplete="new-password">
+        <span class="field-error" id="err-signup-confirm">Passwords do not match</span>
+      </div>
 
-    <button class="btn btn-primary" disabled style="opacity:.45;cursor:not-allowed">Create Account</button>
+      <div class="field-error" id="signup-error"
+           style="margin-bottom:12px;display:none;padding:9px 12px;background:#FEF2F2;border-radius:8px;border:1px solid #FECACA">
+      </div>
+
+      <button type="submit" id="signup-submit-btn" class="btn btn-primary">Create Account</button>
+    </form>
 
     <div class="auth-link">
-      Already have an account? <a href="login.html">Sign in</a>
+      Already have an account? <a href="login.html" id="go-to-login">Sign in</a>
     </div>
   </div>
 </div>
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+
+<script src="js/state.js"></script>
+<script>
+'use strict';
+if (Flock.getUser()) {
+  window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
+}
+
+function showErr(id, msg) {
+  const el = document.getElementById('err-signup-' + id);
+  if (msg) el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('signup-' + id).classList.add('invalid');
+}
+
+function clearErrs() {
+  ['fullname','username','password','confirm'].forEach(function(k) {
+    const el = document.getElementById('err-signup-' + k);
+    if (el) { el.classList.remove('show'); }
+    const inp = document.getElementById('signup-' + k);
+    if (inp) { inp.classList.remove('invalid'); }
+  });
+  document.getElementById('signup-error').style.display = 'none';
+}
+
+document.getElementById('signup-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  clearErrs();
+
+  const name     = document.getElementById('signup-fullname').value.trim();
+  const username = document.getElementById('signup-username').value.trim().toLowerCase();
+  const password = document.getElementById('signup-password').value;
+  const confirm  = document.getElementById('signup-confirm').value;
+
+  let valid = true;
+
+  if (!name || name.length < 2) {
+    showErr('fullname', 'Please enter your full name'); valid = false;
+  }
+  if (!username || username.length < 3) {
+    showErr('username', 'Username must be at least 3 characters'); valid = false;
+  } else if (username === 'jags') {
+    showErr('username', 'That username is already taken — try another'); valid = false;
+  } else if (/\s/.test(username)) {
+    showErr('username', 'Username cannot contain spaces'); valid = false;
+  }
+  if (!password || password.length < 6) {
+    showErr('password', 'Password must be at least 6 characters'); valid = false;
+  }
+  if (password !== confirm) {
+    showErr('confirm', 'Passwords do not match'); valid = false;
+  }
+
+  if (!valid) return;
+
+  // Create the account in localStorage
+  Flock.login(username);
+  Flock.setProfile({ name: name.split(' ')[0], fullName: name, age: '' });
+  // Not onboarded yet — send to onboarding to set preferences
+  window.location.href = 'onboarding.html';
+});
+</script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
 </body>
 </html>
