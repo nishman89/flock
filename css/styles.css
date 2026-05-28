@@ -1196,3 +1196,22 @@ body {
   cursor: pointer; margin-top: 8px; transition: background .15s; display: block;
 }
 .btn-msg-roost:hover { background: var(--bg) }
+
+/* ── Roost card as link (Flock detail preview) ───────────── */
+.roost-card-link { text-decoration: none; display: block; transition: transform .1s }
+.roost-card-link:active { transform: scale(.98) }
+.roost-card-link .roost-title {
+  display: flex; align-items: center; color: var(--primary-dk);
+}
+
+/* ── Back to Flock link (Roost detail page) ──────────────── */
+.roost-flock-link {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; color: var(--text2);
+  text-decoration: none; padding: 10px 14px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--rs); margin-bottom: 16px;
+  transition: background .15s;
+}
+.roost-flock-link:hover { background: var(--border) }
+.roost-flock-link svg:first-child { color: var(--primary); flex-shrink: 0 }

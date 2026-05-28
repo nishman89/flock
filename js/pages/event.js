@@ -79,62 +79,41 @@ function render() {
     : `<button class="btn btn-pr" style="margin-bottom:10px" onclick="toggleMembership()">${joinLbl}</button>
        <button class="btn-share" onclick="shareGroup()">🔗 Share this Flock</button>`;
 
-  // Init maps after render
+  // Maps now on individual Roost detail page
   Object.keys(_maps).forEach(k => { _maps[k].remove(); });
   _maps = {};
-  setTimeout(() => { fl.roosts.forEach((m, i) => initMap(m, i)); }, 100);
 }
 
 function roostCard(m, i, isMember) {
-  const attending  = Flock.isAttending(id, m.id);
-  const liveGoing  = Flock.getLiveGoing(id, m.id, m.going);
-  const spotsLeft  = m.max - liveGoing;
-  const isFree     = m.price === 'Free';
-  const col        = EV_COLS[fl.cat] || '#374151';
-
-  let btn = '';
-  if (isMember) {
-    btn = attending
-      ? `<button class="roost-attend-btn attending" onclick="toggleRoost('${m.id}','${m.price}')">✓ Going - tap to cancel</button>`
-      : spotsLeft <= 0
-        ? `<button class="roost-attend-btn full" disabled>Full</button>`
-        : isFree
-          ? `<button class="roost-attend-btn" onclick="toggleRoost('${m.id}','${m.price}')">Attend this Roost</button>`
-          : `<button class="roost-attend-btn" onclick="toggleRoost('${m.id}','${m.price}')">Pay ${m.price} & Attend</button>`;
-  } else {
-    btn = `<button class="roost-attend-btn locked" onclick="promptJoinFirst()">Join Flock to attend</button>`;
-  }
+  const attending = Flock.isAttending(id, m.id);
+  const liveGoing = Flock.getLiveGoing(id, m.id, m.going);
+  const spotsLeft = m.max - liveGoing;
+  const col       = EV_COLS[fl.cat] || '#374151';
+  const roostUrl  = `roost.html?flock=${id}&roost=${m.id}`;
 
   return `
-    <div class="roost-card" id="roost-${m.id}">
+    <a class="roost-card roost-card-link" id="roost-${m.id}" href="${roostUrl}">
       <div class="roost-header" style="background:${col}18;border-left:4px solid ${col}">
-        <div class="roost-title">${m.title}</div>
+        <div class="roost-title">${m.title}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px;vertical-align:middle;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
         <span class="roost-price ${m.price === 'Free' ? 'free' : ''}">${m.price}</span>
       </div>
       <div class="roost-body">
-        <div class="roost-meta" style="margin-top:12px">
+        <div class="roost-meta" style="margin-top:10px">
           <span>📅 ${fmtDate(m.date)}</span>
           <span>🕐 ${m.time}</span>
           <span>⏱ ${m.dur}</span>
         </div>
-        <div class="roost-meta" style="margin-top:6px">
+        <div class="roost-meta" style="margin-top:6px;margin-bottom:10px">
           <span>📍 ${m.venue}</span>
           <span class="${spotsLeft <= 0 ? 'txt-err' : spotsLeft < 5 ? 'txt-err' : 'txt-ok'}">
             ${liveGoing} going &middot; ${spotsLeft <= 0 ? 'Full' : spotsLeft + ' spot' + (spotsLeft === 1 ? '' : 's') + ' left'}
           </span>
+          ${attending ? '<span style="color:var(--ok);font-weight:700">✓ Going</span>' : ''}
         </div>
-        <div class="detail-map-wrap" style="margin-top:14px;margin-bottom:0">
-          <div id="map-${m.id}" style="height:170px;width:100%;background:var(--bg)"></div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(m.addr)}"
-             target="_blank" rel="noopener" class="detail-directions-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-            Get Directions
-          </a>
-        </div>
-        ${btn}
-        ${isMember ? `<button class="btn-msg-roost" onclick="event.preventDefault();showMsgPopup('roost')">💬 Chat with this Roost</button>` : ''}
       </div>
-    </div>`;
+    </a>`;
 }
 
 function initMap(m, i) {

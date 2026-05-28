@@ -77,7 +77,8 @@ Opens full screen, works offline once cached.
 | `onboarding.html` | 4-step setup: name/DOB/avatar - interests - suggested Flocks - preferences |
 | `home.html` | Browse Roosts (primary discovery) |
 | `flocks.html` | Browse Flocks (groups) (individual gatherings across all Flocks) |
-| `event.html` | Flock detail - group info + list of Roosts with maps and attend buttons |
+| `event.html` | Flock detail - group info + list of Roost preview cards (clickable titles) |
+| `roost.html` | Individual Roost detail - full info, map, attend/cancel, back to Flock link |
 | `my-flocks.html` | Flocks you've joined |
 | `my-roosts.html` | Roosts you're attending |
 | `profile.html` | Profile - edit name/DOB/avatar, city, interests, looking to meet |
@@ -153,7 +154,8 @@ flock_alt/
 ├── login.html / signup.html / onboarding.html
 ├── home.html              - Browse Roosts (primary)
 ├── flocks.html            - Browse Flocks
-├── event.html             - Flock detail + Roosts
+├── event.html             - Flock detail + Roost preview cards
+├── roost.html             - Individual Roost detail page
 ├── my-flocks.html         - My Flocks
 ├── my-roosts.html         - My Roosts
 ├── profile.html
@@ -170,7 +172,8 @@ flock_alt/
         ├── login.js / signup.js / onboarding.js
         ├── home.js        - Browse Flocks
         ├── roosts.js      - Browse Roosts
-        ├── event.js       - Flock detail + Roost cards
+        ├── event.js       - Flock detail + Roost preview cards (linked)
+        ├── roost.js       - Individual Roost detail, map, attend button
         ├── my-flocks.js   - Joined groups
         ├── my-roosts.js   - Attended Roosts
         └── profile.js / about.js / checkout-*.js

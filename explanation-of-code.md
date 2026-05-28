@@ -149,6 +149,10 @@ Filters: city, category chips, sort (Soonest / Most popular / Spots left), searc
 
 ### `event.js` - Flock Detail
 
+Renders the Flock group page with slim Roost preview cards. Each card links to `roost.html?flock=FL001&roost=M1`. The map and attend button have moved to the individual Roost detail page. Preview cards show: date, time, venue, going count/spots left, and a "✓ Going" badge if attending.
+
+### `roost.js` - Individual Roost Detail (NEW)
+
 Reads `?id=FL001` from URL. Renders:
 
 **Top section (group info):**
