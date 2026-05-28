@@ -1,0 +1,16 @@
+{
+  "name": "Flock",
+  "short_name": "Flock",
+  "description": "Make friends through shared events",
+  "start_url": "login.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F97316",
+  "theme_color": "#F97316",
+  "categories": ["social", "lifestyle"],
+  "icons": [
+    { "src": "images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
