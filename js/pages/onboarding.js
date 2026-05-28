@@ -48,7 +48,7 @@ function render() {
 
   if (step === 2) {
     c.innerHTML = `
-      <p class="ob-hint">Select everything you enjoy — the more you pick, the better your event matches!</p>
+      <p class="ob-hint">Select everything you enjoy  -  the more you pick, the better your event matches!</p>
       <div class="interest-grid">
         ${INTERESTS.map(i => `
           <div class="interest-chip ${selectedInterests.has(i.label)?'selected':''}"
@@ -69,7 +69,7 @@ function render() {
         </select>
       </div>
       <div class="field" style="margin-bottom:8px">
-        <label>Distance — show events within</label>
+        <label>Distance  -  show events within</label>
       </div>
       <div class="dist-chips">
         ${DISTANCES.map(d => `

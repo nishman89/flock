@@ -928,3 +928,13 @@ body {
   .co-wrap { padding: 28px 40px }
   .co-field-row { grid-template-columns: 1fr 1fr }
 }
+
+/* Chat button */
+.btn-chat {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 600;
+}
+.btn-chat:hover { background: var(--bg) }

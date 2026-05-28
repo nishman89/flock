@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
-  <title>Flock — My Events</title>
+  <title>Flock  -  My Events</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -50,6 +50,10 @@
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
       About
     </a>
+    <a class="nav-item" id="nav-chats" data-page="chats" href="javascript:void(0)" onclick="showMobileChatsPopup()">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Chats
+    </a>
   </nav>
 </div>
 
@@ -58,5 +62,18 @@
 <script src="js/pages/my-events.js"></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 <script src="js/desktop-sidebar.js"></script>
+<script>
+function showMobileChatsPopup() {
+  let ov = document.getElementById('mobile-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'mobile-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center"><div style="font-size:36px;margin-bottom:12px">💬</div><div style="font-family:-apple-system,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div><div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">Not yet implemented - chat functionality is coming soon!</div><button onclick="document.getElementById('mobile-chats-overlay').remove()" style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">Got it</button></div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
+}
+</script>
 </body>
 </html>

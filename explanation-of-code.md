@@ -1,8 +1,7 @@
-# Flock — Code Explanation
+# Flock  -  Code Explanation
 
 This document walks through every file in the project, explaining what it does and how it works. Written for QA engineers and developers who want to understand the codebase before testing or extending it.
 
----
 
 ## Project Structure
 
@@ -16,9 +15,9 @@ flock/
 ├── event.html                    Single event detail
 ├── my-events.html                Events the user has joined
 ├── profile.html                  User profile and preferences
-├── checkout-info.html            Checkout step 1 — personal & card details
-├── checkout-overview.html        Checkout step 2 — order review
-├── checkout-complete.html        Checkout step 3 — confirmation
+├── checkout-info.html            Checkout step 1  -  personal & card details
+├── checkout-overview.html        Checkout step 2  -  order review
+├── checkout-complete.html        Checkout step 3  -  confirmation
 ├── manifest.json                 PWA install configuration
 ├── sw.js                         Service worker (offline caching)
 ├── css/
@@ -44,7 +43,6 @@ flock/
     └── icon-512.png              PWA icon (512×512)
 ```
 
----
 
 ## HTML Pages
 
@@ -73,10 +71,10 @@ Scripts are loaded in order at the bottom of the `<body>`. This means by the tim
 A meta-refresh redirect to `login.html`. Exists so opening the root URL goes somewhere sensible rather than a 404.
 
 ### login.html
-The entry point for returning users. Contains the login form markup with `id` attributes on every input and button for test automation. No page logic lives here — it is all in `js/pages/login.js`.
+The entry point for returning users. Contains the login form markup with `id` attributes on every input and button for test automation. No page logic lives here  -  it is all in `js/pages/login.js`.
 
 ### signup.html
-Sign-up form for new users. Marked as a proof of concept — data is stored in `localStorage` (the browser), not on any server. Contains validation error `<span>` elements pre-written in the HTML, shown and hidden by the JS.
+Sign-up form for new users. Marked as a proof of concept  -  data is stored in `localStorage` (the browser), not on any server. Contains validation error `<span>` elements pre-written in the HTML, shown and hidden by the JS.
 
 ### onboarding.html
 A three-step wizard: (1) name and age group, (2) interests, (3) city and preferences. The step content is rendered dynamically into a single `<div id="ob-content">` container by `js/pages/onboarding.js`. The header and footer (progress bar + Continue button) are static HTML.
@@ -89,8 +87,8 @@ The main events feed. Contains:
 
 ### event.html
 The detail view for a single event. The event ID is passed via URL query string: `event.html?id=EV001`. The page reads this on load and renders the full event. Contains two dynamic areas:
-- `#detail-content` — the main event information
-- `#detail-cta` — the Join/Leave/Pay button at the bottom
+- `#detail-content`  -  the main event information
+- `#detail-cta`  -  the Join/Leave/Pay button at the bottom
 
 ### my-events.html / profile.html
 Both follow the same pattern: an empty container that the corresponding page JS fills by reading from `localStorage` via `Flock` helpers.
@@ -98,9 +96,8 @@ Both follow the same pattern: an empty container that the corresponding page JS 
 ### checkout-info.html / checkout-overview.html / checkout-complete.html
 A three-step checkout flow for paid events (any event where `price !== 'Free'`). Each page reads the event ID from `localStorage` (set by `Flock.setCheckoutEvent()` before navigating) and renders accordingly.
 
----
 
-## CSS — `css/styles.css`
+## CSS  -  `css/styles.css`
 
 One stylesheet for all pages. It is divided into clearly labelled sections:
 
@@ -128,9 +125,9 @@ All colours and key values are defined as custom properties on `:root`:
 
 ```css
 :root {
-  --primary:    #F97316;   /* Flock orange — buttons, active states */
-  --primary-dk: #C2410C;   /* Darker orange — hover states */
-  --primary-lt: #FED7AA;   /* Light orange — backgrounds */
+  --primary:    #F97316;   /* Flock orange  -  buttons, active states */
+  --primary-dk: #C2410C;   /* Darker orange  -  hover states */
+  --primary-lt: #FED7AA;   /* Light orange  -  backgrounds */
   --bg:         #FFF8EF;   /* Page background (warm off-white) */
   --card:       #FFFFFF;   /* Card and header background */
   --border:     #FDE8D0;   /* Borders and dividers */
@@ -153,7 +150,6 @@ The app uses a **mobile-first** approach. The base CSS is written for narrow scr
 - A 2-column event grid (`grid-template-columns: repeat(2, 1fr)`)
 - Wider padding on all containers
 
----
 
 ## JavaScript
 
@@ -161,19 +157,19 @@ The app uses a **mobile-first** approach. The base CSS is written for narrow scr
 
 Contains two exports used across multiple pages:
 
-**`INTERESTS`** — array of `{ emoji, label }` objects used in onboarding and on the profile page:
+**`INTERESTS`**  -  array of `{ emoji, label }` objects used in onboarding and on the profile page:
 ```javascript
 { emoji: '⚽', label: 'Football' }
 ```
 
-**`CITIES`** — array of city name strings used in the city dropdown.
+**`CITIES`**  -  array of city name strings used in the city dropdown.
 
-**`EVENTS`** — the main data array. Each event object:
+**`EVENTS`**  -  the main data array. Each event object:
 ```javascript
 {
   id:       'EV001',           // unique ID, used in URL params and localStorage
   t:        'Event Title',     // display name
-  cat:      'Sports',          // category — must match a filter tab
+  cat:      'Sports',          // category  -  must match a filter tab
   interests:['Football'],      // interest labels from INTERESTS array
   city:     'London',          // must match a value in CITIES
   venue:    'The Crown & Anchor',
@@ -181,7 +177,7 @@ Contains two exports used across multiple pages:
   date:     '2025-07-14',      // ISO date string
   time:     '15:00',
   dur:      '3 hrs',
-  price:    'Free',            // 'Free' or '£X' — drives the checkout routing
+  price:    'Free',            // 'Free' or '£X'  -  drives the checkout routing
   going:    24,                // current attendee count (static demo data)
   max:      40,                // capacity
   e:        '⚽',              // emoji displayed in card header
@@ -193,9 +189,8 @@ Contains two exports used across multiple pages:
 }
 ```
 
-**`SAMPLE_ATTENDEES`** — 12 placeholder attendee objects with names and colours, used to render the "who's going" circles on the event detail page.
+**`SAMPLE_ATTENDEES`**  -  12 placeholder attendee objects with names and colours, used to render the "who's going" circles on the event detail page.
 
----
 
 ### `js/state.js`
 
@@ -219,11 +214,11 @@ const Flock = { ... }
 | Method | Key stored | Shape |
 |--------|-----------|-------|
 | `Flock.setProfile(obj)` | `flock_profile` | `{ name, fullName, age }` |
-| `Flock.getProfile()` | — | Returns profile object or `{}` |
+| `Flock.getProfile()` |  -  | Returns profile object or `{}` |
 | `Flock.setInterests(arr)` | `flock_interests` | Array of interest label strings |
-| `Flock.getInterests()` | — | Returns array or `[]` |
+| `Flock.getInterests()` |  -  | Returns array or `[]` |
 | `Flock.setPrefs(obj)` | `flock_prefs` | `{ city, dist, ft }` |
-| `Flock.getPrefs()` | — | Returns prefs or defaults |
+| `Flock.getPrefs()` |  -  | Returns prefs or defaults |
 
 **Events:**
 
@@ -251,11 +246,10 @@ A special method called every time the demo user `nish` logs in. It always overw
 - Interests: Football, Swimming, Dancing, Pub & Social, Food & Dining, Cinema, Gym & Fitness
 - His joined events list is preserved after first login (so testing joining/leaving works)
 
----
 
 ### `js/desktop-sidebar.js`
 
-This file runs after all other scripts on each app page. It checks the screen width — if `>= 768px`, it programmatically builds the sidebar and restructures the DOM:
+This file runs after all other scripts on each app page. It checks the screen width  -  if `>= 768px`, it programmatically builds the sidebar and restructures the DOM:
 
 ```
 Before: .app-shell → [header, content, bottom-nav]
@@ -266,16 +260,14 @@ Because it runs after `state.js` is loaded, it can call `Flock.logout()` from th
 
 Why JS instead of static HTML? The sidebar is the same across all app pages. Putting it in JS means it only needs to be maintained in one place rather than copied into every HTML file.
 
----
 
 ### `js/pages/login.js`
 
-- Checks if a user is already logged in on page load — if so, skips straight to `home.html` or `onboarding.html`
+- Checks if a user is already logged in on page load  -  if so, skips straight to `home.html` or `onboarding.html`
 - Listens to form submit, validates that both fields are filled
 - If `nish` / `mandal`: calls `Flock.login()`, `Flock.seedNish()`, redirects to `home.html`
 - Any other combination: shows the `#login-error` inline error
 
----
 
 ### `js/pages/signup.js`
 
@@ -287,7 +279,6 @@ Validates the sign-up form with rules:
 
 On success: calls `Flock.login(username)`, sets a basic profile (first name only), and redirects to `onboarding.html`. The user then sets their interests and preferences before reaching the home feed.
 
----
 
 ### `js/pages/onboarding.js`
 
@@ -300,22 +291,20 @@ On step 3 completion, it writes everything to `localStorage` via the `Flock` hel
 
 Interest chips use a `Set` (`S.obInts`) for O(1) add/delete and easy duplicate prevention.
 
----
 
 ### `js/pages/home.js`
 
 Runs on `home.html`. Key responsibilities:
 
-1. **Greeting** — reads the current hour to produce "Good Morning/Afternoon/Evening, [name]"
-2. **Populates dropdowns** — reads `CITIES` from `data.js` to build the city `<select>`, sets the initial value from `Flock.getPrefs()`
-3. **`renderEvents()`** — the main render function:
+1. **Greeting**  -  reads the current hour to produce "Good Morning/Afternoon/Evening, [name]"
+2. **Populates dropdowns**  -  reads `CITIES` from `data.js` to build the city `<select>`, sets the initial value from `Flock.getPrefs()`
+3. **`renderEvents()`**  -  the main render function:
    - Filters `EVENTS` by `activeCity`, `activeDist` and `activeCat`
    - Renders each matching event as an `<a>` tag (so tapping navigates to `event.html?id=EV001`)
    - Generates 3 small avatar dots and an attendee count for the card footer
-4. **`setCat(cat, el)`** — updates `activeCat` and re-renders
-5. **`applyFilters()`** — called by the dropdowns' `onchange`, updates `activeCity` / `activeDist` and re-renders
+4. **`setCat(cat, el)`**  -  updates `activeCat` and re-renders
+5. **`applyFilters()`**  -  called by the dropdowns' `onchange`, updates `activeCity` / `activeDist` and re-renders
 
----
 
 ### `js/pages/event.js`
 
@@ -335,10 +324,9 @@ Reads the event ID from `new URLSearchParams(location.search).get('id')` and fin
 
 The CTA button label changes based on state:
 - Not joined, free: `Join Flock! 🐦`
-- Not joined, paid: `Pay & Join — £5 💳`
-- Already joined: `✓ You're going — tap to leave`
+- Not joined, paid: `Pay & Join  -  £5 💳`
+- Already joined: `✓ You're going  -  tap to leave`
 
----
 
 ### `js/pages/checkout-info.js`
 
@@ -348,7 +336,6 @@ The CTA button label changes based on state:
 - Validates all 6 fields on submit; shows inline errors for each failing field
 - On success: calls `Flock.setCheckoutInfo(data)` and navigates to `checkout-overview.html`
 
----
 
 ### `js/pages/checkout-overview.js`
 
@@ -358,14 +345,12 @@ The CTA button label changes based on state:
 - Masks the card number to show only the last 4 digits
 - On "Confirm & Pay": calls `Flock.completeCheckout()` (which calls `joinEvent()` internally) then navigates to `checkout-complete.html`
 
----
 
 ### `js/pages/checkout-complete.js`
 
 - Generates a random booking reference: `FLK-XXXX-XXXX`
 - Reads the user's first name to personalise the confirmation message
 
----
 
 ### `js/pages/my-events.js`
 
@@ -374,7 +359,6 @@ The CTA button label changes based on state:
 - Renders either a list of event cards or an empty state with a "Browse Events" button
 - Each card is an `<a>` tag linking to `event.html?id={id}`
 
----
 
 ### `js/pages/profile.js`
 
@@ -386,7 +370,6 @@ The CTA button label changes based on state:
 - "Edit interests & preferences" row links back to `onboarding.html`
 - Sign Out button calls `Flock.logout()`
 
----
 
 ## PWA Setup
 
@@ -403,7 +386,7 @@ Tells the browser the app is installable. Key fields:
 }
 ```
 
-### `sw.js` — Service Worker
+### `sw.js`  -  Service Worker
 
 A service worker is a background script that intercepts network requests. Flock's service worker implements a **cache-first** strategy:
 
@@ -411,7 +394,7 @@ A service worker is a background script that intercepts network requests. Flock'
 2. **`activate`** event: takes control of all open tabs immediately
 3. **`fetch`** event: for every request, checks the cache first. If found, returns the cached version (fast, works offline). If not found, fetches from the network and adds it to the cache for next time.
 
-This means after the first load, Flock works entirely offline. The cache is named `flock-v2` — incrementing the version number (e.g. to `flock-v3`) forces the browser to discard the old cache and re-download everything, which is how you deploy updates.
+This means after the first load, Flock works entirely offline. The cache is named `flock-v2`  -  incrementing the version number (e.g. to `flock-v3`) forces the browser to discard the old cache and re-download everything, which is how you deploy updates.
 
 ### iOS Meta Tags
 
@@ -424,9 +407,8 @@ These appear in the `<head>` of every page:
 
 The first tag enables full-screen mode when opened from the iOS home screen. The second makes the status bar transparent so the orange header extends behind it, giving a truly native feel.
 
----
 
-## Data Flow — End to End
+## Data Flow  -  End to End
 
 Here is how data moves through the app for a typical user journey:
 
@@ -445,7 +427,7 @@ Here is how data moves through the app for a typical user journey:
    └── Navigates to event.html?id=EV004
        └── event.js reads URL param, finds event in EVENTS
            └── Renders detail page
-               └── User clicks "Pay & Join — £5 💳"
+               └── User clicks "Pay & Join  -  £5 💳"
                    └── event.js calls Flock.setCheckoutEvent('EV004')
                        └── Navigates to checkout-info.html
 
@@ -461,7 +443,6 @@ Here is how data moves through the app for a typical user journey:
        └── Finds EV004 in EVENTS, renders it
 ```
 
----
 
 ## `id` Attribute Reference for Test Automation
 

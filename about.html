@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <title>Flock — About</title>
+  <title>Flock  -  About</title>
   <link rel="stylesheet" href="css/styles.css">
   <style>
     .about-hero{background:var(--primary);padding:36px 24px 40px;text-align:center;color:#fff}
@@ -35,8 +35,10 @@
     .about-cta p{font-size:14px;color:var(--text3);margin-bottom:14px}
     @media(min-width:768px){
       .event-grid{grid-template-columns:repeat(3,1fr)}
-      .about-section,.about-cta{padding-left:40px;padding-right:40px;max-width:680px}
-      .about-quote{margin-left:40px;margin-right:40px}
+      .about-inner{max-width:700px;margin:0 auto;padding:0 40px}
+      .about-section{padding-left:0;padding-right:0}
+      .about-cta{padding-left:0;padding-right:0}
+      .about-quote{margin-left:0;margin-right:0}
     }
   </style>
 </head>
@@ -72,6 +74,7 @@
       <p>Make genuine local friends through shared events and experiences</p>
     </div>
 
+    <div class="about-inner">
     <!-- How it works -->
     <div class="about-section">
       <h2>How it works</h2>
@@ -80,14 +83,14 @@
           <div class="step-num">1</div>
           <div class="step-text">
             <strong>Tell us what you're into</strong>
-            <p>Football, gym, Indian food, gaming, hiking, live music — whatever makes you <em>you</em>. The more you share, the better your matches.</p>
+            <p>Football, gym, Indian food, gaming, hiking, live music  -  whatever makes you <em>you</em>. The more you share, the better your matches.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
           <div class="step-text">
             <strong>Set your preferences</strong>
-            <p>Choose your city, how far you're willing to travel, and who you'd like to meet — girls, guys, or everyone.</p>
+            <p>Choose your city, how far you're willing to travel, and who you'd like to meet  -  girls, guys, or everyone.</p>
           </div>
         </div>
         <div class="step-item">
@@ -109,7 +112,7 @@
 
     <!-- Quote -->
     <div class="about-quote">
-      "When people go to these events they will hopefully make local friends who are into the same sort of things as them."
+      "Find your flock."
     </div>
 
     <!-- Event types -->
@@ -160,14 +163,14 @@
           <div class="audience-icon">🏫</div>
           <div>
             <strong>School students</strong>
-            <p>Find people your age who share your interests — from study groups to gaming nights and sports activities.</p>
+            <p>Find people your age who share your interests  -  from study groups to gaming nights and sports activities.</p>
           </div>
         </div>
         <div class="audience-item">
           <div class="audience-icon">👥</div>
           <div>
             <strong>Anyone who wants real friendships</strong>
-            <p>Making friends as an adult is hard. Flock makes it natural — you're already there doing something you love.</p>
+            <p>Making friends as an adult is hard. Flock makes it natural  -  you're already there doing something you love.</p>
           </div>
         </div>
       </div>
@@ -178,9 +181,11 @@
       <!-- populated by JS depending on login state -->
     </div>
 
+    </div><!-- /about-inner -->
+
   </div>
 
-  <!-- Bottom nav — populated by JS if logged in -->
+  <!-- Bottom nav  -  populated by JS if logged in -->
   <nav class="bottom-nav" id="about-bottom-nav" style="display:none">
     <a class="nav-item" id="nav-discover" data-page="home" href="home.html">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -198,6 +203,10 @@
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
       About
     </a>
+    <a class="nav-item" id="nav-chats" data-page="chats" href="javascript:void(0)" onclick="showMobileChatsPopup()">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Chats
+    </a>
   </nav>
 
 </div>
@@ -206,5 +215,18 @@
 <script src="js/pages/about.js"></script>
 <script src="js/desktop-sidebar.js"></script>
 <script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+<script>
+function showMobileChatsPopup() {
+  let ov = document.getElementById('mobile-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'mobile-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center"><div style="font-size:36px;margin-bottom:12px">💬</div><div style="font-family:-apple-system,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div><div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">Not yet implemented - chat functionality is coming soon!</div><button onclick="document.getElementById('mobile-chats-overlay').remove()" style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">Got it</button></div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
+}
+</script>
 </body>
 </html>

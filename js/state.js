@@ -1,7 +1,7 @@
 'use strict';
 
 /* ══════════════════════════════════════════════════════════
-   JAGS — pre-seeded demo account
+   JAGS  -  pre-seeded demo account
    Applied every time nish logs in so it's always consistent
 ══════════════════════════════════════════════════════════ */
 const JAGS = {

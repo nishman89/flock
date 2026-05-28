@@ -112,10 +112,12 @@ function render() {
       ${buildAttendees()}
     </div>`;
 
-  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join — ${ev.price} 💳`;
+  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join  -  ${ev.price} 💳`;
   document.getElementById('detail-cta').innerHTML = joined
-    ? `<button id="leave-event-btn" class="btn btn-join" onclick="toggleJoin()">✓ You're going — tap to leave</button>`
-    : `<button id="join-event-btn"  class="btn btn-pr"   onclick="toggleJoin()">${joinLbl}</button>`;
+    ? `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're going - tap to leave</button>`
+    : `<button id="join-event-btn"  class="btn btn-pr"   style="margin-bottom:10px" onclick="toggleJoin()">${joinLbl}</button>`;
+  document.getElementById('detail-cta').innerHTML +=
+    `<button id="chat-btn" class="btn btn-chat" onclick="showChatPopup()">💬 Chat with attendees</button>`;
 }
 
 function toggleJoin() {
@@ -132,6 +134,31 @@ function toggleJoin() {
       Flock.joinEvent(id);
       render();
     }
+  }
+}
+
+function showChatPopup() {
+  let overlay = document.getElementById('chat-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'chat-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;animation:fadeIn .15s ease';
+    overlay.innerHTML = `
+      <div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center;animation:slideUp .2s ease">
+        <div style="font-size:36px;margin-bottom:12px">💬</div>
+        <div style="font-family:var(--font);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">Event Chat</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:20px">
+          Not yet implemented - chat functionality is coming soon! Once live, you'll be able to message other attendees before and after the event.
+        </div>
+        <button id="chat-close-btn" onclick="document.getElementById('chat-overlay').remove()"
+          style="padding:11px 28px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;width:100%">
+          Got it
+        </button>
+      </div>`;
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.remove();
+    });
+    document.body.appendChild(overlay);
   }
 }
 

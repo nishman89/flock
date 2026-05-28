@@ -12,7 +12,7 @@ function fmtD(d) {
   return dt.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
-/* Parse ticket price — strip £ and take first number */
+/* Parse ticket price  -  strip £ and take first number */
 function parsePrice(str) {
   const m = str.replace('£','').match(/[\d.]+/);
   return m ? parseFloat(m[0]) : 0;

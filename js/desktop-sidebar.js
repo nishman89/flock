@@ -15,6 +15,7 @@ function initDesktop() {
     profile:  '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
     logout:   '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
     about:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    chats:    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   };
 
   function icon(paths) {
@@ -44,6 +45,7 @@ function initDesktop() {
       ${navLink('my-events.html', 'my-events', 'My Events', svgs.events)}
       ${navLink('profile.html',   'profile',   'Profile',   svgs.profile)}
       ${navLink('about.html',    'about',     'About',     svgs.about)}
+      <button id="sidebar-nav-chats" class="sb-link" onclick="showSidebarChatsPopup()" style="background:none;border:none;cursor:pointer;width:100%;text-align:left">${icon(svgs.chats)}<span>Chats</span></button>
     </nav>
     <div class="sb-foot">
       <button id="sidebar-signout-btn" class="sb-logout" onclick="Flock.logout()">
@@ -68,4 +70,28 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initDesktop);
 } else {
   initDesktop();
+}
+
+function showSidebarChatsPopup() {
+  let ov = document.getElementById('sidebar-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'sidebar-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `
+      <div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">💬</div>
+        <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div>
+        <div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">
+          Not yet implemented - the Chats feature is coming soon. You'll be able to message other attendees before and after events.
+        </div>
+        <button onclick="document.getElementById('sidebar-chats-overlay').remove()"
+          id="sidebar-chats-close-btn"
+          style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">
+          Got it
+        </button>
+      </div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
 }
