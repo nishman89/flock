@@ -14,7 +14,7 @@ function render() {
 
   if (events.length === 0) {
     el.innerHTML = `
-      <div class="empty-state">
+      <div id="my-events-empty" class="empty-state">
         <div class="empty-icon">🐦</div>
         <h3>No events yet</h3>
         <p>Discover events near you and join the flock!</p>
@@ -31,7 +31,7 @@ function render() {
       ${events.map(e => {
         const col = EV_COLS[e.cat] || '#F97316';
         return `
-          <a class="my-event-card" href="event.html?id=${e.id}">
+          <a id="my-event-card-${e.id}" class="my-event-card" href="event.html?id=${e.id}">
             <div class="my-event-accent" style="background:${col}"></div>
             <div class="my-event-body">
               <div class="my-event-title">${e.e} ${e.t}</div>

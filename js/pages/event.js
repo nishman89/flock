@@ -41,7 +41,7 @@ function render() {
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero" style="background:${col}">
-      <button class="detail-back" onclick="history.back()">
+      <button id="detail-back-btn" class="detail-back" onclick="history.back()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"/>
         </svg>

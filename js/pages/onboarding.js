@@ -73,10 +73,10 @@ function render() {
       </div>
       <div class="dist-chips">
         ${DISTANCES.map(d => `
-          <div class="dist-chip ${selectedDist===d?'selected':''}"
+          <div class="dist-chip ${selectedDist===d?'selected':''}" id="ob-dist-${d}"
                onclick="selectDist(${d},this)">${d} miles</div>
         `).join('')}
-        <div class="dist-chip ${selectedDist===999?'selected':''}"
+        <div class="dist-chip ${selectedDist===999?'selected':''}" id="ob-dist-any"
              onclick="selectDist(999,this)">Any</div>
       </div>
       <div class="field" style="margin-bottom:8px">

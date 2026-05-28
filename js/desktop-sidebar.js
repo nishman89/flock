@@ -14,6 +14,7 @@ function initDesktop() {
     events:   '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
     profile:  '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
     logout:   '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+    about:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
   };
 
   function icon(paths) {
@@ -22,7 +23,7 @@ function initDesktop() {
 
   function navLink(href, id, label, svgPaths) {
     const active = page === href ? 'active' : '';
-    return `<a class="sb-link ${active}" href="${href}">${icon(svgPaths)}<span>${label}</span></a>`;
+    return `<a id="sidebar-nav-${id}" class="sb-link ${active}" href="${href}">${icon(svgPaths)}<span>${label}</span></a>`;
   }
 
   const birdSVG = `<svg width="24" height="19" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,9 +43,10 @@ function initDesktop() {
       ${navLink('home.html',      'home',      'Discover',  svgs.home)}
       ${navLink('my-events.html', 'my-events', 'My Events', svgs.events)}
       ${navLink('profile.html',   'profile',   'Profile',   svgs.profile)}
+      ${navLink('about.html',    'about',     'About',     svgs.about)}
     </nav>
     <div class="sb-foot">
-      <button class="sb-logout" onclick="Flock.logout()">
+      <button id="sidebar-signout-btn" class="sb-logout" onclick="Flock.logout()">
         ${icon(svgs.logout)} Sign Out
       </button>
     </div>`;

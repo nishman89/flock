@@ -19,7 +19,7 @@ function render() {
     <div class="profile-section">
       <div class="profile-section-title">My Stats</div>
       <div class="profile-card">
-        <div class="profile-row">
+        <div id="profile-events-joined" class="profile-row">
           <span class="profile-row-label">Events joined</span>
           <span class="profile-row-val">${myEvCount} 🎉</span>
         </div>
@@ -64,7 +64,7 @@ function render() {
     <div class="profile-section">
       <div class="profile-section-title">Account</div>
       <div class="profile-card">
-        <div class="profile-row">
+        <div id="profile-username-row" class="profile-row">
           <span class="profile-row-label">Username</span>
           <span class="profile-row-val">${Flock.getUser()}</span>
         </div>
@@ -78,7 +78,7 @@ function render() {
     </div>
 
     <div class="profile-section" style="padding-bottom:16px">
-      <button class="btn btn-ghost" onclick="if(confirm('Sign out of Flock?'))Flock.logout()">Sign Out</button>
+      <button id="signout-btn" class="btn btn-ghost" onclick="if(confirm('Sign out of Flock?'))Flock.logout()">Sign Out</button>
     </div>`;
 }
 

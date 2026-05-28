@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <title>Flock — About</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .about-hero{background:var(--primary);padding:36px 24px 40px;text-align:center;color:#fff}
+    .about-hero-icon{width:72px;height:72px;border-radius:22px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .about-hero h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+    .about-hero p{font-size:16px;color:rgba(255,255,255,.85);line-height:1.5;max-width:320px;margin:0 auto}
+    .about-section{padding:24px 20px 0}
+    .about-section h2{font-family:var(--font);font-size:18px;font-weight:700;color:var(--text);margin-bottom:14px}
+    .step-list{display:flex;flex-direction:column;gap:14px;margin-bottom:8px}
+    .step-item{display:flex;gap:14px;align-items:flex-start}
+    .step-num{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-family:var(--font);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .step-text strong{display:block;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+    .step-text p{font-size:14px;color:var(--text2);line-height:1.5;margin:0}
+    .event-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+    .event-pill{background:var(--card);border:1.5px solid var(--border);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--text2)}
+    .event-pill span:first-child{font-size:20px}
+    .audience-list{display:flex;flex-direction:column;gap:10px}
+    .audience-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--rs);padding:14px 16px;display:flex;gap:12px;align-items:center}
+    .audience-icon{font-size:24px;flex-shrink:0}
+    .audience-item strong{display:block;font-size:14px;font-weight:700;color:var(--text)}
+    .audience-item p{font-size:13px;color:var(--text2);margin:3px 0 0;line-height:1.4}
+    .about-quote{background:var(--primary-lt);border-left:4px solid var(--primary);border-radius:0 var(--rs) var(--rs) 0;padding:16px 18px;margin:24px 20px;font-size:14px;font-style:italic;color:var(--text2);line-height:1.6}
+    .about-cta{padding:24px 20px 8px;text-align:center}
+    .about-cta p{font-size:14px;color:var(--text3);margin-bottom:14px}
+    @media(min-width:768px){
+      .event-grid{grid-template-columns:repeat(3,1fr)}
+      .about-section,.about-cta{padding-left:40px;padding-right:40px;max-width:680px}
+      .about-quote{margin-left:40px;margin-right:40px}
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell" id="about-shell">
+
+  <header class="app-header" id="about-header">
+    <a class="header-logo" href="javascript:void(0)" id="about-logo-link">
+      <div class="header-logo-icon">
+        <svg width="24" height="19" viewBox="0 0 36 28" fill="none">
+          <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+          <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+          <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="header-brand">Flock</span>
+    </a>
+    <div id="about-header-action"></div>
+  </header>
+
+  <div class="content">
+
+    <!-- Hero -->
+    <div class="about-hero">
+      <div class="about-hero-icon">
+        <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+          <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+          <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+          <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+        </svg>
+      </div>
+      <h1>What is Flock?</h1>
+      <p>Make genuine local friends through shared events and experiences</p>
+    </div>
+
+    <!-- How it works -->
+    <div class="about-section">
+      <h2>How it works</h2>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Tell us what you're into</strong>
+            <p>Football, gym, Indian food, gaming, hiking, live music — whatever makes you <em>you</em>. The more you share, the better your matches.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Set your preferences</strong>
+            <p>Choose your city, how far you're willing to travel, and who you'd like to meet — girls, guys, or everyone.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Get matched to events</strong>
+            <p>Flock finds events in your city that match your interests. These are real, organised events planned in major cities across the UK.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <strong>Show up and meet your flock</strong>
+            <p>Go to the event, meet people who are into the same things, and make genuine local friendships that last.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="about-quote">
+      "When people go to these events they will hopefully make local friends who are into the same sort of things as them."
+    </div>
+
+    <!-- Event types -->
+    <div class="about-section">
+      <h2>What kind of events?</h2>
+      <div class="event-grid">
+        <div class="event-pill"><span>⚽</span>Pub football</div>
+        <div class="event-pill"><span>🃏</span>Board games</div>
+        <div class="event-pill"><span>🏎️</span>F1 watch parties</div>
+        <div class="event-pill"><span>🏉</span>Rugby screenings</div>
+        <div class="event-pill"><span>🍛</span>Food tours</div>
+        <div class="event-pill"><span>🛍️</span>Shopping trips</div>
+        <div class="event-pill"><span>🎵</span>Live music</div>
+        <div class="event-pill"><span>🥾</span>Hiking days out</div>
+        <div class="event-pill"><span>🧘</span>Yoga & wellness</div>
+        <div class="event-pill"><span>🏋️</span>Gym buddies</div>
+        <div class="event-pill"><span>🎬</span>Cinema nights</div>
+        <div class="event-pill"><span>☕</span>Coffee crawls</div>
+      </div>
+    </div>
+
+    <!-- Who it's for -->
+    <div class="about-section" style="padding-bottom:24px">
+      <h2>Who is Flock for?</h2>
+      <div class="audience-list">
+        <div class="audience-item">
+          <div class="audience-icon">🏡</div>
+          <div>
+            <strong>People who've moved cities</strong>
+            <p>Starting fresh somewhere new? Flock helps you build a social circle from scratch based on what you actually enjoy.</p>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">👴</div>
+          <div>
+            <strong>Older adults seeking companionship</strong>
+            <p>Flock is for all ages. Whether you're retired or just looking for more social connection, there are events for you.</p>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">🎓</div>
+          <div>
+            <strong>University students</strong>
+            <p>New to a city and want to meet people outside your course? Join clubbing nights, sports events and social meetups.</p>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">🏫</div>
+          <div>
+            <strong>School students</strong>
+            <p>Find people your age who share your interests — from study groups to gaming nights and sports activities.</p>
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">👥</div>
+          <div>
+            <strong>Anyone who wants real friendships</strong>
+            <p>Making friends as an adult is hard. Flock makes it natural — you're already there doing something you love.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="about-cta" id="about-cta">
+      <!-- populated by JS depending on login state -->
+    </div>
+
+  </div>
+
+  <!-- Bottom nav — populated by JS if logged in -->
+  <nav class="bottom-nav" id="about-bottom-nav" style="display:none">
+    <a class="nav-item" id="nav-discover" data-page="home" href="home.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Discover
+    </a>
+    <a class="nav-item" id="nav-my-events" data-page="my-events" href="my-events.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      My Events
+    </a>
+    <a class="nav-item" id="nav-profile" data-page="profile" href="profile.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+    <a class="nav-item active" id="nav-about" data-page="about" href="about.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      About
+    </a>
+  </nav>
+
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/pages/about.js"></script>
+<script src="js/desktop-sidebar.js"></script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+</body>
+</html>
