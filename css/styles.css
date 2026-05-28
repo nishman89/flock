@@ -257,7 +257,7 @@ body {
   background: var(--card);
   border-top: 1px solid var(--border);
   display: flex; align-items: stretch;
-  position: sticky; bottom: 0; z-index: 40;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
   flex-shrink: 0;
 }
 .nav-item {
@@ -550,6 +550,11 @@ body {
 /* ══════════════════════════════════════════════════════════
    MY EVENTS PAGE
 ══════════════════════════════════════════════════════════ */
+/* Hide desktop sidebar elements at mobile widths */
+.sb { display: none }
+.page-wrap { display: contents }
+.page-main { display: contents }
+
 .my-list { padding: 16px }
 .my-event-card {
   background: var(--card); border-radius: var(--r);
