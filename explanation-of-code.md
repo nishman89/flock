@@ -1,616 +1,340 @@
-# Flock  -  Code Explanation
+# Flock Alt - Code Explanation
 
-A full technical walkthrough of every file in the project. Written so any developer can pick this up, understand it, and extend it.
-
----
-
-## What is a Flock?
-
-A **Flock** is the core unit of the app  -  what other apps might call an "event". Each Flock has a fixed capacity, a date, a venue, a category, and a vibe. When a user joins a Flock, the going count goes up and the spots left go down in real time. The terminology is used consistently throughout the codebase and UI.
+A full technical walkthrough of the flock_alt codebase. This version redesigns the core concept: a **Flock** is a group, a **Roost** is a specific gathering within that group.
 
 ---
 
-## Project Structure
+## Core Concepts
+
+| Term | Code reference | Description |
+|------|---------------|-------------|
+| **Flock** | `FLOCKS` array, `FL001`...`FL023` | A persistent group of like-minded people in a city |
+| **Roost** | `fl.roosts[]`, `M1`...`M3` | A specific gathering organised by a Flock |
+| **Member** | `flock_my_flocks` in localStorage | A user who has joined a Flock |
+| **Attending** | `flock_roost_attendance` in localStorage | A member who has committed to a specific Roost |
+
+A user joins a Flock once. They then individually mark which Roosts within that Flock they will attend. Leaving a Flock removes them from all its Roosts automatically.
+
+---
+
+## File Structure
 
 ```
-flock/
-├── index.html                  Auth router
-├── login.html / signup.html / onboarding.html
-├── home.html                   Flocks feed
-├── event.html                  Flock detail
-├── my-events.html              My Flocks
-├── profile.html                User profile
-├── checkout-info/overview/complete.html
-├── about.html
-├── manifest.json               PWA config
-├── sw.js                       Service worker (flock-v11)
-├── css/styles.css              Single shared stylesheet
-└── js/
-    ├── data.js                 All Flock data + helpers
-    ├── state.js                localStorage state management
-    ├── desktop-sidebar.js      Desktop sidebar injector
-    └── pages/                  One JS file per page
+flock_alt/
+├── home.html + js/pages/home.js         - Browse Flocks
+├── roosts.html + js/pages/roosts.js     - Browse all Roosts
+├── event.html + js/pages/event.js       - Flock detail + Roost list
+├── my-flocks.html + js/pages/my-flocks.js  - Joined Flocks
+├── my-roosts.html + js/pages/my-roosts.js  - Attending Roosts
+├── onboarding.html + js/pages/onboarding.js - 4-step setup
+├── js/data.js      - All Flock/Roost data
+├── js/state.js     - localStorage state management
+└── js/desktop-sidebar.js - Desktop sidebar injector
 ```
 
 ---
 
-## HTML Pages
+## Data Structure
 
-All pages follow the same pattern  -  scripts load at the bottom in order:
+### `FLOCKS` array in `data.js`
 
-```html
-<script src="js/data.js"></script>      <!-- globals: EVENTS, INTERESTS, CITIES, EV_COLS -->
-<script src="js/state.js"></script>     <!-- global: Flock object, setActiveNav() -->
-<script src="js/pages/{page}.js"></script>
-<script src="js/desktop-sidebar.js"></script>
-```
-
-### index.html
-Auth router  -  no visible content. Checks `localStorage` and redirects:
-```javascript
-const user = localStorage.getItem('flock_user');
-window.location.replace(user ? 'home.html' : 'login.html');
-```
-Uses `replace()` not `href` so the router doesn't appear in browser history.
-`manifest.json` `start_url` points here so PWA launch always routes correctly.
-
-### signup.html
-First name + last name side by side, username, password, confirm password.
-- Checks username against `flock_registered` array in localStorage  -  shows "already taken" inline without a page reload
-- `nish` is always reserved
-- On success: saves `firstName`/`lastName` to profile, registers username, redirects to `onboarding.html`
-
-### onboarding.html
-3-step mandatory wizard. No skip button.
-- **Step 1:** First name (pre-filled from signup), last name, date of birth (native date picker), avatar picker (12 emojis)
-- **Step 2:** Interest chips  -  tap to select, minimum 1 required
-- **Step 3:** City dropdown, distance chips, "looking to meet" chips
-- Each step saves to localStorage before advancing  -  data is never lost if user navigates away
-
-### home.html
-Main feed. Contains empty containers filled by `home.js`:
-- Filter bar: city dropdown, distance dropdown, sort dropdown
-- Search bar + "Use my location" button
-- Category chips: All, ⚡ Soon, Sports, Food & Drink, Gaming, Fitness, Social, Wellness, Outdoors, Music, Arts
-- `#events-container`  -  filled with Flock cards
-
-### event.html
-Flock detail. Reads `?id=EV001` from URL. Loads Leaflet from CDN for the map. Key areas:
-- `#detail-content`  -  hero, info rows, description, map, attendees
-- `#detail-cta`  -  sticky bottom CTA (Join/Leave/Waitlist/Pay + Share)
-
-### my-events.html
-Lists joined Flocks split into upcoming (sorted soonest first) and past (sorted most recent first). Past Flocks shown dimmed.
-
-### profile.html
-No `<header>`  -  the orange hero fills from the very top. All content rendered by JS. Editable inline:
-- City via `<select>`  -  saves instantly on change
-- Looking to meet via chips  -  saves instantly on tap
-- All 19 interests as chips  -  tap to toggle, saves instantly
-- "Edit profile" button opens a bottom-sheet modal for name/DOB/avatar
-
----
-
-## CSS  -  `css/styles.css`
-
-One stylesheet for all pages, mobile-first.
-
-### CSS Custom Properties
-```css
-:root {
-  --primary:    #F97316;   /* Flock orange */
-  --primary-dk: #C2410C;   /* Darker orange */
-  --primary-lt: #FED7AA;   /* Light orange */
-  --bg:         #FFF8EF;   /* Warm off-white */
-  --card:       #FFFFFF;
-  --border:     #FDE8D0;
-  --text:       #1C0A00;
-  --text2:      #6B3A1F;
-  --text3:      #A8784A;
-  --ok:         #16A34A;
-  --err:        #DC2626;
-  --nav-h:      72px;
-  --r:          14px;      /* card border-radius */
-  --rs:         10px;      /* small border-radius */
-}
-```
-
-### Responsive Strategy
-Mobile-first. Single breakpoint at `768px`.
-
-**Mobile (< 768px):**
-- `.app-shell` full width, max 480px, centred at wider screens
-- `.bottom-nav`  -  `position: fixed; bottom: 0; left: 0; right: 0; z-index: 100`  -  always visible regardless of scroll
-- `.content` has `padding-bottom` equal to nav height so nothing is hidden behind it
-- `.sb`, `.page-wrap`, `.page-main` default to `display: none` / `display: contents`  -  prevents broken sidebar HTML showing on resize
-
-**Desktop (≥ 768px):**
-- `.sb`  -  `display: flex; width: 240px; position: sticky; top: 0; height: 100vh`
-- `.page-wrap`  -  `display: flex` (sidebar + main side by side)
-- `.bottom-nav`  -  `display: none !important`
-- `.page-wrap .my-list`  -  `max-width: 560px` (keeps My Flocks cards proportional)
-- Home events grid  -  `grid-template-columns: repeat(2, 1fr)`
-
----
-
-## JavaScript
-
-### `js/data.js`
-
-#### `d(n)`  -  dynamic date helper
-```javascript
-function d(n) {
-  const dt = new Date();
-  dt.setDate(dt.getDate() + n);
-  return dt.toISOString().slice(0, 10);
-}
-```
-Returns an ISO date string `n` days from today. Every Flock uses this so dates are always upcoming and never stale.
-
-#### `INTERESTS`
-19 items. Each: `{ e: '⚽', label: 'Football' }`. The emoji field is `e`  -  not `emoji`. Any code referencing interests must use `match.e`.
-
-Includes: Football, Rugby, Formula 1, Gym & Fitness, Running, Yoga & Wellness, Hiking & Outdoors, Food & Dining, Coffee & Cafés, Pub & Social, Video Games, Board Games, Shopping, Live Music, Cinema, Book Club, Arts & Culture, Swimming, Dancing.
-
-#### `CITIES`
-```javascript
-['London','Manchester','Birmingham','Edinburgh','Bristol','Leeds','Liverpool','Glasgow','Cardiff','Newcastle']
-```
-
-#### `EVENTS`
-52 Flock objects. Each:
 ```javascript
 {
-  id:         'EV001',
-  t:          'Premier League Watch Party',  // title
-  cat:        'Sports',                      // matches a filter tab
-  interests:  ['Football'],
-  city:       'London',                      // must match CITIES
-  venue:      'The Crown & Anchor',
-  addr:       '22 Fleet St EC4Y',
-  date:       d(1),                          // always upcoming
-  time:       '15:00',
-  dur:        '2 hrs',
-  price:      'Free',                        // 'Free' or '£X'  -  never a range
-  going:      24,                            // base count (real count = going + delta)
-  max:        40,
-  e:          '⚽',                          // emoji for pin and card
-  dist:       1.2,                           // miles from city centre (fallback)
-  lat:        51.5148,                       // for real-distance calc + map
-  lng:        -0.1069,
-  desc:       '...',
-  tags:       ['Football','Sports','Social'],
-  ages:       '18+',
-  ft:         'Both',                        // 'Both', 'Girls', 'Boys'
-  recurring:  true,                          // optional  -  shows 🔁 Weekly badge
+  id:       'FL001',
+  name:     'Arsenal Supporters Club London',
+  cat:      'Sports',
+  interests: ['Football'],
+  city:     'London',
+  e:        '⚽',               // emoji for cards and map pins
+  members:  84,                 // base member count
+  desc:     '...',
+  tags:     ['Football','Arsenal','Sports'],
+  ages:     '18+',
+  ft:       'Both',             // 'Both', 'Girls', 'Boys'
+  lat:      51.5550,            // Flock centre (for location matching)
+  lng:      -0.1086,
+  roosts: [                     // array of upcoming Roosts
+    {
+      id:     'M1',
+      title:  'Arsenal vs Spurs - North London Derby',
+      venue:  'The Tollington',
+      addr:   '74 Tollington Rd, London N7',
+      date:   d(1),             // always upcoming via d(n) helper
+      time:   '13:30',
+      dur:    '2.5 hrs',
+      price:  'Free',           // 'Free' or '£X'
+      going:  38,               // base going count
+      max:    60,               // capacity
+      lat:    51.5561,
+      lng:    -0.1127,
+    }
+  ]
 }
 ```
 
+Each Flock has 2-3 Roosts. IDs are `FL001`-`FL023` for Flocks, `M1`-`M3` for Roosts within each Flock.
+
 ---
 
-### `js/state.js`
+## State Management - `js/state.js`
 
-All state lives in `localStorage`. The `Flock` object is a global namespace for all state methods.
+All state in localStorage. The global `Flock` object manages everything.
 
-#### Auth
-| Method | Key | Notes |
-|--------|-----|-------|
-| `Flock.login(u)` | `flock_user` | Saves username |
-| `Flock.getUser()` |  -  | Returns username or null |
-| `Flock.logout()` |  -  | `localStorage.clear()`, redirect to login |
-| `Flock.requireAuth()` |  -  | Redirects to login if no user |
-| `Flock.isOnboarded()` | `flock_onboarded` | Returns boolean |
-| `Flock.setOnboarded()` |  -  | Marks onboarding complete |
-
-#### Profile
-Stored as `flock_profile`: `{ firstName, lastName, dob, avatar }`. DOB is ISO string `YYYY-MM-DD`. Age is always calculated from DOB at render time  -  never stored.
-
-#### Preferences
-Stored as `flock_prefs`: `{ city, dist, friendType }`.
-- `city`  -  string matching CITIES
-- `dist`  -  number (5, 10, 25, 50, or 999 = any)
-- `friendType`  -  `'Girls'`, `'Boys'`, or `'Both'`
-
-#### Interests
-Stored as `flock_interests`: array of label strings e.g. `['Football', 'Cinema']`.
-
-#### Flocks (joined)
-| Method | Key | Notes |
-|--------|-----|-------|
-| `Flock.getMyEvents()` | `flock_my_events` | Array of joined Flock IDs |
-| `Flock.joinEvent(id)` |  -  | Adds ID, increments going delta, clears waitlist |
-| `Flock.leaveEvent(id)` |  -  | Removes ID, decrements going delta |
-| `Flock.isJoined(id)` |  -  | Returns boolean |
-
-#### Going count deltas
-Stored as `flock_going_deltas`: `{ 'EV001': 1, 'EV003': -1, ... }`.
-
-The base `going` count in `data.js` is static. When a user joins or leaves, a delta is written here. The rendered count is always `base + delta`.
+### Flock membership
 
 ```javascript
-Flock.getGoingCount('EV001', 24) // → 25 if user joined, 24 if not
+Flock.getMyFlocks()          // ['FL001', 'FL004']
+Flock.joinFlock('FL001')     // adds to flock_my_flocks
+Flock.leaveFlock('FL001')    // removes from flock_my_flocks AND clears all roost_attendance for this Flock
+Flock.isFlockMember('FL001') // true/false
 ```
 
-This means:
-- Counts persist across page loads and refreshes
-- If the user joins and leaves, the count returns to the original
-- The "spots left" is always `max - (base + delta + joined ? 1 : 0)`
+Key: `flock_my_flocks` - JSON array of Flock IDs.
 
-#### Waitlist
-Stored as `flock_waitlist`: array of Flock IDs. Cleared for an ID when `joinEvent()` is called.
+### Roost attendance
 
-#### Username registry
-Stored as `flock_registered`: array of all usernames created via signup. Used to check uniqueness before account creation. `nish` is always reserved in signup.js logic.
-
-#### Checkout
-Three keys: `flock_checkout_event` (ID), `flock_checkout_info` (form data object), cleared on `completeCheckout()`.
-
----
-
-### `js/desktop-sidebar.js`
-
-Runs after all page scripts. If `window.innerWidth >= 768`, wraps the page in a sidebar layout:
-
-```
-Before: .app-shell → [header, content, bottom-nav]
-After:  .app-shell → .page-wrap → [.sb (sidebar), .page-main → [header, content, bottom-nav]]
-```
-
-Reads `location.pathname` to mark the correct nav link `.active`. If the window is resized below 768px, the sidebar becomes invisible via CSS (no broken links) and the bottom nav reappears.
-
----
-
-### `js/pages/home.js`
-
-#### Geolocation
 ```javascript
-function useMyLocation() {
-  navigator.geolocation.getCurrentPosition(success, error, options);
-}
+Flock.attendRoost('FL001', 'M1')    // marks attending
+Flock.unattendRoost('FL001', 'M1')  // cancels attendance
+Flock.isAttending('FL001', 'M1')    // true/false
+Flock.getLiveGoing('FL001', 'M1', 38) // 38 + 1 if attending = 39
 ```
-On success: runs Haversine formula against `CITY_COORDS` (lat/lng for all 10 cities) to find nearest, updates city dropdown, re-renders. On location known, calculates real distances from user to each Flock venue rather than using the hardcoded `dist` field.
 
-Haversine formula (returns miles):
+Key: `flock_roost_attendance` - JSON object, keys are `FL001_M1` format.
+
 ```javascript
-function haversine(lat1, lng1, lat2, lng2) { ... }
+{ 'FL001_M1': true, 'FL004_M1': true }
 ```
 
-On error code 1 (permission denied): shows OS-specific instructions (iOS: Settings → Safari → Location; Android: address bar padlock). Auto-dismisses after 6 seconds.
+`getLiveGoing(flockId, roostId, base)` returns `base + (isAttending ? 1 : 0)`.
+The `+ 1` is only added when the current user is attending - no separate delta needed.
 
-**Requires HTTPS**  -  works automatically on GitHub Pages and Netlify. Will silently fail on `file://` or `http://`.
+### Demo user seed
 
-#### Filters and search
-- `activeCity`, `activeDist`, `activeCat`, `activeSort`, `searchQuery`, `userLat`, `userLng`  -  module-level state
-- `renderEvents()`  -  filters, sorts, renders all in one pass
-- `⚡ Soon` category  -  shows Flocks within the next 2 days
-- Search matches against: title, venue, description, tags
-- Sort options: `date` (soonest), `dist` (nearest  -  uses real distance if location granted), `going` (most popular), `spots` (fewest spots left)
-
-#### Going count on cards
-Cards show `e._dist` (real or fallback distance) and the base `e.going` count. The live going delta is only applied on the Flock detail page  -  home cards show the base count for performance.
-
----
-
-### `js/pages/event.js`
-
-#### Going count
 ```javascript
-const liveGoing = Flock.getGoingCount(id, ev.going) + (joined ? 1 : 0);
-const spotsLeft = ev.max - liveGoing;
+Flock.seedNish() // called on every nish/mandal login
 ```
-The `+ (joined ? 1 : 0)` is because the delta only records the *other users' changes*  -  the current user's join is always reflected via `isJoined()`.
 
-#### Leaflet map
-Initialised after render. Destroyed and re-initialised on re-render (join/leave) to avoid duplicate map instances. Custom emoji pin using `L.divIcon`:
+Seeds: profile (Nish Mandal, DOB 2000-02-02), interests, prefs (London).
+Pre-joins: FL001 (Arsenal Supporters) + FL004 (London Foodies) + FL024 (Mario Kart Enthusiasts London).
+Pre-attends: FL001_M1 (Arsenal vs Spurs) + FL004_M1 (Brick Lane Street Food Tour) + FL024_M1 (Mario Kart Grand Prix Night).
+
+Seed only runs once (guarded by `flock_nish_seeded` flag) so user's subsequent changes persist.
+
+---
+
+## Pages
+
+### `home.js` - Browse Flocks
+
+Renders Flock group cards. Each card shows:
+- Group name, emoji, category badge
+- Member count, next Roost date and venue
+- "✓ Member" badge if already joined
+
+Filters: city dropdown, category chips (All/Sports/Gaming etc), sort (Most members / Next Roost / A-Z), search (matches name, description, tags).
+
+No distance filter - Flocks are city-level communities, not distance-based.
+
+### `roosts.js` - Browse Roosts
+
+Flattens all Roosts from all Flocks in the selected city into a single list. Each card shows:
+- Roost title, parent Flock name
+- Date, time, venue, going count, spots left, price
+- "✓ Going" badge if attending
+
+Clicking any card goes to `event.html?id=FL001` (the parent Flock detail page) where you can join the Flock and attend the Roost.
+
+Filters: city, category chips, sort (Soonest / Most popular / Spots left), search.
+
+### `event.js` - Flock Detail
+
+Reads `?id=FL001` from URL. Renders:
+
+**Top section (group info):**
+- Coloured hero with emoji + back button
+- Group name, city, member count (live: base + 1 if member), category, open to
+- Description and tags
+- Join/Leave Flock CTA button (sticky at bottom)
+
+**Roost cards** (one per Roost in `fl.roosts`):
+
 ```javascript
-const icon = L.divIcon({
-  html: `<div style="background:var(--primary)..."><span style="transform:rotate(45deg)">${ev.e}</span></div>`,
-  iconSize: [32, 32], iconAnchor: [16, 32]
-});
+function roostCard(roost, index, isMember)
 ```
-`scrollWheelZoom: false` prevents accidental zoom while scrolling the page on desktop.
 
-#### CTA states
-| State | Button shown |
-|-------|-------------|
-| Free, not joined | "Join Flock! 🐦" |
-| Paid, not joined | "Pay & Join  -  £X 💳" |
-| Joined | "✓ You're in this Flock  -  tap to leave" |
-| Full, not on waitlist | "🔔 Join Waitlist" |
-| Full, on waitlist | "⏳ You're on the waitlist" |
+Each card has:
+- Coloured header strip with title and price pill
+- Date, time, duration meta row
+- Venue + going count / spots left row
+- Leaflet map (170px tall, custom emoji pin, scroll wheel disabled)
+- Get Directions link (deep-links to Google Maps)
+- Attend/cancel button (disabled if not a member - shows "Join Flock to attend")
 
-#### Share
-Uses `navigator.share` (native sheet on iOS/Android). Falls back to `navigator.clipboard.writeText` on desktop with a "✓ Link copied!" confirmation.
+**Button states:**
+
+| State | Button |
+|-------|--------|
+| Not a member | "Join Flock to attend" (locked, grey) |
+| Member, not attending, free | "Attend this Roost" (orange) |
+| Member, not attending, paid | "Pay £X & Attend" (orange) |
+| Member, attending | "✓ Going - tap to cancel" (soft green) |
+| Full | "Full" (grey, disabled) |
+
+**Maps:**
+Leaflet + OpenStreetMap, one map per Roost. Maps are destroyed and re-created on re-render (join/leave/attend) to prevent duplicate instances. Stored in `_maps` object keyed by Roost ID.
+
+### `my-flocks.js` - My Flocks
+
+Lists joined Flocks. For each:
+- Flock name, emoji, member count (+1 for self), upcoming Roost count
+- Next Roost title, date, time, venue
+- "✓ Going" indicator if attending the next Roost
+
+### `my-roosts.js` - My Roosts
+
+Collects all Roosts across all Flocks that `Flock.isAttending()` returns true for. Splits into:
+- Upcoming (date >= today, sorted soonest first)
+- Past (date < today, sorted most recent first)
+
+Each card shows Roost title, parent Flock name, date, time, venue.
+
+### `onboarding.js` - 4-Step Setup
+
+**Step 1:** First name, last name, DOB (native date picker), avatar (12 emoji options). Pre-fills from signup data.
+
+**Step 2:** Interest chips (19 options). Minimum 1 required.
+
+**Step 3 - Suggested Flocks (new):**
+- Filters `FLOCKS` by user's city (from saved prefs) and selected interests
+- Shows up to 6 matching Flocks as tappable cards
+- Each card: emoji, name, member count, category, join toggle
+- "Skip for now" button visible only on this step
+- On Continue: calls `Flock.joinFlock(id)` for each selected Flock before advancing
+- If no interest-matched Flocks found, falls back to showing popular Flocks
+
+**Step 4:** City dropdown, distance chips (5/10/25/50/Any miles), "looking to meet" chips (Girls/Boys/Both). Saves to `flock_prefs`.
 
 ---
 
-### `js/pages/my-events.js`
+## CSS - Key New Classes
 
-Splits joined Flocks into upcoming (date ≥ today) and past (date < today). Upcoming sorted soonest first. Past sorted most-recent first. Past Flocks shown with `.past` class (dimmed opacity). Each card links to `event.html?id={id}`.
+### Roost cards
+```css
+.roost-card          /* card container with border + shadow */
+.roost-header        /* coloured strip with title + price pill */
+.roost-title         /* 15px bold, flex:1 */
+.roost-price         /* orange pill; .free = green */
+.roost-body          /* padding: 0 16px 14px */
+.roost-meta          /* flex row of metadata items */
+.roost-attend-btn    /* full-width CTA */
+.roost-attend-btn.attending  /* soft green "✓ Going" state */
+.roost-attend-btn.locked     /* grey, cursor:default */
+.roost-attend-btn.full       /* grey, cursor:default */
+```
+
+### Onboarding Flock suggestion cards
+```css
+.ob-flock-card       /* tappable Flock card in onboarding step 3 */
+.ob-flock-card.joined /* highlighted when selected */
+.ob-flock-emoji      /* 40x40 rounded square with category colour */
+.ob-flock-join       /* pill button; .joined = orange */
+```
 
 ---
 
-### `js/pages/profile.js`
+## Navigation
 
-#### Age calculation
+5 items in mobile bottom nav, 7 in desktop sidebar:
+
+| ID | href | data-page | Label |
+|----|------|-----------|-------|
+| `nav-flocks` | `home.html` | `home` | Flocks |
+| `nav-roosts` | `roosts.html` | `roosts` | Roosts |
+| `nav-my-flocks` | `my-flocks.html` | `my-flocks` | My Flocks |
+| `nav-my-roosts` | `my-roosts.html` | `my-roosts` | My Roosts |
+| `nav-profile` | `profile.html` | `profile` | Profile |
+| `nav-about` | `about.html` | `about` | About (sidebar only) |
+| `sidebar-nav-chats` | button | - | Chats (sidebar only) |
+
+Active page detection in `desktop-sidebar.js`:
 ```javascript
-function calcAge(dob) {
-  const birth = new Date(dob);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-  return age;
-}
+const pageMap = { 'event.html': 'home.html' };
+const effectivePage = pageMap[page] || page;
 ```
-Correctly handles birthdays that haven't occurred yet this year.
-
-#### Inline editing
-- **City**  -  `<select>` with `onchange="savePrefs({city:this.value});render()"`  -  saves and re-renders immediately
-- **Looking to meet**  -  chips with `onclick="savePrefs({friendType:'X'});render()"`
-- **Interests**  -  all 19 INTERESTS rendered as chips, `toggleInterest(label)` adds/removes from the array and re-renders
-
-#### Edit profile modal
-Bottom-sheet (`align-items: flex-end`) with first name, last name, DOB, and avatar grid. Closes on backdrop tap. Saves via `Flock.setProfile({...existing, firstName, lastName, dob, avatar})` to preserve any extra fields.
+So viewing a Flock detail (`event.html`) highlights "Flocks" in the sidebar.
 
 ---
 
-### `js/pages/onboarding.js`
+## Service Worker
 
-Step 1 reads existing profile (pre-filled from signup). Avatar defaults to 🐦. Step 3 saves prefs with keys `{ city, dist, friendType }`  -  these match `getPrefs()` defaults exactly.
+Cache: `flock-alt-v7`. Cache-first strategy. Caches all HTML, CSS, JS, manifest.
 
-`setOnboarded()` is called only at the end of step 3, or by `seedNish()`. `requireAuth()` + `isOnboarded()` check at the top means already-onboarded users are immediately redirected to home.
-
----
-
-### `js/pages/signup.js`
-
-Username uniqueness check:
-```javascript
-function usernameExists(username) {
-  const reg = JSON.parse(localStorage.getItem('flock_registered') || '[]');
-  return reg.map(u => u.toLowerCase()).includes(username.toLowerCase());
-}
-```
-`nish` is always reserved via an explicit `|| username === 'nish'` check. On successful signup, `registerUsername()` adds the new username to `flock_registered`.
+To deploy updates: bump `CACHE` to `flock-alt-v8`.
 
 ---
 
-## PWA
+## Test Automation - Key Selectors
 
-### `manifest.json`
-- `start_url: "index.html"`  -  so PWA launch always routes correctly (auth check)
-- `display: "standalone"`  -  no browser chrome when installed
-- `theme_color: "#F97316"`  -  orange status bar on Android
-
-### `sw.js`  -  Service Worker (flock-v11)
-Cache-first strategy. On install, pre-caches all HTML, CSS, JS and manifest. On activate, takes control immediately. On fetch, serves from cache then updates cache in background.
-
-To deploy a new version: bump `CACHE = 'flock-v12'`. Browser installs new SW, discards old cache.
+| Element | Selector |
+|---------|----------|
+| Flock cards (home) | `[id^="event-card-FL"]` |
+| Roost cards | `#roost-M1`, `#roost-M2` etc |
+| Join Flock button | `.btn.btn-pr` (when not member) |
+| Leave Flock button | `.btn.btn-join` (when member) |
+| Attend Roost button | `.roost-attend-btn` (not attending) |
+| Cancel Roost button | `.roost-attend-btn.attending` |
+| Flock container | `#my-flocks-container` |
+| Roost container | `#my-roosts-container` |
+| Onboarding Flock cards | `.ob-flock-card` |
+| Onboarding skip | `#skip-btn` (visible on step 3 only) |
+| Progress bars | `#prog-1` through `#prog-4` |
 
 ---
 
 ## Data Flow
 
 ```
-1. User opens index.html
-   ├── flock_user in localStorage → home.html
-   └── no user → login.html
+1. User signs up → onboarding
+   Step 1: name/DOB/avatar saved to flock_profile
+   Step 2: interests saved to flock_interests
+   Step 3: suggested Flocks shown - user joins 0-6
+           joinFlock() called for each → flock_my_flocks updated
+   Step 4: prefs saved → redirect to home.html
 
-2. Login: nish / mandal
-   └── Flock.login() + Flock.seedNish()
-       └── Sets profile {firstName:'Nish', lastName:'Mandal', dob:'2000-02-02', avatar:'🐦'}
-           └── home.html
+2. Browse Flocks (home.html)
+   - FLOCKS filtered by city + category + search
+   - Cards show member count and next Roost date
 
-3. Browse Flocks
-   └── Filter by city/distance/category/search/sort
-       └── Click a Flock card → event.html?id=EV001
+3. Click Flock card → event.html?id=FL001
+   - Group info rendered
+   - Each Roost rendered as roostCard()
+   - Join Flock button in sticky CTA
 
-4. Join a free Flock
-   └── Flock.joinEvent('EV001')
-       └── flock_my_events: ['EV001']
-           flock_going_deltas: { EV001: 1 }
-               └── liveGoing = 24 + 1 + 1 (joined) = 26
-                   spotsLeft = 40 - 26 = 14
+4. Join Flock
+   - Flock.joinFlock('FL001')
+   - flock_my_flocks: ['FL001']
+   - Member count: 84 + 1 = 85
+   - Roost attend buttons unlock
 
-5. Join a paid Flock
-   └── Flock.setCheckoutEvent('EV004') → checkout-info.html
-       └── Fill card details → checkout-overview.html
-           └── Confirm → Flock.completeCheckout() → joinEvent() + clear checkout keys
-               └── checkout-complete.html
+5. Attend a Roost
+   - Free: Flock.attendRoost('FL001','M1')
+     flock_roost_attendance: { 'FL001_M1': true }
+     liveGoing: 38 + 1 = 39, spotsLeft: 60 - 39 = 21
+   - Paid: setCheckoutEvent('FL001_M1') → checkout flow
+     completeCheckout() splits key → joinFlock() + attendRoost()
 
-6. Profile
-   └── Edit city → savePrefs({city:'Manchester'}) → re-render
-   └── Toggle interest → toggleInterest('Rugby') → setInterests([...]) → re-render
-   └── Edit profile modal → setProfile({firstName, lastName, dob, avatar}) → re-render
+6. My Flocks (my-flocks.html)
+   - getMyFlocks() → ['FL001']
+   - Shows FL001 with next Roost and attending status
+
+7. My Roosts (my-roosts.html)
+   - Scans all FLOCKS, all roosts, checks isAttending()
+   - Shows M1 of FL001 as upcoming Roost
+
+8. Leave Flock
+   - Flock.leaveFlock('FL001')
+   - Removes from flock_my_flocks
+   - Clears all FL001_* keys from flock_roost_attendance
+   - Member count returns to 84, attend buttons lock
 ```
-
----
-
-## Key Conventions for Test Automation
-
-- Page inputs: `signup-firstname`, `signup-lastname`, `signup-username`, `signup-password`, `signup-confirm`
-- Submit buttons: `signup-submit-btn`, `login-submit-btn`
-- Error spans: `err-signup-firstname`, `err-signup-username` etc.
-- Nav items: `data-page="home"`, `data-page="my-events"`, `data-page="profile"`
-- Flock cards: `id="event-card-EV001"` etc.
-- CTA buttons: `join-event-btn`, `leave-event-btn`, `waitlist-btn`, `share-btn`
-
-
----
-
-## Test Automation Assessment
-
-### Overall testability: Good
-
-The app is fully static (no backend, no network calls for data), which makes automation straightforward. All state is in `localStorage`, all interactive elements have `id` attributes, and every page has a predictable URL. A Playwright or Cypress test suite can cover the full user journey without any mocking of APIs.
-
----
-
-### What makes it easy to test
-
-- All form inputs have `id` attributes (`login-username`, `signup-firstname` etc.)
-- All submit buttons have `id` attributes (`login-submit-btn`, `signup-submit-btn`)
-- Flock cards have IDs: `event-card-EV001` through `event-card-EV052`
-- CTA buttons have stable IDs: `join-event-btn`, `leave-event-btn`, `waitlist-btn`, `share-btn`
-- Nav items have `data-page` attributes for reliable selection
-- Sidebar nav items have `id="sidebar-nav-home"` etc.
-- Error spans have `id="err-signup-username"` etc. and class `show` when visible
-- `localStorage` can be seeded or cleared before each test
-- No animations that require `waitForAnimation` - transitions are CSS only (< 200ms)
-- `index.html` routing is deterministic based on `flock_user` in localStorage
-
----
-
-### Complete ID reference
-
-#### Login page (`login.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| Username input | `#login-username` |
-| Password input | `#login-password` |
-| Submit button | `#login-submit-btn` |
-| Error message | `#login-error` |
-| Sign up link | `#login-signup-link` |
-
-#### Signup page (`signup.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| First name input | `#signup-firstname` |
-| Last name input | `#signup-lastname` |
-| Username input | `#signup-username` |
-| Password input | `#signup-password` |
-| Confirm password | `#signup-confirm` |
-| Submit button | `#signup-submit-btn` |
-| First name error | `#err-signup-firstname` (class `show` when visible) |
-| Username error | `#err-signup-username` |
-| Password error | `#err-signup-password` |
-| Confirm error | `#err-signup-confirm` |
-| General error | `#signup-error` |
-
-#### Onboarding (`onboarding.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| First name input | `#ob-first` |
-| Last name input | `#ob-last` |
-| DOB input | `#ob-dob` |
-| Avatar options | `.avatar-opt` (class `selected` when chosen) |
-| Interest chips | `.interest-chip` (class `selected` when chosen) |
-| City select | `#ob-city` |
-| Distance chips | `#ob-dist-5`, `#ob-dist-10`, `#ob-dist-25`, `#ob-dist-50`, `#ob-dist-any` |
-| Continue button | `#next-btn` |
-| Progress steps | `#prog-1`, `#prog-2`, `#prog-3` (class `done` when complete) |
-
-#### Home page (`home.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| Greeting text | `#greeting-text` |
-| City dropdown | `#city-filter` |
-| Distance dropdown | `#distance-filter` |
-| Sort dropdown | `#sort-filter` |
-| Search input | `#search-input` |
-| Search clear button | `#search-clear` (class `show` when visible) |
-| Location button | `#location-btn` |
-| Location button text | `#location-btn-text` |
-| Category chips | `#tab-all`, `#tab-soon`, `#tab-sports`, `#tab-food`, `#tab-gaming`, `#tab-fitness`, `#tab-social`, `#tab-wellness`, `#tab-outdoors`, `#tab-music`, `#tab-arts` |
-| Events container | `#events-container` |
-| Flock cards | `#event-card-EV001` ... `#event-card-EV052` |
-| Empty state | `.empty-state` (present when no results) |
-
-#### Flock detail (`event.html?id=EV001`)
-| Element | ID / Selector |
-|---------|--------------|
-| Detail content area | `#detail-content` |
-| CTA area | `#detail-cta` |
-| Join button | `#join-event-btn` |
-| Leave button | `#leave-event-btn` |
-| Waitlist button | `#waitlist-btn` |
-| Share button | `#share-btn` |
-| Chat button | `#chat-btn` |
-| Map container | `#event-map` |
-| Directions link | `#directions-btn` |
-| Back button | `#detail-back-btn` |
-
-#### My Flocks (`my-events.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| Events container | `#my-events-container` |
-| Flock cards | `#my-event-card-EV001` etc. |
-| Empty state | `#my-events-empty` |
-
-#### Profile (`profile.html`)
-| Element | ID / Selector |
-|---------|--------------|
-| Hero section | `#profile-hero` |
-| Body section | `#profile-body` |
-| Events joined row | `#profile-events-joined` |
-| Username row | `#profile-username-row` |
-| Sign out button | `#signout-btn` |
-| Edit profile button | `.profile-edit-btn` |
-| Edit overlay | `#edit-profile-overlay` (when open) |
-| First name input (modal) | `#ep-first` |
-| Last name input (modal) | `#ep-last` |
-| DOB input (modal) | `#ep-dob` |
-
-#### Navigation
-| Element | ID / Selector |
-|---------|--------------|
-| Bottom nav | `.bottom-nav` |
-| Nav: Discover | `.nav-item[data-page="home"]` |
-| Nav: My Flocks | `.nav-item[data-page="my-events"]` |
-| Nav: Profile | `.nav-item[data-page="profile"]` |
-| Nav: About | `.nav-item[data-page="about"]` |
-| Sidebar (desktop) | `.sb` |
-| Sidebar: Discover | `#sidebar-nav-home` |
-| Sidebar: My Flocks | `#sidebar-nav-my-flocks` |
-| Sidebar: Profile | `#sidebar-nav-profile` |
-| Sidebar: About | `#sidebar-nav-about` |
-| Sidebar: Sign out | `#sidebar-signout-btn` |
-
----
-
-### Recommended test scenarios
-
-#### Auth flow
-1. Open `index.html` with empty localStorage - assert redirect to `login.html`
-2. Open `index.html` with `flock_user` set - assert redirect to `home.html`
-3. Login with `nish`/`mandal` - assert `home.html` loads and `#greeting-text` contains "Nish"
-4. Login with wrong password - assert `#login-error` is visible
-5. Signup with existing username (`nish`) - assert `#err-signup-username` has class `show`
-6. Signup with mismatched passwords - assert `#err-signup-confirm` has class `show`
-7. Complete full signup + onboarding flow - assert lands on `home.html`
-
-#### Flock browsing
-8. Home loads - assert `#events-container` has at least one `[id^="event-card-"]`
-9. Type in `#search-input` - assert card count changes
-10. Select `#tab-soon` - assert only near-future Flocks shown
-11. Change `#city-filter` to "Glasgow" - assert Glasgow Flocks appear
-12. Change `#sort-filter` to "dist" - assert first card has lowest distance
-13. Click a Flock card - assert navigates to `event.html?id=`
-
-#### Joining a Flock
-14. Open a free Flock detail - assert `#join-event-btn` is visible
-15. Click `#join-event-btn` - assert `#leave-event-btn` appears
-16. Assert going count increased by 1, spots decreased by 1
-17. Click `#leave-event-btn` - assert `#join-event-btn` returns
-18. Assert going count back to original
-19. Navigate to `my-events.html` - assert joined Flock appears in `#my-events-container`
-20. Open a full Flock - assert `#waitlist-btn` is visible (not `#join-event-btn`)
-
-#### Profile
-21. Profile hero shows correct name and age calculated from DOB
-22. Click city dropdown - change to "Manchester" - assert save persists on reload
-23. Click an interest chip - assert class toggles `active`
-24. Click `.profile-edit-btn` - assert `#edit-profile-overlay` appears
-25. Submit edit with blank first name - assert alert fires (or validation shown)
-26. Click `#signout-btn` - confirm dialog - assert redirects to `login.html`
-
----
-
-### Gaps / things that need manual testing
-
-- **Geolocation** - `navigator.geolocation` must be mocked in Playwright (`page.setGeolocation()`) or granted via browser context. Test the denied path by denying permission and asserting error text appears on `#location-btn`.
-- **Leaflet map** - tiles load from OpenStreetMap CDN. In CI, either allow external requests or assert only that `#event-map` exists and has non-zero height.
-- **Native share sheet** - `navigator.share` is not available in headless Chromium. Assert the clipboard fallback fires instead (mock `navigator.clipboard.writeText` and assert it was called).
-- **PWA install / service worker** - not automatable in standard headless mode; test manually on device.
-- **iOS Safari-specific layout** - test manually on real iPhone (or BrowserStack). Focus on: safe area insets, bottom nav height, date picker rendering on `#ob-dob`.
-- **Resize behaviour** - resize window from > 768px to < 768px and assert sidebar disappears and bottom nav reappears. Playwright `page.setViewportSize()` works for this.

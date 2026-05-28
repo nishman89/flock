@@ -13,10 +13,10 @@ if (!loggedIn) {
 
 /* Show bottom nav only when logged in */
 if (loggedIn) {
-  document.getElementById('about-bottom-nav').style.display = 'flex';
+  setActiveNav('about');
 }
 
-/* CTA: always show Browse Events  -  goes to home if logged in, login if not */
+/* CTA: always show Browse Roosts  -  goes to home if logged in, login if not */
 const ctaHref = loggedIn ? 'home.html' : 'login.html';
 const ctaSub  = loggedIn
   ? 'Find events near you right now'
@@ -25,7 +25,7 @@ const ctaSub  = loggedIn
 document.getElementById('about-cta').innerHTML = `
   <a href="${ctaHref}" id="about-browse-btn" class="btn btn-primary"
      style="max-width:280px;margin:0 auto;display:block;margin-bottom:10px">
-    Browse Events
+    Browse Roosts
   </a>
   <p style="font-size:13px;color:var(--text3)">${ctaSub}</p>
   ${!loggedIn ? '<p style="font-size:13px;color:var(--text3);margin-top:4px">New here? <a href="signup.html" id="about-signup-link" style="color:var(--primary);font-weight:600">Create a free account</a></p>' : ''}

@@ -33,55 +33,63 @@ const Flock = {
   },
   setPrefs(p) { localStorage.setItem('flock_prefs', JSON.stringify(p)); },
 
-  getMyEvents() {
-    try { return JSON.parse(localStorage.getItem('flock_my_events') || '[]'); } catch { return []; }
+  /* ── Flock group membership ──────────────────────────────── */
+  getMyFlocks() {
+    try { return JSON.parse(localStorage.getItem('flock_my_flocks') || '[]'); } catch { return []; }
   },
-  getGoingDeltas() {
-    try { return JSON.parse(localStorage.getItem('flock_going_deltas') || '{}'); } catch { return {}; }
+  joinFlock(id) {
+    const f = this.getMyFlocks();
+    if (!f.includes(id)) { f.push(id); localStorage.setItem('flock_my_flocks', JSON.stringify(f)); }
   },
-  getGoingCount(id, baseGoing) {
-    const d = this.getGoingDeltas();
-    return baseGoing + (d[id] || 0);
+  leaveFlock(id) {
+    localStorage.setItem('flock_my_flocks', JSON.stringify(this.getMyFlocks().filter(x => x !== id)));
+    // also clear any roost attendance for this flock
+    const att = this.getRoostAttendance();
+    Object.keys(att).filter(k => k.startsWith(id + '_')).forEach(k => delete att[k]);
+    localStorage.setItem('flock_roost_attendance', JSON.stringify(att));
   },
-  joinEvent(id) {
-    const e = this.getMyEvents();
-    if (!e.includes(id)) {
-      e.push(id);
-      localStorage.setItem('flock_my_events', JSON.stringify(e));
-    }
-    this.leaveWaitlist(id);
-  },
-  leaveEvent(id) {
-    const e = this.getMyEvents();
-    if (e.includes(id)) {
-      localStorage.setItem('flock_my_events', JSON.stringify(e.filter(x => x !== id)));
-    }
-  },
-  isJoined(id) { return this.getMyEvents().includes(id); },
+  isFlockMember(id) { return this.getMyFlocks().includes(id); },
 
-  getWaitlist() {
-    try { return JSON.parse(localStorage.getItem('flock_waitlist') || '[]'); } catch { return []; }
+  /* ── Roost attendance ───────────────────────────────────── */
+  getRoostAttendance() {
+    try { return JSON.parse(localStorage.getItem('flock_roost_attendance') || '{}'); } catch { return {}; }
   },
-  joinWaitlist(id) {
-    const w = this.getWaitlist();
-    if (!w.includes(id)) { w.push(id); localStorage.setItem('flock_waitlist', JSON.stringify(w)); }
+  attendRoost(flockId, roostId) {
+    const att = this.getRoostAttendance();
+    att[flockId + '_' + roostId] = true;
+    localStorage.setItem('flock_roost_attendance', JSON.stringify(att));
   },
-  leaveWaitlist(id) {
-    localStorage.setItem('flock_waitlist', JSON.stringify(this.getWaitlist().filter(x => x !== id)));
+  unattendRoost(flockId, roostId) {
+    const att = this.getRoostAttendance();
+    delete att[flockId + '_' + roostId];
+    localStorage.setItem('flock_roost_attendance', JSON.stringify(att));
   },
-  isOnWaitlist(id) { return this.getWaitlist().includes(id); },
+  isAttending(flockId, roostId) {
+    return !!this.getRoostAttendance()[flockId + '_' + roostId];
+  },
+  getLiveGoing(flockId, roostId, base) {
+    return base + (this.isAttending(flockId, roostId) ? 1 : 0);
+  },
 
   seedNish() {
     this.setProfile(JAGS.profile);
     this.setInterests(JAGS.interests);
     this.setPrefs(JAGS.prefs);
     if (!localStorage.getItem('flock_nish_seeded')) {
-      localStorage.setItem('flock_my_events', '[]');
+      // Nish is a member of 3 Flocks
+      localStorage.setItem('flock_my_flocks', JSON.stringify(['FL001','FL004','FL024']));
+      // And attending specific Roosts within those Flocks
+      localStorage.setItem('flock_roost_attendance', JSON.stringify({
+        'FL001_M1': true,   // Arsenal vs Spurs - North London Derby
+        'FL004_M1': true,   // Brick Lane Street Food Tour
+        'FL024_M1': true,   // Mario Kart Grand Prix Night
+      }));
       localStorage.setItem('flock_nish_seeded', '1');
     }
     this.setOnboarded();
   },
 
+  /* ── Checkout (paid roosts) ─────────────────────────────── */
   setCheckoutEvent(id) { localStorage.setItem('flock_checkout_event', id); },
   getCheckoutEvent()   { return localStorage.getItem('flock_checkout_event'); },
   clearCheckoutEvent() { localStorage.removeItem('flock_checkout_event'); },
@@ -91,8 +99,12 @@ const Flock = {
   },
   clearCheckoutInfo() { localStorage.removeItem('flock_checkout_info'); },
   completeCheckout() {
-    const id = this.getCheckoutEvent();
-    if (id) this.joinEvent(id);
+    const key = this.getCheckoutEvent(); // format: "FL001_M2"
+    if (key) {
+      const [flockId, roostId] = key.split('_M');
+      this.joinFlock(flockId);
+      this.attendRoost(flockId, 'M' + roostId);
+    }
     this.clearCheckoutEvent();
     this.clearCheckoutInfo();
   }

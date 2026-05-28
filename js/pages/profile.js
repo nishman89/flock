@@ -30,7 +30,7 @@ function render() {
   const profile   = Flock.getProfile();
   const prefs     = Flock.getPrefs();
   const interests = Flock.getInterests();
-  const myEvCount = Flock.getMyEvents().length;
+  const myEvCount = Flock.getMyFlocks().length;
 
   const firstName = profile.firstName || '';
   const lastName  = profile.lastName  || '';

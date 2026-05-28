@@ -79,15 +79,19 @@
     <!-- What is a Flock -->
     <div class="about-section">
       <h2>What's a Flock? 🐦</h2>
+      <div style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:12px">
+        <p style="font-size:15px;color:var(--text);line-height:1.7;margin:0">
+          A <strong>Flock</strong> is a group of people who share the same interest. Think <em>Arsenal Supporters Club London</em>, <em>Edinburgh Whisky Society</em>, or <em>Manchester City Fans</em>. You join a Flock and become part of that community - meeting the same people again and again, building real friendships over shared passions.
+        </p>
+      </div>
+
+      <h2>What's a Roost? 🪺</h2>
       <div style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:8px">
         <p style="font-size:15px;color:var(--text);line-height:1.7;margin:0">
-          A <strong>Flock</strong> is what we call every event on the app. Just like birds of a feather flock together, 
-          a Flock is a group of like-minded people gathering around something they love  -  whether that's watching 
-          the football, hiking in the hills, or finding the best street food in the city.
+          A <strong>Roost</strong> is a specific gathering organised by a Flock - a time, a place, and a plan. Just like birds come together to roost, your Flock gathers for a Roost. The Arsenal Flock might have a Roost for the North London Derby. The Whisky Society Flock might have a Roost for a Highland malt tasting.
         </p>
         <p style="font-size:15px;color:var(--text);line-height:1.7;margin:12px 0 0">
-          Every Flock has a fixed number of spots, a time, a place, and a shared vibe. 
-          You join a Flock, show up, and meet your people. Simple as that.
+          Join the <strong>Flock</strong>, show up to a <strong>Roost</strong>, make friends. That's it.
         </p>
       </div>
     </div>
@@ -100,28 +104,35 @@
           <div class="step-num">1</div>
           <div class="step-text">
             <strong>Tell us what you're into</strong>
-            <p>Football, gym, Indian food, gaming, hiking, live music  -  whatever makes you <em>you</em>. The more you share, the better your matches.</p>
+            <p>Football, gym, food, gaming, hiking, live music - whatever makes you <em>you</em>. The more you share, the better your Flock matches.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
           <div class="step-text">
-            <strong>Set your preferences</strong>
-            <p>Choose your city, how far you're willing to travel, and who you'd like to meet  -  girls, guys, or everyone.</p>
+            <strong>We suggest Flocks you'll love</strong>
+            <p>Based on your interests and city, we show you groups to join during sign-up. You can always find more later.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">3</div>
           <div class="step-text">
-            <strong>Get matched to Flocks</strong>
-            <p>Flock finds Flocks in your city that match your interests. These are real, organised Flocks planned in major cities across the UK.</p>
+            <strong>Join a Flock</strong>
+            <p>Become a member of groups that match your interests. Each Flock is a community of like-minded people in your city.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">4</div>
           <div class="step-text">
-            <strong>Show up and meet your Flock</strong>
-            <p>Join a Flock, meet people who are into the same things, and make genuine local friendships that last.</p>
+            <strong>Attend a Roost</strong>
+            <p>Your Flock organises Roosts - pub screenings, food tours, hikes, quiz nights. Pick the ones you want to go to and show up.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-text">
+            <strong>Make genuine friends</strong>
+            <p>See the same faces across multiple Roosts. That's how friendships actually form - repeated shared experiences, not one-off events.</p>
           </div>
         </div>
       </div>
@@ -173,7 +184,7 @@
           <div class="audience-icon">🎓</div>
           <div>
             <strong>University students</strong>
-            <p>New to a city and want to meet people outside your course? Join clubbing nights, sports events and social meetups.</p>
+            <p>New to a city and want to meet people outside your course? Join clubbing nights, sports events and social roosts.</p>
           </div>
         </div>
         <div class="audience-item">
@@ -202,27 +213,26 @@
 
   </div>
 
-  <!-- Bottom nav  -  populated by JS if logged in -->
-  <nav class="bottom-nav" id="about-bottom-nav" style="display:none">
-    <a class="nav-item" id="nav-discover" data-page="home" href="home.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Discover
+  <nav class="bottom-nav">
+    <a class="nav-item" id="nav-roosts" data-page="home" href="home.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Roosts
     </a>
-    <a class="nav-item" id="nav-my-flocks" data-page="my-flocks" href="my-events.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <a class="nav-item" id="nav-flocks" data-page="flocks" href="flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Flocks
+    </a>
+    <a class="nav-item" id="nav-my-flocks" data-page="my-flocks" href="my-flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       My Flocks
+    </a>
+    <a class="nav-item" id="nav-my-roosts" data-page="my-roosts" href="my-roosts.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      My Roosts
     </a>
     <a class="nav-item" id="nav-profile" data-page="profile" href="profile.html">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profile
-    </a>
-    <a class="nav-item active" id="nav-about" data-page="about" href="about.html">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      About
-    </a>
-    <a class="nav-item" id="nav-chats" data-page="chats" href="javascript:void(0)" onclick="showMobileChatsPopup()">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Chats
     </a>
   </nav>
 

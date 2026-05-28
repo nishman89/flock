@@ -12,24 +12,20 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
-  <title>Flock  -  Event</title>
+  <title>Flock  -  My Flocks</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
 </head>
 <body>
 <div class="app-shell">
-<div class="detail-shell">
 
-  <div class="detail-scroll" id="detail-content">
-    <!-- rendered by JS -->
+  <header class="app-header">
+    <div class="header-title">My Flocks</div>
+    <div style="width:36px"></div>
+  </header>
+
+  <div class="content">
+    <div class="my-list" id="my-flocks-container"></div>
   </div>
-
-  <div class="detail-cta" id="detail-cta"></div>
-
-</div>
-</div>
 
   <nav class="bottom-nav">
     <a class="nav-item" id="nav-roosts" data-page="home" href="home.html">
@@ -53,11 +49,25 @@
       Profile
     </a>
   </nav>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/state.js"></script>
-<script src="js/pages/event.js"></script>
+<script src="js/pages/my-flocks.js"></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 <script src="js/desktop-sidebar.js"></script>
+<script>
+function showMobileChatsPopup() {
+  let ov = document.getElementById('mobile-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'mobile-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center"><div style="font-size:36px;margin-bottom:12px">💬</div><div style="font-family:-apple-system,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div><div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">Not yet implemented - chat functionality is coming soon!</div><button onclick="document.getElementById('mobile-chats-overlay').remove()" style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">Got it</button></div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
+}
+</script>
 </body>
 </html>

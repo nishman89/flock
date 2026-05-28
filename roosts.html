@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flock">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Make friends through shared events">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+  <title>Flock  -  Discover</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <a class="header-logo" href="home.html">
+      <div class="header-logo-icon">
+        <svg width="24" height="19" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+  <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+  <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+</svg>
+      </div>
+      <span class="header-brand">Flock</span>
+    </a>
+    <div id="greeting-text" style="font-size:13px;color:var(--text3);font-weight:600"></div>
+  </header>
+
+  <!-- City + distance + sort filters -->
+  <div class="filter-bar">
+    <div class="filter-select-wrap" style="flex:1.2">
+      <select class="filter-select" id="city-filter" name="city-filter" onchange="applyFilters()">
+        <!-- populated by JS -->
+      </select>
+    </div>
+    <div class="filter-select-wrap" style="flex:.9">
+      <select class="filter-select" id="distance-filter" name="distance-filter" onchange="applyFilters()">
+        <option value="5">5 miles</option>
+        <option value="10">10 miles</option>
+        <option value="25" selected>25 miles</option>
+        <option value="50">50 miles</option>
+        <option value="999">Any distance</option>
+      </select>
+    </div>
+    <div class="sort-wrap">
+      <select class="sort-select" id="sort-filter" onchange="applyFilters()">
+        <option value="members">Most members</option>
+        <option value="next">Next roost</option>
+        <option value="name">A-Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search-input" type="search" placeholder="Search events, venues, tags…" oninput="applySearch(this)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <button class="location-btn" id="location-btn" onclick="useMyLocation()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 4"/></svg>
+      <span id="location-btn-text">Use my location</span>
+    </button>
+  </div>
+
+  <div class="cat-scroll" id="cat-scroll">
+    <div class="cat-chip active" id="tab-all"      data-cat="All"          onclick="setCat('All',this)">🌟 All</div>
+    <div class="cat-chip"        id="tab-sports"   data-cat="Sports"       onclick="setCat('Sports',this)">⚽ Sports</div>
+    <div class="cat-chip"        id="tab-food"     data-cat="Food & Drink" onclick="setCat('Food & Drink',this)">🍛 Food & Drink</div>
+    <div class="cat-chip"        id="tab-gaming"   data-cat="Gaming"       onclick="setCat('Gaming',this)">🎮 Gaming</div>
+    <div class="cat-chip"        id="tab-fitness"  data-cat="Fitness"      onclick="setCat('Fitness',this)">🏋️ Fitness</div>
+    <div class="cat-chip"        id="tab-social"   data-cat="Social"       onclick="setCat('Social',this)">🍺 Social</div>
+    <div class="cat-chip"        id="tab-wellness" data-cat="Wellness"     onclick="setCat('Wellness',this)">🧘 Wellness</div>
+    <div class="cat-chip"        id="tab-outdoors" data-cat="Outdoors"     onclick="setCat('Outdoors',this)">🥾 Outdoors</div>
+    <div class="cat-chip"        id="tab-music"    data-cat="Music"        onclick="setCat('Music',this)">🎵 Music</div>
+    <div class="cat-chip"        id="tab-arts"     data-cat="Arts"         onclick="setCat('Arts',this)">🎬 Arts</div>
+  </div>
+
+  <div class="content">
+    <div class="events-list" id="events-container"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" id="nav-roosts" data-page="home" href="home.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Roosts
+    </a>
+    <a class="nav-item" id="nav-flocks" data-page="flocks" href="flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Flocks
+    </a>
+    <a class="nav-item" id="nav-my-flocks" data-page="my-flocks" href="my-flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      My Flocks
+    </a>
+    <a class="nav-item" id="nav-my-roosts" data-page="my-roosts" href="my-roosts.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      My Roosts
+    </a>
+    <a class="nav-item" id="nav-profile" data-page="profile" href="profile.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </nav>
+</div>
+
+<!-- iOS Add to Home Screen banner -->
+<div id="ios-banner" class="ios-banner" style="display:none">
+  <div class="ios-banner-icon">
+    <svg width="24" height="19" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+  <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+  <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+</svg>
+  </div>
+  <div class="ios-banner-text">
+    <strong>Add Flock to your Home Screen</strong>
+    <span>Tap <strong>Share</strong> then <strong>"Add to Home Screen"</strong> for the full app experience 🐦</span>
+  </div>
+  <button class="ios-banner-close" onclick="dismissBanner()">✕</button>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/pages/roosts.js"></script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
+<script src="js/desktop-sidebar.js"></script>
+<script>
+function showMobileChatsPopup() {
+  let ov = document.getElementById('mobile-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'mobile-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center"><div style="font-size:36px;margin-bottom:12px">💬</div><div style="font-family:-apple-system,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div><div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">Not yet implemented - chat functionality is coming soon!</div><button onclick="document.getElementById('mobile-chats-overlay').remove()" style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">Got it</button></div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
+}
+</script>
+</body>
+</html>

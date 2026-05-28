@@ -1,13 +1,13 @@
 'use strict';
-const CACHE = 'flock-v15';
+const CACHE = 'flock-alt-v11';
 const ASSETS = [
   'index.html','login.html','signup.html','onboarding.html',
-  'home.html','event.html','my-events.html','profile.html',
+  'home.html','flocks.html','roosts.html','event.html','my-flocks.html','my-roosts.html','profile.html',
   'checkout-info.html','checkout-overview.html','checkout-complete.html','about.html',
   'css/styles.css',
   'js/data.js','js/state.js','js/desktop-sidebar.js',
   'js/pages/login.js','js/pages/signup.js','js/pages/onboarding.js',
-  'js/pages/home.js','js/pages/event.js','js/pages/my-events.js',
+  'js/pages/home.js','js/pages/roosts.js','js/pages/flocks.js','js/pages/my-flocks.js','js/pages/event.js','js/pages/my-roosts.js',
   'js/pages/profile.js',
   'js/pages/checkout-info.js','js/pages/checkout-overview.js','js/pages/checkout-complete.js','js/pages/about.js',
   'manifest.json'

@@ -17,7 +17,7 @@ const INTERESTS = [
   {e:'🏎️',label:'Formula 1'},{e:'🏋️',label:'Gym & Fitness'},
   {e:'🏃',label:'Running'},{e:'🧘',label:'Yoga & Wellness'},
   {e:'🥾',label:'Hiking & Outdoors'},{e:'🍛',label:'Food & Dining'},
-  {e:'☕',label:'Coffee & Cafés'},{e:'🍺',label:'Pub & Social'},
+  {e:'☕',label:'Coffee & Cafes'},{e:'🍺',label:'Pub & Social'},
   {e:'🎮',label:'Video Games'},{e:'🃏',label:'Board Games'},
   {e:'🛍️',label:'Shopping'},{e:'🎵',label:'Live Music'},
   {e:'🎬',label:'Cinema'},{e:'📚',label:'Book Club'},
@@ -27,97 +27,307 @@ const INTERESTS = [
 
 const CITIES = ['London','Manchester','Birmingham','Edinburgh','Bristol','Leeds','Liverpool','Glasgow','Cardiff','Newcastle'];
 
-// Returns an ISO date string n days from today
 function d(n) {
   const dt = new Date();
   dt.setDate(dt.getDate() + n);
   return dt.toISOString().slice(0, 10);
 }
 
-const EVENTS = [
-  {id:'EV001',t:'Premier League Watch Party',cat:'Sports',interests:['Football'],city:'London',venue:"The Crown & Anchor",addr:'22 Fleet St, London EC4Y',date:d(1),time:'15:00',dur:'3 hrs',price:'Free',going:24,max:40,e:'⚽',dist:1.2,desc:"Watch the big match with fellow fans at one of London\'s best sports pubs. Great banter, cold drinks and proper football all afternoon.",tags:['Football','Sports','Social'],ft:'Both',lat:51.5148,lng:-0.1069,ages:'18+'},
-  {id:'EV002',t:'Magic: The Gathering Draft Night',cat:'Gaming',interests:['Board Games'],city:'London',venue:'Playset Games',addr:'14 Carnaby St, London W1F',date:d(3),time:'19:00',dur:'3 hrs',price:'£8',going:12,max:20,e:'🃏',dist:0.8,desc:'Friendly booster draft evening  -  cards provided. All skill levels welcome from first-timers to seasoned veterans. Great way to meet other players in the city.',tags:['Gaming','Cards','Strategy'],ft:'Both',lat:51.5131,lng:-0.1394,ages:'All ages'},
-  {id:'EV003',t:'Westfield Shopping Trip',cat:'Social',interests:['Shopping'],city:'London',venue:'Westfield Stratford',addr:'Montfichet Rd, London E20',date:d(2),time:'11:00',dur:'4 hrs',price:'Free',going:8,max:15,e:'🛍️',dist:4.2,desc:"Meet new friends over a fun shopping afternoon at Westfield. We\'ll grab lunch together and explore the shops  -  perfect if you\'re new to the area.",tags:['Shopping','Social','Casual'],ft:'Girls',lat:51.5435,lng:-0.0085,ages:'All ages'},
-  {id:'EV004',t:'F1 Grand Prix Watch Party',cat:'Sports',interests:['Formula 1'],city:'London',venue:'Skylight Rooftop Bar',addr:'Tobacco Dock, London E1W',date:d(7),time:'13:00',dur:'3 hrs',price:'£5',going:35,max:60,e:'🏎️',dist:2.1,desc:"Watch the Grand Prix on the big screen with a crowd of passionate F1 fans. Cocktails on the rooftop, great atmosphere and non-stop racing chat.",tags:['F1','Sports','Social'],ft:'Both',lat:51.5079,lng:-0.0588,ages:'18+'},
-  {id:'EV005',t:'Morning Run Club',cat:'Fitness',interests:['Running','Gym & Fitness'],city:'London',venue:'Victoria Park',addr:'Grove Rd, London E3',date:d(1),time:'07:30',dur:'1 hr',price:'Free',going:18,max:30,e:'🏃',dist:3.5,desc:'A friendly 5K run around Victoria Park for all abilities. No pace pressure  -  just fresh air, good chat, and coffee at the park café afterwards.',tags:['Running','Fitness','Outdoors'],ft:'Both',recurring:true,lat:51.5361,lng:-0.0434,ages:'All ages'},
-  {id:'EV006',t:'Brick Lane Food Tour',cat:'Food & Drink',interests:['Food & Dining'],city:'London',venue:'Brick Lane',addr:'Brick Lane, London E1',date:d(4),time:'18:30',dur:'2.5 hrs',price:'£10',going:14,max:20,e:'🍛',dist:1.9,desc:"Explore Brick Lane\'s legendary food scene together. We\'ll sample dishes from multiple stalls and restaurants  -  an absolute must for foodies.",tags:['Food','Indian','Social'],ft:'Both',lat:51.5217,lng:-0.0724,ages:'All ages'},
-  {id:'EV007',t:'Sunday Yoga in Hyde Park',cat:'Wellness',interests:['Yoga & Wellness'],city:'London',venue:'Hyde Park',addr:'Hyde Park, London W2',date:d(2),time:'09:00',dur:'1 hr',price:'Free',going:22,max:40,e:'🧘',dist:2.8,desc:"Start your Sunday with a relaxing yoga session in Hyde Park. All levels welcome  -  just bring a mat and good energy. Coffee and chat afterwards!",tags:['Yoga','Wellness','Outdoors'],ft:'Both',recurring:true,lat:51.5073,lng:-0.1657,ages:'All ages'},
-  {id:'EV008',t:'Manchester Derby Watch Party',cat:'Sports',interests:['Football'],city:'Manchester',venue:'The Printworks',addr:'27 Withy Grove, Manchester',date:d(5),time:'16:30',dur:'2 hrs',price:'Free',going:42,max:80,e:'⚽',dist:0.5,desc:"City vs United  -  the biggest derby in football. Watch it with hundreds of passionate fans at one of Manchester\'s most iconic entertainment venues.",tags:['Football','Derby','Social'],ft:'Both',lat:53.4842,lng:-2.2384,ages:'18+'},
-  {id:'EV009',t:'Quiz Night at The Refuge',cat:'Social',interests:['Pub & Social'],city:'Manchester',venue:'The Refuge',addr:'Oxford St, Manchester M60',date:d(3),time:'19:30',dur:'2 hrs',price:'£3',going:20,max:40,e:'🧠',dist:0.3,desc:"Come solo or in a group  -  we\'ll pair you up with a team! Six rounds covering sport, music, film and general knowledge. Prizes for the top three teams.",tags:['Quiz','Social','Pub'],ft:'Both',recurring:true,lat:53.4776,lng:-2.2373,ages:'18+'},
-  {id:'EV010',t:'Northern Quarter Coffee Crawl',cat:'Food & Drink',interests:['Coffee & Cafés'],city:'Manchester',venue:'Northern Quarter',addr:'Northern Quarter, Manchester',date:d(6),time:'10:00',dur:'3 hrs',price:'Free',going:9,max:15,e:'☕',dist:0.6,desc:"Visit four of Manchester\'s best independent coffee shops in the Northern Quarter. Perfect for people new to the city who want to explore and make friends.",tags:['Coffee','Social','Casual'],ft:'Both',lat:53.4841,lng:-2.2319,ages:'All ages'},
-  {id:'EV011',t:'Gym Buddies Session',cat:'Fitness',interests:['Gym & Fitness'],city:'Birmingham',venue:'PureGym Birmingham',addr:'Corporation St, Birmingham B2',date:d(2),time:'18:00',dur:'1.5 hrs',price:'£6 day pass',going:6,max:12,e:'🏋️',dist:0.4,desc:"Train with new gym buddies and share tips and programmes. Weights, cardio or classes  -  all levels welcome. Protein shakes after!",tags:['Gym','Fitness','Health'],ft:'Both',lat:52.4797,lng:-1.8967,ages:'All ages'},
-  {id:'EV012',t:'Balti Triangle Food Tour',cat:'Food & Drink',interests:['Food & Dining'],city:'Birmingham',venue:'Balti Triangle',addr:'Ladypool Rd, Birmingham B12',date:d(8),time:'19:00',dur:'2 hrs',price:'£15',going:11,max:16,e:'🍲',dist:3.1,desc:"Birmingham\'s Balti Triangle is world-famous for good reason. Join fellow foodies and try authentic baltis at the area\'s best restaurants.",tags:['Food','Indian','Culture'],ft:'Both',lat:52.4628,lng:-1.8875,ages:'All ages'},
-  {id:'EV013',t:'Six Nations Rugby Screening',cat:'Sports',interests:['Rugby'],city:'Edinburgh',venue:'The Hanging Bat',addr:'133 Lothian Rd, Edinburgh',date:d(4),time:'14:00',dur:'2 hrs',price:'Free',going:31,max:50,e:'🏉',dist:0.2,desc:"Scotland in action! Watch the match in one of Edinburgh\'s best bars with a passionate home crowd. The atmosphere is always electric.",tags:['Rugby','Sports','Social'],ft:'Both',lat:55.9439,lng:-3.2101,ages:'18+'},
-  {id:'EV014',t:"Arthur\'s Seat Hike",cat:'Outdoors',interests:['Hiking & Outdoors'],city:'Edinburgh',venue:'Holyrood Park',addr:"Queen\'s Dr, Edinburgh EH8",date:d(1),time:'09:00',dur:'2.5 hrs',price:'Free',going:15,max:25,e:'🥾',dist:1.0,desc:"Hike up Arthur\'s Seat for breathtaking views over Edinburgh. Moderate difficulty  -  good trainers recommended. Coffee and cake at the bottom afterwards!",tags:['Hiking','Outdoors','Nature'],ft:'Both',lat:55.9445,lng:-3.1637,ages:'All ages'},
-  {id:'EV015',t:'Board Game Night',cat:'Gaming',interests:['Board Games'],city:'Bristol',venue:'Chance & Counters',addr:'20 Christmas Steps, Bristol',date:d(3),time:'18:30',dur:'3 hrs',price:'£5',going:16,max:24,e:'🎲',dist:0.3,desc:"Bristol\'s favourite board game café! Choose from over 500 games, enjoy great food and drinks, and meet fellow enthusiasts. Solos very welcome.",tags:['Board Games','Social','Indoor'],ft:'Both',recurring:true,lat:51.4561,lng:-2.5973,ages:'All ages'},
-  {id:'EV016',t:'Live Music at Thekla',cat:'Music',interests:['Live Music'],city:'Bristol',venue:'Thekla',addr:'East Mud Dock, Bristol BS1',date:d(5),time:'20:00',dur:'3 hrs',price:'£12',going:45,max:80,e:'🎵',dist:0.8,desc:"Live indie music aboard Bristol\'s iconic floating music venue. Come solo  -  the crowd is always warm and welcoming, and the vibes are always incredible.",tags:['Music','Live','Nightlife'],ft:'Both',lat:51.4497,lng:-2.5902,ages:'18+'},
-  {id:'EV017',t:'Leeds Indie Cinema Night',cat:'Arts',interests:['Cinema'],city:'Leeds',venue:'Hyde Park Picture House',addr:'Brudenell Rd, Leeds LS6',date:d(7),time:'19:30',dur:'2.5 hrs',price:'£9',going:20,max:35,e:'🎬',dist:2.3,desc:"Screen a classic indie film and discuss it over drinks afterwards. A relaxed, welcoming crowd  -  perfect if you love film and want to meet like-minded people.",tags:['Cinema','Arts','Social'],ft:'Both',lat:53.8098,lng:-1.5636,ages:'All ages'},
-  {id:'EV018',t:'Liverpool Book Club',cat:'Social',interests:['Book Club'],city:'Liverpool',venue:'Bold Street Coffee',addr:'89 Bold St, Liverpool L1',date:d(9),time:'18:00',dur:'2 hrs',price:'Free',going:10,max:16,e:'📚',dist:0.5,desc:"Monthly book club meeting  -  this month we\'re reading The Thursday Murder Club by Richard Osman. No need to have finished it, just come along and enjoy the chat!",tags:['Books','Social','Casual'],ft:'Both',lat:53.3996,lng:-2.973,ages:'All ages'},
+// A Flock is a group. Each group has members and a list of upcoming Roosts.
+const FLOCKS = [
 
-  // ── Wellness ────────────────────────────────────────────
-  {id:'EV019',t:'Morning Meditation Circle',cat:'Wellness',interests:['Yoga & Wellness'],city:'London',venue:'Barbican Conservatory',addr:'Silk St, London EC2Y',date:d(1),time:'08:00',dur:'1 hr',price:'Free',going:19,max:30,e:'🧘',dist:1.4,desc:'Start your week with a guided group meditation in the beautiful indoor garden at the Barbican. No experience needed  -  just bring a mat and an open mind.',tags:['Meditation','Wellness','Mindfulness'],ages:'All ages',ft:'Both',lat:51.5199,lng:-0.0941},
-  {id:'EV020',t:'Sound Bath Session',cat:'Wellness',interests:['Yoga & Wellness'],city:'Manchester',venue:'Refuge Wellness',addr:'Oxford St, Manchester M60',date:d(6),time:'18:30',dur:'1.5 hrs',price:'£12',going:14,max:20,e:'🔔',dist:0.3,desc:'Lie back and let the vibrations of crystal singing bowls wash over you. A deeply relaxing experience ideal for stress relief and mental clarity. Mats and blankets provided.',tags:['Sound Bath','Wellness','Relaxation'],ages:'All ages',ft:'Both',lat:53.4776,lng:-2.2373},
-  {id:'EV021',t:'Breathwork & Cold Plunge',cat:'Wellness',interests:['Yoga & Wellness','Gym & Fitness'],city:'Bristol',venue:'Hotwells Lido',addr:'Hotwell Rd, Bristol BS8',date:d(3),time:'07:30',dur:'1.5 hrs',price:'£10',going:12,max:20,e:'❄️',dist:1.1,desc:'Learn the Wim Hof breathing method then take a supervised cold plunge at Bristol\'s open-air lido. Energising, community-led and surprisingly addictive.',tags:['Breathwork','Cold Water','Fitness'],ages:'18+',ft:'Both',lat:51.4529,lng:-2.6124},
+  // ── London ────────────────────────────────────────────────
+  {
+    id:'FL001', name:'Arsenal Supporters Club London', cat:'Sports',
+    interests:['Football'], city:'London', e:'⚽', members:84,
+    desc:'The go-to group for Gunners fans in London. We watch every match together, debate every transfer and celebrate every win. Come as a stranger, leave as a mate.',
+    tags:['Football','Arsenal','Sports'], ages:'18+', ft:'Both',
+    lat:51.5550, lng:-0.1086,
+    roosts:[
+      {id:'M1', title:'Arsenal vs Spurs - North London Derby', venue:'The Tollington', addr:'74 Tollington Rd, London N7', date:d(1), time:'13:30', dur:'2.5 hrs', price:'Free', going:38, max:60, lat:51.5561, lng:-0.1127},
+      {id:'M2', title:'Champions League Watch Party', venue:'The Gunners', addr:'145 Blackstock Rd, London N4', date:d(7), time:'20:00', dur:'2 hrs', price:'Free', going:24, max:50, lat:51.5584, lng:-0.1053},
+      {id:'M3', title:'Pre-season Prediction Night', venue:'The Tollington', addr:'74 Tollington Rd, London N7', date:d(14), time:'19:00', dur:'2 hrs', price:'Free', going:15, max:40, lat:51.5561, lng:-0.1127},
+    ]
+  },
+  {
+    id:'FL002', name:'London Board Gamers', cat:'Gaming',
+    interests:['Board Games'], city:'London', e:'🃏', members:52,
+    desc:'From Catan to Twilight Imperium, we play it all. Friendly group welcoming all levels - first-timers and veterans alike. Games are provided but bring your own if you have a favourite.',
+    tags:['Board Games','Gaming','Social'], ages:'All ages', ft:'Both',
+    lat:51.5131, lng:-0.1394,
+    roosts:[
+      {id:'M1', title:'Weekly Games Night', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(2), time:'18:30', dur:'3 hrs', price:'£5', going:12, max:20, lat:51.5395, lng:-0.0574},
+      {id:'M2', title:'Mega Session - Twilight Imperium', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(9), time:'12:00', dur:'8 hrs', price:'£8', going:7, max:8, lat:51.5395, lng:-0.0574},
+    ]
+  },
+  {
+    id:'FL003', name:'East London Runners', cat:'Fitness',
+    interests:['Running','Gym & Fitness'], city:'London', e:'🏃', members:63,
+    desc:'A welcoming running group for all paces. We run together, no one gets left behind. Coffee afterwards is mandatory. Weekly 5K and occasional longer Sunday runs.',
+    tags:['Running','Fitness','Outdoors'], ages:'All ages', ft:'Both',
+    lat:51.5361, lng:-0.0434,
+    roosts:[
+      {id:'M1', title:'Wednesday 5K - Victoria Park', venue:'Victoria Park', addr:'Grove Rd, London E3', date:d(3), time:'07:00', dur:'1 hr', price:'Free', going:22, max:35, lat:51.5361, lng:-0.0434},
+      {id:'M2', title:'Sunday Long Run - 10 Miles', venue:'Victoria Park', addr:'Grove Rd, London E3', date:d(6), time:'08:00', dur:'2 hrs', price:'Free', going:14, max:25, lat:51.5361, lng:-0.0434},
+      {id:'M3', title:'Parkrun Social', venue:'Mile End Park', addr:'Grove Rd, London E3', date:d(10), time:'09:00', dur:'1 hr', price:'Free', going:18, max:40, lat:51.5199, lng:-0.0351},
+    ]
+  },
+  {
+    id:'FL004', name:'London Foodies', cat:'Food & Drink',
+    interests:['Food & Dining'], city:'London', e:'🍛', members:97,
+    desc:'We eat our way around London one neighbourhood at a time. Street food markets, hidden gems, Michelin stars - we do it all. New members always welcome.',
+    tags:['Food','Social','London'], ages:'All ages', ft:'Both',
+    lat:51.5217, lng:-0.0724,
+    roosts:[
+      {id:'M1', title:'Brick Lane Street Food Tour', venue:'Brick Lane', addr:'Brick Lane, London E1', date:d(4), time:'18:30', dur:'3 hrs', price:'Free', going:20, max:25, lat:51.5217, lng:-0.0724},
+      {id:'M2', title:'Borough Market Morning', venue:'Borough Market', addr:'8 Southwark St, London SE1', date:d(8), time:'10:00', dur:'2.5 hrs', price:'Free', going:16, max:20, lat:51.5054, lng:-0.0910},
+    ]
+  },
+  {
+    id:'FL005', name:'London Hikers', cat:'Outdoors',
+    interests:['Hiking & Outdoors'], city:'London', e:'🥾', members:44,
+    desc:'Day hikes, evening walks, and weekend escapes from the city. We explore the North Downs, South Downs, Chilterns and beyond. All fitness levels, just good boots required.',
+    tags:['Hiking','Nature','Outdoors'], ages:'All ages', ft:'Both',
+    lat:51.4800, lng:-0.3100,
+    roosts:[
+      {id:'M1', title:'Box Hill Circular Walk', venue:'Box Hill & Westhumble Station', addr:'Station Rd, Westhumble RH5', date:d(5), time:'09:30', dur:'4 hrs', price:'Free', going:15, max:22, lat:51.2485, lng:-0.3110},
+      {id:'M2', title:'Hampstead Heath Evening Walk', venue:'Hampstead Heath', addr:'East Heath Rd, London NW3', date:d(3), time:'18:00', dur:'2 hrs', price:'Free', going:19, max:30, lat:51.5608, lng:-0.1632},
+    ]
+  },
 
-  // ── Outdoors ────────────────────────────────────────────
-  {id:'EV022',t:'Box Hill Sunrise Hike',cat:'Outdoors',interests:['Hiking & Outdoors'],city:'London',venue:'Box Hill, Surrey',addr:'Box Hill Rd, Dorking RH5',date:d(2),time:'06:00',dur:'4 hrs',price:'Free',going:21,max:35,e:'🌅',dist:18.4,desc:'Catch the sunrise from the top of Box Hill with a friendly group of hikers. Moderate 8km route, stunning views over the Surrey Hills, and breakfast at the cafe at the top.',tags:['Hiking','Sunrise','Nature'],ages:'All ages',ft:'Both',lat:51.2485,lng:-0.311},
-  {id:'EV023',t:'Canal Kayaking Trip',cat:'Outdoors',interests:['Hiking & Outdoors','Swimming'],city:'Birmingham',venue:'Gas Street Basin',addr:'Gas St, Birmingham B1',date:d(4),time:'10:00',dur:'3 hrs',price:'£25',going:10,max:14,e:'🚣',dist:0.6,desc:'Paddle through Birmingham\'s historic canal network with an experienced guide. Equipment and brief training provided  -  no prior kayaking experience necessary.',tags:['Kayaking','Outdoors','Water'],ages:'16+',ft:'Both',lat:52.4756,lng:-1.9106},
-  {id:'EV024',t:'Night Cycling Ride',cat:'Outdoors',interests:['Hiking & Outdoors'],city:'London',venue:'Southbank',addr:'Southbank, London SE1',date:d(8),time:'21:00',dur:'2.5 hrs',price:'Free',going:28,max:50,e:'🚲',dist:1.6,desc:'Explore London by night on two wheels. A relaxed 15-mile circular route taking in the City, Canary Wharf and back along the Thames. All fitness levels welcome  -  just bring a working bike and lights.',tags:['Cycling','Night Ride','London'],ages:'16+',ft:'Both',lat:51.5055,lng:-0.1134},
+  // ── Manchester ────────────────────────────────────────────
+  {
+    id:'FL006', name:'Manchester City Supporters', cat:'Sports',
+    interests:['Football'], city:'Manchester', e:'🔵', members:71,
+    desc:'Blues through and through. We watch every City game together, home and away. Premiership, Champions League, cups - we never miss a kick.',
+    tags:['Football','Man City','Sports'], ages:'18+', ft:'Both',
+    lat:53.4831, lng:-2.2004,
+    roosts:[
+      {id:'M1', title:'Derby Day - City vs United', venue:'The Printworks', addr:'27 Withy Grove, Manchester M4', date:d(2), time:'16:30', dur:'2.5 hrs', price:'Free', going:48, max:80, lat:53.4842, lng:-2.2384},
+      {id:'M2', title:'Champions League Night', venue:'The Footage', addr:'37 Withy Grove, Manchester M4', date:d(8), time:'20:00', dur:'2 hrs', price:'Free', going:30, max:60, lat:53.4840, lng:-2.2370},
+    ]
+  },
+  {
+    id:'FL007', name:'Northern Quarter Social Club', cat:'Social',
+    interests:['Pub & Social'], city:'Manchester', e:'🍺', members:58,
+    desc:'Weekly socials in Manchester\'s coolest neighbourhood. Pub crawls, quiz nights, rooftop bars - always a good time, always a different venue. Solo joiners especially welcome.',
+    tags:['Social','Pub','Manchester'], ages:'18+', ft:'Both',
+    lat:53.4841, lng:-2.2319,
+    roosts:[
+      {id:'M1', title:'Thursday Quiz Night', venue:'The Refuge', addr:'Oxford St, Manchester M60', date:d(4), time:'19:30', dur:'2 hrs', price:'£3', going:20, max:40, lat:53.4776, lng:-2.2373},
+      {id:'M2', title:'Saturday Pub Crawl', venue:'Elnecot', addr:'41 Blossom St, Manchester M4', date:d(6), time:'18:00', dur:'4 hrs', price:'Free', going:18, max:30, lat:53.4851, lng:-2.2285},
+      {id:'M3', title:'Vinyl Record Sunday', venue:'Vinyl Exchange', addr:'18 Market St, Manchester M1', date:d(10), time:'11:00', dur:'3 hrs', price:'Free', going:12, max:25, lat:53.4808, lng:-2.2374},
+    ]
+  },
 
-  // ── Music ───────────────────────────────────────────────
-  {id:'EV025',t:'Jazz & Cocktails Night',cat:'Music',interests:['Live Music','Pub & Social'],city:'London',venue:'Ronnie Scott\'s',addr:'47 Frith St, London W1D',date:d(5),time:'20:00',dur:'3 hrs',price:'£18',going:38,max:60,e:'🎷',dist:1.2,desc:'A magical evening of live jazz at one of the world\'s most iconic venues. Come solo or in a group  -  the warm atmosphere makes it easy to meet fellow music lovers over cocktails.',tags:['Jazz','Live Music','Cocktails'],ages:'18+',ft:'Both',lat:51.5132,lng:-0.1319},
-  {id:'EV026',t:'Open Mic Night',cat:'Music',interests:['Live Music'],city:'Leeds',venue:'Brudenell Social Club',addr:'33 Queens Rd, Leeds LS6',date:d(2),time:'19:00',dur:'3 hrs',price:'£3',going:24,max:60,e:'🎤',dist:2.1,desc:'Whether you want to perform or just enjoy a great night out, this monthly open mic welcomes all levels. Expect original songs, spoken word, comedy and the occasional surprise act.',tags:['Open Mic','Live Music','Social'],ages:'18+',ft:'Both',lat:53.8102,lng:-1.5624},
-  {id:'EV027',t:'Vinyl Record Swap',cat:'Music',interests:['Live Music','Arts & Culture'],city:'Manchester',venue:'Vinyl Exchange',addr:'18 Market St, Manchester M1',date:d(1),time:'11:00',dur:'3 hrs',price:'Free',going:15,max:30,e:'💿',dist:0.4,desc:'Bring records you no longer play, swap them for ones you\'ll love. A relaxed morning for music obsessives of all tastes  -  DJs on the decks all morning and free coffee for swappers.',tags:['Vinyl','Records','Music'],ages:'All ages',ft:'Both',lat:53.4808,lng:-2.2374},
+  // ── Birmingham ────────────────────────────────────────────
+  {
+    id:'FL008', name:'Brum Fitness Crew', cat:'Fitness',
+    interests:['Gym & Fitness','Running'], city:'Birmingham', e:'🏋️', members:39,
+    desc:'Group workouts, park runs and gym sessions for all fitness levels. We motivate each other, celebrate progress and grab a shake afterwards. No judgement, just gains.',
+    tags:['Fitness','Gym','Health'], ages:'All ages', ft:'Both',
+    lat:53.4808, lng:-2.2426,
+    roosts:[
+      {id:'M1', title:'Cannon Hill Park Run', venue:'Cannon Hill Park', addr:'Russell Rd, Birmingham B13', date:d(1), time:'09:00', dur:'1 hr', price:'Free', going:16, max:30, lat:52.4502, lng:-1.9007},
+      {id:'M2', title:'Group Gym Session', venue:'PureGym Birmingham', addr:'Corporation St, Birmingham B2', date:d(5), time:'18:00', dur:'1.5 hrs', price:'£6', going:8, max:12, lat:52.4797, lng:-1.8967},
+    ]
+  },
+  {
+    id:'FL009', name:'Birmingham Foodies', cat:'Food & Drink',
+    interests:['Food & Dining'], city:'Birmingham', e:'🍜', members:46,
+    desc:'Brum has one of the best food scenes in the UK and we are determined to eat all of it. Balti Triangle tours, Digbeth street food, fine dining - all welcome.',
+    tags:['Food','Birmingham','Social'], ages:'All ages', ft:'Both',
+    lat:52.4756, lng:-1.9106,
+    roosts:[
+      {id:'M1', title:'Balti Triangle Food Tour', venue:'Ladypool Rd', addr:'Ladypool Rd, Birmingham B12', date:d(3), time:'18:30', dur:'3 hrs', price:'Free', going:14, max:20, lat:52.4629, lng:-1.8875},
+      {id:'M2', title:'Digbeth Street Food Night', venue:'Digbeth Dining Club', addr:'152 Fazeley St, Birmingham B5', date:d(9), time:'17:00', dur:'3 hrs', price:'Free', going:20, max:35, lat:52.4747, lng:-1.8851},
+    ]
+  },
 
-  // ── Arts ────────────────────────────────────────────────
-  {id:'EV028',t:'Life Drawing Class',cat:'Arts',interests:['Arts & Culture'],city:'London',venue:'Hackney Arts Centre',addr:'1 Reading Ln, London E8',date:d(7),time:'19:00',dur:'2 hrs',price:'£8',going:16,max:24,e:'🎨',dist:3.8,desc:'Drop-in life drawing session for all abilities. Paper and charcoal provided  -  just turn up, draw, and enjoy the social atmosphere. A great way to be creative and meet people.',tags:['Art','Drawing','Creative'],ages:'18+',ft:'Both',lat:51.5416,lng:-0.0567},
-  {id:'EV029',t:'Photography Walk',cat:'Arts',interests:['Arts & Culture','Hiking & Outdoors'],city:'Edinburgh',venue:'Old Town',addr:'Royal Mile, Edinburgh EH1',date:d(3),time:'14:00',dur:'2 hrs',price:'Free',going:11,max:18,e:'📷',dist:0.5,desc:'Explore the winding closes and dramatic skyline of Edinburgh\'s Old Town through the lens. Phones and cameras equally welcome  -  tips on composition shared by the group as you go.',tags:['Photography','Arts','Edinburgh'],ages:'All ages',ft:'Both',lat:55.9503,lng:-3.1883},
-  {id:'EV030',t:'Street Art & Mural Tour',cat:'Arts',interests:['Arts & Culture'],city:'Bristol',venue:'Stokes Croft',addr:'Stokes Croft, Bristol BS1',date:d(6),time:'13:00',dur:'2 hrs',price:'Free',going:18,max:30,e:'🖌️',dist:0.7,desc:'Discover Bristol\'s world-famous street art scene on a guided walking tour through Stokes Croft and Bedminster. Learn the stories behind Banksy\'s murals and dozens of other artists.',tags:['Street Art','Walking','Culture'],ages:'All ages',ft:'Both',lat:51.4623,lng:-2.5954},
+  // ── Edinburgh ─────────────────────────────────────────────
+  {
+    id:'FL010', name:'Edinburgh Whisky Society', cat:'Food & Drink',
+    interests:['Food & Dining','Pub & Social'], city:'Edinburgh', e:'🥃', members:33,
+    desc:'Monthly tastings, distillery visits and everything in between for whisky lovers. Beginners and connoisseurs equally welcome - no snobbery, just a love of good dram.',
+    tags:['Whisky','Tasting','Culture'], ages:'18+', ft:'Both',
+    lat:55.9495, lng:-3.1934,
+    roosts:[
+      {id:'M1', title:'Monthly Tasting - Highland Malts', venue:'The Scotch Whisky Experience', addr:'354 Castlehill, Edinburgh EH1', date:d(5), time:'19:30', dur:'2 hrs', price:'£18', going:14, max:20, lat:55.9495, lng:-3.1934},
+      {id:'M2', title:'Pub Crawl - Old Town Whisky Bars', venue:'The Royal Mile Tavern', addr:'127 High St, Edinburgh EH1', date:d(12), time:'18:00', dur:'3 hrs', price:'Free', going:18, max:30, lat:55.9503, lng:-3.1883},
+    ]
+  },
+  {
+    id:'FL011', name:'Edinburgh Outdoor Adventurers', cat:'Outdoors',
+    interests:['Hiking & Outdoors'], city:'Edinburgh', e:'🏔️', members:55,
+    desc:'Hikes, scrambles and wild swims across Scotland\'s stunning landscape. From Arthur\'s Seat to the Cairngorms, we explore it all. Beginners and experienced hikers welcome.',
+    tags:['Hiking','Nature','Scotland'], ages:'All ages', ft:'Both',
+    lat:55.9439, lng:-3.1760,
+    roosts:[
+      {id:'M1', title:'Arthur\'s Seat Morning Hike', venue:'Holyrood Park', addr:'Queen\'s Dr, Edinburgh EH8', date:d(1), time:'09:00', dur:'2.5 hrs', price:'Free', going:16, max:25, lat:55.9445, lng:-3.1637},
+      {id:'M2', title:'Meadows Frisbee & Picnic', venue:'The Meadows', addr:'Melville Dr, Edinburgh EH9', date:d(4), time:'13:00', dur:'2 hrs', price:'Free', going:14, max:30, lat:55.9374, lng:-3.1875},
+    ]
+  },
 
-  // ── Gaming (more) ────────────────────────────────────────
-  {id:'EV031',t:'Dungeons & Dragons One-Shot',cat:'Gaming',interests:['Board Games','Gaming'],city:'London',venue:'Draughts Bar',addr:'337 Acton Mews, London E8',date:d(10),time:'18:00',dur:'4 hrs',price:'£6',going:7,max:8,e:'🐉',dist:4.1,desc:'An introductory D&D adventure for beginners and veterans alike. Pre-made characters provided  -  just bring your imagination. Dungeon master will guide you through everything.',tags:['D&D','Tabletop','Fantasy'],ages:'All ages',ft:'Both',lat:51.5395,lng:-0.0574},
-  {id:'EV032',t:'Retro Gaming Night',cat:'Gaming',interests:['Gaming','Video Games'],city:'Leeds',venue:'Loading Bar Leeds',addr:'Merrion St, Leeds LS2',date:d(4),time:'19:00',dur:'3 hrs',price:'£5',going:22,max:40,e:'🕹️',dist:1.0,desc:'Classic consoles, arcade cabinets and great company. Play SNES, N64, Mega Drive and more with fellow retro fans. Entry includes unlimited gaming all night.',tags:['Retro Gaming','Social','Arcade'],ages:'18+',ft:'Both',lat:53.8014,lng:-1.5488},
+  // ── Bristol ───────────────────────────────────────────────
+  {
+    id:'FL012', name:'Bristol Music Lovers', cat:'Music',
+    interests:['Live Music'], city:'Bristol', e:'🎵', members:48,
+    desc:'Bristol has one of the most vibrant music scenes in the UK. We go to gigs together, discover new artists and explore venues from Thekla to Colston Hall. All genres welcome.',
+    tags:['Music','Live','Gigs'], ages:'18+', ft:'Both',
+    lat:51.4497, lng:-2.5902,
+    roosts:[
+      {id:'M1', title:'Live Indie Night - Thekla', venue:'Thekla', addr:'East Mud Dock, Bristol BS1', date:d(5), time:'20:00', dur:'3 hrs', price:'£12', going:28, max:40, lat:51.4497, lng:-2.5902},
+      {id:'M2', title:'Jazz at the Grain Barge', venue:'Grain Barge', addr:'Mardyke Wharf, Bristol BS8', date:d(11), time:'19:30', dur:'2.5 hrs', price:'£8', going:18, max:30, lat:51.4519, lng:-2.6191},
+    ]
+  },
+  {
+    id:'FL013', name:'Bristol Yoga & Wellness', cat:'Wellness',
+    interests:['Yoga & Wellness'], city:'Bristol', e:'🧘', members:36,
+    desc:'Outdoor yoga, meditation circles and wellness walks around Bristol\'s parks and harbourside. All levels welcome - bring a mat and an open mind.',
+    tags:['Yoga','Wellness','Outdoors'], ages:'All ages', ft:'Both',
+    lat:51.4561, lng:-2.5973,
+    roosts:[
+      {id:'M1', title:'Sunday Yoga - Clifton Down', venue:'Clifton Down', addr:'Clifton Down, Bristol BS8', date:d(2), time:'09:30', dur:'1 hr', price:'Free', going:18, max:25, lat:51.4623, lng:-2.6203},
+      {id:'M2', title:'Harbourside Meditation Walk', venue:'Bristol Harbourside', addr:'Canons Rd, Bristol BS1', date:d(7), time:'18:00', dur:'1.5 hrs', price:'Free', going:12, max:20, lat:51.4497, lng:-2.5950},
+    ]
+  },
 
-  // ── Fitness (more) ──────────────────────────────────────
-  {id:'EV033',t:'Beginner Climbing Session',cat:'Fitness',interests:['Gym & Fitness'],city:'London',venue:'The Castle Climbing Centre',addr:'Green Lanes, London N4',date:d(2),time:'18:30',dur:'2 hrs',price:'£16',going:10,max:16,e:'🧗',dist:5.2,desc:'Try indoor bouldering for the first time in a friendly group. Instructors will walk you through the basics  -  shoes and chalk provided. A full-body workout that doesn\'t feel like one.',tags:['Climbing','Fitness','Beginners'],ages:'16+',ft:'Both',lat:51.5716,lng:-0.0887},
-  {id:'EV034',t:'5-a-Side Football',cat:'Fitness',interests:['Football','Gym & Fitness'],city:'Birmingham',venue:'Goals Birmingham',addr:'Garrison Ln, Birmingham B9',date:d(5),time:'19:00',dur:'1.5 hrs',price:'£5',going:8,max:10,e:'⚽',dist:2.8,desc:'Weekly mixed 5-a-side game for all abilities. We split into balanced teams on the night  -  just turn up ready to run around and have fun. Absolute beginners welcome.',tags:['Football','5-a-side','Fitness'],ages:'18+',ft:'Both',recurring:true,lat:52.4775,lng:-1.8683},
+  // ── Leeds ─────────────────────────────────────────────────
+  {
+    id:'FL014', name:'Leeds United Supporters', cat:'Sports',
+    interests:['Football'], city:'Leeds', e:'🤍', members:88,
+    desc:'MOT. Leeds fans watching every game together. Promotion battles, away days and everything in between. If you bleed white and yellow, this is your Flock.',
+    tags:['Football','Leeds United','Sports'], ages:'18+', ft:'Both',
+    lat:53.7771, lng:-1.5724,
+    roosts:[
+      {id:'M1', title:'Leeds vs Sheffield Wed - Big Screen', venue:'Mojo Bar', addr:'18 Merrion St, Leeds LS2', date:d(3), time:'15:00', dur:'2 hrs', price:'Free', going:35, max:60, lat:53.8002, lng:-1.5458},
+      {id:'M2', title:'Pre-Season Predictions Night', venue:'The Lamb & Flag', addr:'Church Row, Leeds LS2', date:d(9), time:'19:00', dur:'2 hrs', price:'Free', going:18, max:35, lat:53.8010, lng:-1.5432},
+    ]
+  },
+  {
+    id:'FL015', name:'Leeds Street Food Club', cat:'Food & Drink',
+    interests:['Food & Dining'], city:'Leeds', e:'🍔', members:41,
+    desc:'Leeds has a brilliant and rapidly growing food scene. We hit Trinity Kitchen, Kirkgate Market, pop-ups and everything in between. Always a great excuse to eat too much.',
+    tags:['Street Food','Foodie','Leeds'], ages:'All ages', ft:'Both',
+    lat:53.7980, lng:-1.5443,
+    roosts:[
+      {id:'M1', title:'Trinity Kitchen Crawl', venue:'Trinity Kitchen', addr:'27 Boar Ln, Leeds LS1', date:d(2), time:'12:30', dur:'2 hrs', price:'Free', going:14, max:20, lat:53.7980, lng:-1.5443},
+      {id:'M2', title:'Kirkgate Market Morning', venue:'Kirkgate Market', addr:'34 George St, Leeds LS2', date:d(8), time:'10:00', dur:'2 hrs', price:'Free', going:10, max:18, lat:53.7975, lng:-1.5391},
+    ]
+  },
 
-  // ── Liverpool (more) ─────────────────────────────────────
-  {id:'EV035',t:'Beatles Pub Crawl',cat:'Music',interests:['Live Music','Pub & Social'],city:'Liverpool',venue:'The Cavern Club',addr:'10 Mathew St, Liverpool L2',date:d(3),time:'19:00',dur:'3 hrs',price:'Free',going:22,max:40,e:'🎸',dist:0.3,desc:'Follow in the footsteps of the Fab Four across Liverpool\'s legendary music venues. Start at the Cavern Club and work your way through the pubs where Beatlemania was born. Stories, songs and pints all night.',tags:['Beatles','Music','Pub'],ft:'Both',lat:53.4082,lng:-2.9793,ages:'18+'},
-  {id:'EV036',t:'Albert Dock Morning Run',cat:'Fitness',interests:['Running','Gym & Fitness'],city:'Liverpool',venue:'Albert Dock',addr:'Albert Dock, Liverpool L3',date:d(2),time:'08:00',dur:'1 hr',price:'Free',going:14,max:25,e:'🏃',dist:0.8,desc:'A friendly 5K run along the waterfront past the Albert Dock and Pier Head. All paces welcome  -  we always wait at the end. Coffee at the dock café afterwards.',tags:['Running','Fitness','Waterfront'],ft:'Both',lat:53.3998,lng:-2.9952,ages:'All ages'},
-  {id:'EV037',t:'Baltic Triangle Street Food',cat:'Food & Drink',interests:['Food & Dining'],city:'Liverpool',venue:'Baltic Market',addr:'47 Jamaica St, Liverpool L1',date:d(6),time:'18:00',dur:'2.5 hrs',price:'Free',going:19,max:35,e:'🌮',dist:1.1,desc:'Liverpool\'s coolest street food market in the Baltic Triangle arts district. Pick from dozens of independent vendors, meet fellow foodies and explore the area\'s vibrant graffiti and gallery scene.',tags:['Street Food','Social','Culture'],ft:'Both',lat:53.3964,lng:-2.9755,ages:'All ages'},
-
-  // ── Edinburgh (more) ─────────────────────────────────────
-  {id:'EV038',t:'Scotch Whisky Tasting',cat:'Food & Drink',interests:['Food & Dining','Pub & Social'],city:'Edinburgh',venue:'The Scotch Whisky Experience',addr:'354 Castlehill, Edinburgh EH1',date:d(4),time:'19:30',dur:'2 hrs',price:'£18',going:12,max:20,e:'🥃',dist:0.3,desc:'A guided tasting of six single malts led by a whisky expert, right next to Edinburgh Castle. Learn to nose and taste like a pro  -  no prior knowledge needed. Pairs beautifully with the spectacular views.',tags:['Whisky','Tasting','Culture'],ft:'Both',lat:55.9495,lng:-3.1934,ages:'18+'},
-  {id:'EV039',t:'Meadows Sunday Frisbee',cat:'Fitness',interests:['Gym & Fitness'],city:'Edinburgh',venue:'The Meadows',addr:'Melville Dr, Edinburgh EH9',date:d(1),time:'13:00',dur:'2 hrs',price:'Free',going:16,max:30,e:'🥏',dist:1.4,desc:'Casual ultimate frisbee on the Meadows  -  no experience needed, just turn up and run around. We split into balanced teams. A brilliant way to get active and meet Edinburgh locals.',tags:['Frisbee','Outdoors','Sport'],ft:'Both',recurring:true,lat:55.9374,lng:-3.1875,ages:'All ages'},
-
-  // ── Leeds (more) ─────────────────────────────────────────
-  {id:'EV040',t:'Trinity Kitchen Food Crawl',cat:'Food & Drink',interests:['Food & Dining'],city:'Leeds',venue:'Trinity Kitchen',addr:'27 Boar Ln, Leeds LS1',date:d(5),time:'12:30',dur:'2 hrs',price:'Free',going:10,max:18,e:'🍔',dist:0.2,desc:'Work your way through Trinity Kitchen\'s rotating roster of street food trucks. We\'ll meet, share dishes and vote on the best. Always a surprise lineup  -  past vendors have included Korean BBQ, Neapolitan pizza and Argentinian empanadas.',tags:['Street Food','Foodie','Social'],ft:'Both',lat:53.798,lng:-1.5443,ages:'All ages'},
-  {id:'EV041',t:'Roundhay Park Cycle Ride',cat:'Outdoors',interests:['Hiking & Outdoors'],city:'Leeds',venue:'Roundhay Park',addr:'Princes Ave, Leeds LS8',date:d(1),time:'10:00',dur:'2 hrs',price:'Free',going:12,max:20,e:'🚲',dist:3.5,desc:'A relaxed 10-mile cycle around Roundhay Park and the Eccup Reservoir loop. Suitable for anyone with a road or hybrid bike. We take it easy and stop for coffee about halfway round.',tags:['Cycling','Outdoors','Nature'],ft:'Both',recurring:true,lat:53.8322,lng:-1.5071,ages:'All ages'},
+  // ── Liverpool ─────────────────────────────────────────────
+  {
+    id:'FL016', name:'Liverpool Beatles & Music Fans', cat:'Music',
+    interests:['Live Music','Pub & Social'], city:'Liverpool', e:'🎸', members:62,
+    desc:'From the Cavern Club to the Kazimier, Liverpool\'s music heritage is unmatched. We explore it together - tours, gigs, pub crawls and everything Scouse.',
+    tags:['Beatles','Music','Liverpool'], ages:'All ages', ft:'Both',
+    lat:53.4082, lng:-2.9793,
+    roosts:[
+      {id:'M1', title:'Beatles Pub Crawl', venue:'The Cavern Club', addr:'10 Mathew St, Liverpool L2', date:d(3), time:'19:00', dur:'3 hrs', price:'Free', going:22, max:35, lat:53.4082, lng:-2.9793},
+      {id:'M2', title:'Live Night at Sound', venue:'Sound Basement', addr:'4 Stanley St, Liverpool L1', date:d(10), time:'20:00', dur:'3 hrs', price:'£8', going:18, max:30, lat:53.4058, lng:-2.9836},
+    ]
+  },
+  {
+    id:'FL017', name:'Liverpool Waterfront Runners', cat:'Fitness',
+    interests:['Running'], city:'Liverpool', e:'🏃', members:34,
+    desc:'Morning runs along the Albert Dock, Pier Head and waterfront. All paces welcome - we stick together and grab coffee after every run at the dock cafe.',
+    tags:['Running','Waterfront','Fitness'], ages:'All ages', ft:'Both',
+    lat:53.3998, lng:-2.9952,
+    roosts:[
+      {id:'M1', title:'Albert Dock 5K', venue:'Albert Dock', addr:'Albert Dock, Liverpool L3', date:d(2), time:'08:00', dur:'1 hr', price:'Free', going:16, max:25, lat:53.3998, lng:-2.9952},
+      {id:'M2', title:'Sunday Long Run - 8 Miles', venue:'Pier Head', addr:'Pier Head, Liverpool L3', date:d(7), time:'08:30', dur:'1.5 hrs', price:'Free', going:10, max:20, lat:53.4042, lng:-2.9975},
+    ]
+  },
 
   // ── Glasgow ───────────────────────────────────────────────
-  {id:'EV042',t:'Old Firm Derby Watch Party',cat:'Sports',interests:['Football'],city:'Glasgow',venue:'Tennent\'s Bar',addr:'191 Byres Rd, Glasgow G12',date:d(1),time:'12:30',dur:'2 hrs',price:'Free',going:55,max:80,e:'⚽',dist:0.4,desc:'The biggest club rivalry in world football  -  Celtic vs Rangers  -  live on the big screen in the West End. Come early to get a seat. Expect noise, passion and an atmosphere you won\'t forget.',tags:['Football','Derby','Sports'],ft:'Both',lat:55.8733,lng:-4.2909,ages:'18+'},
-  {id:'EV043',t:'Kelvingrove Art Gallery Tour',cat:'Arts',interests:['Arts & Culture'],city:'Glasgow',venue:'Kelvingrove Art Gallery',addr:'Argyle St, Glasgow G3',date:d(4),time:'14:00',dur:'2 hrs',price:'Free',going:11,max:20,e:'🎨',dist:1.5,desc:'A guided group walk through one of the UK\'s most visited museums  -  free entry, world-class art. A knowledgeable local leads the tour, covering everything from Dali\'s Christ of Saint John to the stuffed elephant in the hall.',tags:['Art','Museum','Culture'],ft:'Both',lat:55.8686,lng:-4.2888,ages:'All ages'},
-  {id:'EV044',t:'West End Street Food Night',cat:'Food & Drink',interests:['Food & Dining'],city:'Glasgow',venue:'Dockyard Social',addr:'95 Haugh Rd, Glasgow G3',date:d(6),time:'17:00',dur:'3 hrs',price:'£8',going:30,max:60,e:'🍜',dist:1.8,desc:'Glasgow\'s best outdoor street food market returns with 20+ vendors and live music. Entry covers a welcome drink. Expect jerk chicken, Syrian mezze, loaded fries and Glasgow\'s finest craft beers alongside great company.',tags:['Street Food','Live Music','Social'],ft:'Both',lat:55.8644,lng:-4.2935,ages:'18+'},
-  {id:'EV045',t:'Stand Comedy Club Open Night',cat:'Social',interests:['Pub & Social'],city:'Glasgow',venue:'The Stand Comedy Club',addr:'333 Woodlands Rd, Glasgow G3',date:d(8),time:'20:00',dur:'2.5 hrs',price:'£10',going:28,max:50,e:'🎤',dist:1.2,desc:'Scotland\'s favourite comedy club hosts a mixed bill of five acts  -  established names and rising stars. Come solo; the pre-show mixer in the bar makes it easy to meet people. Guaranteed laughs.',tags:['Comedy','Live','Social'],ft:'Both',lat:55.8699,lng:-4.2887,ages:'18+'},
+  {
+    id:'FL018', name:'Glasgow Comedy & Social', cat:'Social',
+    interests:['Pub & Social'], city:'Glasgow', e:'🎤', members:53,
+    desc:'Glasgow has the best patter in Britain and we want to keep the night alive. Comedy clubs, rooftop bars, quiz nights and random adventures in the West End.',
+    tags:['Comedy','Social','Glasgow'], ages:'18+', ft:'Both',
+    lat:55.8699, lng:-4.2887,
+    roosts:[
+      {id:'M1', title:'Stand Comedy Club Night', venue:'The Stand', addr:'333 Woodlands Rd, Glasgow G3', date:d(4), time:'20:00', dur:'2.5 hrs', price:'£10', going:28, max:45, lat:55.8699, lng:-4.2887},
+      {id:'M2', title:'West End Pub Quiz', venue:'Tennent\'s Bar', addr:'191 Byres Rd, Glasgow G12', date:d(8), time:'19:00', dur:'2 hrs', price:'£3', going:20, max:40, lat:55.8733, lng:-4.2909},
+    ]
+  },
+  {
+    id:'FL019', name:'Glasgow Art & Culture Collective', cat:'Arts',
+    interests:['Arts & Culture'], city:'Glasgow', e:'🎨', members:29,
+    desc:'Museum visits, gallery tours, street art walks and creative workshops. Glasgow has a world-class art scene and we are determined to see all of it, together.',
+    tags:['Art','Culture','Glasgow'], ages:'All ages', ft:'Both',
+    lat:55.8686, lng:-4.2888,
+    roosts:[
+      {id:'M1', title:'Kelvingrove Gallery Tour', venue:'Kelvingrove Art Gallery', addr:'Argyle St, Glasgow G3', date:d(2), time:'14:00', dur:'2 hrs', price:'Free', going:14, max:20, lat:55.8686, lng:-4.2888},
+      {id:'M2', title:'Street Art Walk - East End', venue:'Barras Market', addr:'244 Gallowgate, Glasgow G4', date:d(7), time:'13:00', dur:'2 hrs', price:'Free', going:10, max:18, lat:55.8543, lng:-4.2342},
+    ]
+  },
 
   // ── Cardiff ───────────────────────────────────────────────
-  {id:'EV046',t:'Wales Rugby Pub Watch',cat:'Sports',interests:['Rugby'],city:'Cardiff',venue:'The Cambrian Tap',addr:'4 St Mary St, Cardiff CF10',date:d(2),time:'14:30',dur:'2.5 hrs',price:'Free',going:40,max:70,e:'🏉',dist:0.2,desc:'Wales in action  -  live on the big screen with a packed crowd in the heart of the city. The Cambrian Tap is Cardiff\'s best rugby pub: red everywhere, singing in the second half guaranteed.',tags:['Rugby','Wales','Sports'],ft:'Both',lat:51.4779,lng:-3.1782,ages:'18+'},
-  {id:'EV047',t:'Cardiff Bay Evening Walk',cat:'Outdoors',interests:['Hiking & Outdoors'],city:'Cardiff',venue:'Roald Dahl Plass',addr:'Roald Dahl Plass, Cardiff CF10',date:d(5),time:'18:30',dur:'1.5 hrs',price:'Free',going:13,max:25,e:'🌊',dist:1.6,desc:'A relaxed guided walk around Cardiff Bay at golden hour  -  Roald Dahl Plass, the Senedd, the Barrage and back. Stunning waterfront views, interesting history and good chat. Ends at a waterfront bar.',tags:['Walking','Outdoors','Social'],ft:'Both',lat:51.4635,lng:-3.1637,ages:'All ages'},
-  {id:'EV048',t:'Roath Park Morning Yoga',cat:'Wellness',interests:['Yoga & Wellness'],city:'Cardiff',venue:'Roath Park',addr:'Roath Park, Cardiff CF23',date:d(3),time:'09:00',dur:'1 hr',price:'Free',going:15,max:25,e:'🧘',dist:2.8,desc:'Outdoor yoga on the lawn by the lake in Roath Park. All levels welcome  -  just bring a mat and comfortable clothes. Coffee and cake from the park café afterwards. A peaceful way to start the weekend.',tags:['Yoga','Wellness','Outdoors'],ft:'Both',lat:51.5008,lng:-3.1534,ages:'All ages'},
+  {
+    id:'FL020', name:'Cardiff Rugby Lads', cat:'Sports',
+    interests:['Rugby'], city:'Cardiff', e:'🏉', members:76,
+    desc:'Wales till we die. We watch every game together - Six Nations, World Cup, Pro14. Red shirts, loud singing and the best atmosphere in any pub in Cardiff. Cymru am byth.',
+    tags:['Rugby','Wales','Sports'], ages:'18+', ft:'Both',
+    lat:51.4779, lng:-3.1782,
+    roosts:[
+      {id:'M1', title:'Wales vs England - Six Nations', venue:'The Cambrian Tap', addr:'4 St Mary St, Cardiff CF10', date:d(2), time:'14:30', dur:'2.5 hrs', price:'Free', going:55, max:80, lat:51.4779, lng:-3.1782},
+      {id:'M2', title:'Pro14 Watch Party', venue:'Brewhouse & Kitchen', addr:'Sophia Close, Cardiff CF24', date:d(9), time:'19:30', dur:'2 hrs', price:'Free', going:22, max:40, lat:51.4855, lng:-3.1686},
+    ]
+  },
+  {
+    id:'FL021', name:'Cardiff Bay Walkers', cat:'Outdoors',
+    interests:['Hiking & Outdoors'], city:'Cardiff', e:'🌊', members:31,
+    desc:'Evening and weekend walks around Cardiff Bay, Roath Park, Pontcanna Fields and the Vale of Glamorgan. Fresh air, good chat and always somewhere nice to end up.',
+    tags:['Walking','Outdoors','Cardiff'], ages:'All ages', ft:'Both',
+    lat:51.4635, lng:-3.1637,
+    roosts:[
+      {id:'M1', title:'Bay Barrage Evening Walk', venue:'Roald Dahl Plass', addr:'Roald Dahl Plass, Cardiff CF10', date:d(3), time:'18:30', dur:'1.5 hrs', price:'Free', going:15, max:25, lat:51.4635, lng:-3.1637},
+      {id:'M2', title:'Roath Park Morning Walk', venue:'Roath Park', addr:'Roath Park, Cardiff CF23', date:d(7), time:'09:00', dur:'1.5 hrs', price:'Free', going:12, max:22, lat:51.5008, lng:-3.1534},
+    ]
+  },
 
   // ── Newcastle ─────────────────────────────────────────────
-  {id:'EV049',t:'NUFC Watch Party',cat:'Sports',interests:['Football'],city:'Newcastle',venue:'The Strawberry',addr:'5 Strawberry Pl, Newcastle NE1',date:d(3),time:'15:00',dur:'2 hrs',price:'Free',going:48,max:80,e:'⚽',dist:0.1,desc:'Newcastle United on the big screen at the pub right next to St James\' Park. The Strawberry is the most famous matchday pub in England  -  black and white everywhere, the atmosphere is electric.',tags:['Football','NUFC','Sports'],ft:'Both',lat:54.9749,lng:-1.6192,ages:'18+'},
-  {id:'EV050',t:'Quayside Street Food Market',cat:'Food & Drink',interests:['Food & Dining'],city:'Newcastle',venue:'Quayside',addr:'Quayside, Newcastle NE1',date:d(6),time:'11:00',dur:'3 hrs',price:'Free',going:20,max:40,e:'🥙',dist:0.5,desc:'Newcastle\'s Sunday Quayside market stretches along the riverfront with street food, artisan produce and craft stalls. We\'ll meet, graze our way along and end up in one of the Quayside bars. The Tyne Bridge views are pretty good too.',tags:['Market','Street Food','Social'],ft:'Both',lat:54.9693,lng:-1.6069,ages:'All ages'},
-  {id:'EV051',t:'Geordie Quiz Night',cat:'Social',interests:['Pub & Social'],city:'Newcastle',venue:'The Cumberland Arms',addr:'Byker Bank, Newcastle NE6',date:d(7),time:'19:30',dur:'2 hrs',price:'£3',going:22,max:40,e:'🧠',dist:1.8,desc:'Six rounds of pure quiz madness in one of Newcastle\'s best community pubs in the Ouseburn valley. Come solo or in a group  -  we\'ll make teams on the night. Rounds cover general knowledge, sport, music and a Newcastle special round.',tags:['Quiz','Social','Pub'],ft:'Both',recurring:true,lat:54.9688,lng:-1.5898,ages:'18+'},
-  {id:'EV052',t:'Ouseburn Photography Walk',cat:'Arts',interests:['Arts & Culture','Hiking & Outdoors'],city:'Newcastle',venue:'Ouseburn Valley',addr:'Lime St, Newcastle NE1',date:d(4),time:'14:00',dur:'2 hrs',price:'Free',going:9,max:16,e:'📷',dist:1.2,desc:'Explore one of Newcastle\'s most creative hidden neighbourhoods  -  street art, Victorian byker walls, independent studios and the river. Phones and cameras equally welcome. A relaxed group with tips shared along the way.',tags:['Photography','Arts','Walking'],ft:'Both',lat:54.9701,lng:-1.595,ages:'All ages'},
-];
+  {
+    id:'FL022', name:'Toon Army Social Club', cat:'Sports',
+    interests:['Football'], city:'Newcastle', e:'⚫', members:92,
+    desc:'Howay the lads. Every Newcastle United game watched together in the most passionate footballing city in England. St James\' Park is our cathedral, The Strawberry our living room.',
+    tags:['Football','NUFC','Newcastle'], ages:'18+', ft:'Both',
+    lat:54.9749, lng:-1.6192,
+    roosts:[
+      {id:'M1', title:'Newcastle vs Sunderland - The Derby', venue:'The Strawberry', addr:'5 Strawberry Pl, Newcastle NE1', date:d(1), time:'15:00', dur:'2.5 hrs', price:'Free', going:60, max:80, lat:54.9749, lng:-1.6192},
+      {id:'M2', title:'Champions League Watch Party', venue:'The Forth Hotel', addr:'Pink Ln, Newcastle NE1', date:d(8), time:'20:00', dur:'2 hrs', price:'Free', going:35, max:60, lat:54.9706, lng:-1.6125},
+    ]
+  },
+  {
+    id:'FL023', name:'Ouseburn Quiz & Social', cat:'Social',
+    interests:['Pub & Social'], city:'Newcastle', e:'🧠', members:44,
+    desc:'The best quiz nights, live music and social evenings in the Ouseburn Valley. A friendly, welcoming crowd who love good chat as much as they love winning. Come solo.',
+    tags:['Quiz','Social','Pub'], ages:'18+', ft:'Both',
+    lat:54.9688, lng:-1.5898,
+    roosts:[
+      {id:'M1', title:'Geordie Quiz Night', venue:'The Cumberland Arms', addr:'Byker Bank, Newcastle NE6', date:d(4), time:'19:30', dur:'2 hrs', price:'£3', going:24, max:40, lat:54.9688, lng:-1.5898},
+      {id:'M2', title:'Ouseburn Photography Walk', venue:'Lime Street', addr:'Lime St, Newcastle NE1', date:d(9), time:'14:00', dur:'2 hrs', price:'Free', going:9, max:16, lat:54.9701, lng:-1.5950},
+    ]
+  },
 
-const SAMPLE_ATTENDEES = [
-  {name:'Alex K',color:'#F97316'},{name:'Sam R',color:'#8B5CF6'},
-  {name:'Jordan P',color:'#3B82F6'},{name:'Casey M',color:'#EF4444'},
-  {name:'Riley T',color:'#10B981'},{name:'Morgan W',color:'#F59E0B'},
-  {name:'Taylor B',color:'#EC4899'},{name:'Jamie L',color:'#0891B2'},
-  {name:'Charlie S',color:'#84CC16'},{name:'Drew N',color:'#F97316'},
-  {name:'Avery H',color:'#A855F7'},{name:'Quinn F',color:'#14B8A6'},
+  // ── London (Mario Kart) ───────────────────────────────────
+  {
+    id:'FL024', name:'Mario Kart Enthusiasts London', cat:'Gaming',
+    interests:['Video Games'], city:'London', e:'🎮', members:28,
+    desc:'London\'s most competitive (and most chaotic) Mario Kart community. We meet up, plug in the Switch, argue about which track is hardest and eat too many snacks. All skill levels welcome - beginners get a one-race handicap. Smash Bros sessions occasionally too.',
+    tags:['Mario Kart','Gaming','Nintendo','Switch'], ages:'All ages', ft:'Both',
+    lat:51.5131, lng:-0.1394,
+    roosts:[
+      {id:'M1', title:'Mario Kart Grand Prix Night', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(2), time:'18:30', dur:'3 hrs', price:'£5', going:14, max:16, lat:51.5395, lng:-0.0574},
+      {id:'M2', title:'200cc Tournament - Winner Takes All', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(9), time:'18:00', dur:'4 hrs', price:'£5', going:9, max:16, lat:51.5395, lng:-0.0574},
+      {id:'M3', title:'Smash Bros + Mario Kart Double Bill', venue:'Loading Bar Stoke Newington', addr:'157 Stoke Newington High St, London N16', date:d(14), time:'17:00', dur:'4 hrs', price:'£6', going:11, max:20, lat:51.5631, lng:-0.0739},
+    ]
+  },
+];
+  {name:'Alex K', color:'#F97316'},{name:'Sam T', color:'#8B5CF6'},
+  {name:'Jordan L', color:'#3B82F6'},{name:'Morgan P', color:'#EF4444'},
+  {name:'Casey M', color:'#10B981'},{name:'Riley B', color:'#F59E0B'},
+  {name:'Quinn A', color:'#6366F1'},{name:'Drew N', color:'#EC4899'},
 ];
