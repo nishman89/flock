@@ -70,7 +70,7 @@ function render() {
       <div class="profile-section-title">My Stats</div>
       <div class="profile-card">
         <div class="profile-row">
-          <span class="profile-row-label">Events joined</span>
+          <span class="profile-row-label">Flocks joined</span>
           <span class="profile-row-val">${myEvCount} 🎉</span>
         </div>
         <div class="profile-row">

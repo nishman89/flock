@@ -211,8 +211,8 @@ function renderEvents() {
     list.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
-        <h3>No events found</h3>
-        <p>Try a different city, increasing your distance, or a different category.</p>
+        <h3>No Flocks found</h3>
+        <p>Try a different city, increasing your distance, or a different category to find your Flock.</p>
       </div>`;
     return;
   }

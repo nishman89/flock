@@ -36,13 +36,30 @@ const Flock = {
   getMyEvents() {
     try { return JSON.parse(localStorage.getItem('flock_my_events') || '[]'); } catch { return []; }
   },
+  getGoingDeltas() {
+    try { return JSON.parse(localStorage.getItem('flock_going_deltas') || '{}'); } catch { return {}; }
+  },
+  getGoingCount(id, baseGoing) {
+    const d = this.getGoingDeltas();
+    return baseGoing + (d[id] || 0);
+  },
   joinEvent(id) {
     const e = this.getMyEvents();
-    if (!e.includes(id)) { e.push(id); localStorage.setItem('flock_my_events', JSON.stringify(e)); }
+    if (!e.includes(id)) {
+      e.push(id);
+      localStorage.setItem('flock_my_events', JSON.stringify(e));
+      const d = this.getGoingDeltas(); d[id] = (d[id] || 0) + 1;
+      localStorage.setItem('flock_going_deltas', JSON.stringify(d));
+    }
     this.leaveWaitlist(id);
   },
   leaveEvent(id) {
-    localStorage.setItem('flock_my_events', JSON.stringify(this.getMyEvents().filter(x => x !== id)));
+    const e = this.getMyEvents();
+    if (e.includes(id)) {
+      localStorage.setItem('flock_my_events', JSON.stringify(e.filter(x => x !== id)));
+      const d = this.getGoingDeltas(); d[id] = (d[id] || 0) - 1;
+      localStorage.setItem('flock_going_deltas', JSON.stringify(d));
+    }
   },
   isJoined(id) { return this.getMyEvents().includes(id); },
 

@@ -12,9 +12,9 @@ function fmtDate(d) {
   return dt.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-function buildAttendees() {
-  const shown = Math.min(ev.going, SAMPLE_ATTENDEES.length, 8);
-  const extra = ev.going - shown;
+function buildAttendees(liveGoing) {
+  const shown = Math.min(liveGoing, SAMPLE_ATTENDEES.length, 8);
+  const extra = liveGoing - shown;
   let html = '<div class="attendee-grid">';
   for (let i = 0; i < shown; i++) {
     const a = SAMPLE_ATTENDEES[i];
@@ -34,10 +34,11 @@ function buildAttendees() {
 }
 
 function render() {
-  const joined    = Flock.isJoined(id);
-  const profile   = Flock.getProfile();
-  const spotsLeft = ev.max - ev.going;
-  const col       = EV_COLS[ev.cat] || '#374151';
+  const joined     = Flock.isJoined(id);
+  const profile    = Flock.getProfile();
+  const liveGoing  = Flock.getGoingCount(id, ev.going) + (joined ? 1 : 0);
+  const spotsLeft  = ev.max - liveGoing;
+  const col        = EV_COLS[ev.cat] || '#374151';
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero" style="background:${col}">
@@ -80,7 +81,7 @@ function render() {
           <span class="detail-info-icon">👥</span>
           <div class="detail-info-text">
             <span class="detail-info-label">Attendance</span>
-            ${ev.going} going · <span style="color:${spotsLeft < 5 ? 'var(--err)' : 'var(--ok)'}">${spotsLeft} spots remaining</span>
+            ${liveGoing} going · <span style="color:${spotsLeft <= 0 ? 'var(--err)' : spotsLeft < 5 ? 'var(--err)' : 'var(--ok)'">${spotsLeft <= 0 ? 'Full' : spotsLeft + ' spot' + (spotsLeft === 1 ? '' : 's') + ' left'}</span>
           </div>
         </div>
         <div class="detail-info-row">
@@ -92,7 +93,7 @@ function render() {
         </div>
       </div>
 
-      <div class="detail-section-title">About this event</div>
+      <div class="detail-section-title">About this Flock</div>
       <p class="detail-desc">${ev.desc}</p>
 
       <div class="detail-section-title">Tags</div>
@@ -112,7 +113,7 @@ function render() {
         </a>
       </div>
 
-      <div class="detail-section-title">Who's going (${ev.going + (joined ? 1 : 0)})</div>
+      <div class="detail-section-title">Who's going (${liveGoing})</div>
       ${joined ? `
         <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#F0FDF4;border:1px solid #BBF7D0;margin-bottom:12px">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${(profile.firstName || 'Y')[0].toUpperCase()}</div>
@@ -121,16 +122,16 @@ function render() {
             <div style="font-size:12px;color:var(--text3)">${profile.firstName || 'You'}</div>
           </div>
         </div>` : ''}
-      ${buildAttendees()}
+      ${buildAttendees(liveGoing)}
     </div>`;
 
   const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join — ${ev.price} 💳`;
   const onWaitlist = Flock.isOnWaitlist(id);
-  const full = ev.going >= ev.max && !joined;
+  const full = liveGoing >= ev.max && !joined;
 
   let ctaHtml = '';
   if (joined) {
-    ctaHtml += `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're going — tap to leave</button>`;
+    ctaHtml += `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're in this Flock — tap to leave</button>`;
   } else if (full) {
     ctaHtml += onWaitlist
       ? `<button class="btn-waitlist" style="cursor:default">⏳ You're on the waitlist</button>`
@@ -138,14 +139,14 @@ function render() {
   } else {
     ctaHtml += `<button id="join-event-btn" class="btn btn-pr" style="margin-bottom:10px" onclick="toggleJoin()">${joinLbl}</button>`;
   }
-  ctaHtml += `<button id="chat-btn" class="btn btn-chat" style="margin-bottom:10px" onclick="showChatPopup()">💬 Chat with attendees</button>`;
+  ctaHtml += `<button id="chat-btn" class="btn btn-chat" style="margin-bottom:10px" onclick="showChatPopup()">💬 Chat with your Flock</button>`;
   ctaHtml += `<button id="share-btn" class="btn-share" onclick="shareEvent()">🔗 Share this event</button>`;
   document.getElementById('detail-cta').innerHTML = ctaHtml;
 }
 
 function toggleJoin() {
   if (Flock.isJoined(id)) {
-    if (confirm('Are you sure you want to leave this event?')) {
+    if (confirm('Are you sure you want to leave this Flock?')) {
       Flock.leaveEvent(id);
       renderAndMap();
     }

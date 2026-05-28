@@ -39,9 +39,9 @@ function render() {
     el.innerHTML = `
       <div id="my-events-empty" class="empty-state">
         <div class="empty-icon">🐦</div>
-        <h3>No events yet</h3>
-        <p>Discover events near you and join the flock!</p>
-        <a href="home.html" class="btn btn-primary" style="margin-top:8px;max-width:200px;padding:12px;display:block">Browse Events</a>
+        <h3>No Flocks yet</h3>
+        <p>Discover Flocks near you and join in!</p>
+        <a href="home.html" class="btn btn-primary" style="margin-top:8px;max-width:200px;padding:12px;display:block">Browse Flocks</a>
       </div>`;
     return;
   }
@@ -65,7 +65,7 @@ function render() {
   }
 
   if (past.length > 0) {
-    html += `<div class="past-section-title">Past events</div>
+    html += `<div class="past-section-title">Past Flocks</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       ${past.map(e => eventCard(e, true)).join('')}
     </div>`;
