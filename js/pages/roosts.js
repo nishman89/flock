@@ -82,7 +82,7 @@ function render() {
 
   const list = document.getElementById('events-container');
   if (items.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No events found</h3><p>Try a different city or category.</p></div>`;
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No Roosts found</h3><p>Try a different city or category.</p></div>`;
     return;
   }
 

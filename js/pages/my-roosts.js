@@ -60,13 +60,13 @@ function render() {
   let html = '';
   if (upcoming.length > 0) {
     html += `<p style="font-size:13px;color:var(--text3);font-weight:600;margin-bottom:12px">
-      ${upcoming.length} event${upcoming.length !== 1 ? 's' : ''} coming up
+      ${upcoming.length} Roost${upcoming.length !== 1 ? 's' : ''} coming up
     </p><div style="display:flex;flex-direction:column;gap:10px">
       ${upcoming.map(e => card(e, false)).join('')}
     </div>`;
   }
   if (past.length > 0) {
-    html += `<div class="past-section-title">Past events</div>
+    html += `<div class="past-section-title">Past Roosts</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       ${past.map(e => card(e, true)).join('')}
     </div>`;

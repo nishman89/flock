@@ -19,7 +19,7 @@ if (loggedIn) {
 /* CTA: always show Browse Roosts  -  goes to home if logged in, login if not */
 const ctaHref = loggedIn ? 'home.html' : 'login.html';
 const ctaSub  = loggedIn
-  ? 'Find events near you right now'
+  ? 'Find Roosts near you right now'
   : 'Sign in or create a free account to get started';
 
 document.getElementById('about-cta').innerHTML = `

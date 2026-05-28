@@ -15,7 +15,7 @@ A mobile-first web app that connects you with local people who share your intere
 | **Flock** | A group of like-minded people, e.g. "Arsenal Supporters Club London" or "Edinburgh Whisky Society" |
 | **Roost** | A specific gathering organised by a Flock - a time, a place, and a plan |
 
-You join a **Flock** (the community). You attend a **Roost** (the event). You see the same faces across multiple Roosts and make genuine friends.
+You join a **Flock** (the community). You attend a **Roost** (the gathering). You see the same faces across multiple Roosts and make genuine friends.
 
 ---
 

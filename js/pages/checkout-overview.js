@@ -24,7 +24,7 @@ const subtotal  = ticket + booking;
 const vat       = +(subtotal * 0.20).toFixed(2);
 const total     = +(subtotal + vat).toFixed(2);
 
-/* Render event summary */
+/* Render Roost summary */
 document.getElementById('ov-event-emoji').textContent = ev.emoji;
 document.getElementById('ov-event-name').textContent  = ev.title;
 document.getElementById('ov-event-detail').textContent =
