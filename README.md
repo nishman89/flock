@@ -27,8 +27,8 @@ You join a **Flock** (the community). You attend a **Roost** (the event). You se
 | Password | `mandal` |
 
 Nish Mandal · DOB 02/02/2000 · London
-Pre-joined: Arsenal Supporters Club London (FL001) + London Foodies (FL004) + Mario Kart Enthusiasts London (FL024)
-Pre-attending: Arsenal vs Spurs Roost + Brick Lane Street Food Tour Roost + Mario Kart Grand Prix Night Roost
+Pre-joined: Arsenal Supporters Club London (FL001) + London Foodies (FL004) + Nintendo Collective London (FL024)
+Pre-attending: Arsenal vs Spurs Roost + Brick Lane Street Food Tour Roost + Mario Kart Grand Prix Night Roost + Nintendo Direct Watch Party Roost
 
 ---
 

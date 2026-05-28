@@ -314,10 +314,10 @@ const FLOCKS = [
 
   // ── London (Mario Kart) ───────────────────────────────────
   {
-    id:'FL024', name:'Mario Kart Enthusiasts London', cat:'Gaming',
-    interests:['Video Games'], city:'London', e:'🎮', members:28,
-    desc:'London\'s most competitive (and most chaotic) Mario Kart community. We meet up, plug in the Switch, argue about which track is hardest and eat too many snacks. All skill levels welcome - beginners get a one-race handicap. Smash Bros sessions occasionally too.',
-    tags:['Mario Kart','Gaming','Nintendo','Switch'], ages:'All ages', ft:'Both',
+    id:'FL024', name:'Nintendo Collective London', cat:'Gaming',
+    interests:['Video Games','Board Games'], city:'London', e:'🎮', members:34,
+    desc:'London\'s home for Nintendo fans. We get together to play Mario Kart, Smash Bros, Zelda, Splatoon and whatever else is on the Switch. Competitive when it counts, relaxed the rest of the time. All skill levels genuinely welcome - we have people who have never played before and people who have played since the N64.',
+    tags:['Nintendo','Gaming','Switch','Mario Kart','Smash Bros'], ages:'All ages', ft:'Both',
     lat:51.5131, lng:-0.1394,
     roosts:[
       {id:'M1', title:'Mario Kart Grand Prix Night', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(2), time:'18:30', dur:'3 hrs', price:'£5', going:14, max:16, lat:51.5395, lng:-0.0574},
@@ -325,7 +325,23 @@ const FLOCKS = [
       {id:'M3', title:'Smash Bros + Mario Kart Double Bill', venue:'Loading Bar Stoke Newington', addr:'157 Stoke Newington High St, London N16', date:d(14), time:'17:00', dur:'4 hrs', price:'£6', going:11, max:20, lat:51.5631, lng:-0.0739},
     ]
   },
+
+  // ── Ninty London ──────────────────────────────────────────
+  {
+    id:'FL025', name:'Ninty London', cat:'Gaming',
+    interests:['Video Games','Board Games'], city:'London', e:'🕹️', members:41,
+    desc:'London\'s home for Nintendo fans. We get together for Switch sessions, watch Nintendo Directs as a group, run Smash Bros locals and celebrate every new release properly. Whether you\'re a lifelong fan or just picked up your first Switch, you\'re welcome here.',
+    tags:['Nintendo','Switch','Gaming','Smash Bros'], ages:'All ages', ft:'Both',
+    lat:51.5131, lng:-0.1394,
+    roosts:[
+      {id:'M1', title:'Nintendo Direct Watch Party', venue:'Loading Bar Hackney', addr:'97 Kingsland High St, London E8', date:d(3), time:'18:00', dur:'2 hrs', price:'Free', going:22, max:35, lat:51.5452, lng:-0.0729},
+      {id:'M2', title:'Smash Bros Locals - Season Opener', venue:'Draughts Bar Hackney', addr:'337 Acton Mews, London E8', date:d(8), time:'17:00', dur:'4 hrs', price:'£4', going:18, max:24, lat:51.5395, lng:-0.0574},
+      {id:'M3', title:'Mario Party - Big Screen Night', venue:'Loading Bar Hackney', addr:'97 Kingsland High St, London E8', date:d(13), time:'19:00', dur:'3 hrs', price:'£3', going:14, max:20, lat:51.5452, lng:-0.0729},
+    ]
+  },
 ];
+
+const SAMPLE_ATTENDEES = [
   {name:'Alex K', color:'#F97316'},{name:'Sam T', color:'#8B5CF6'},
   {name:'Jordan L', color:'#3B82F6'},{name:'Morgan P', color:'#EF4444'},
   {name:'Casey M', color:'#10B981'},{name:'Riley B', color:'#F59E0B'},

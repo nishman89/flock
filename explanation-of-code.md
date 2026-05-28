@@ -116,8 +116,8 @@ Flock.seedNish() // called on every nish/mandal login
 ```
 
 Seeds: profile (Nish Mandal, DOB 2000-02-02), interests, prefs (London).
-Pre-joins: FL001 (Arsenal Supporters) + FL004 (London Foodies) + FL024 (Mario Kart Enthusiasts London).
-Pre-attends: FL001_M1 (Arsenal vs Spurs) + FL004_M1 (Brick Lane Street Food Tour) + FL024_M1 (Mario Kart Grand Prix Night).
+Pre-joins: FL001 (Arsenal Supporters) + FL004 (London Foodies) + FL024 (Nintendo Collective London).
+Pre-attends: FL001_M1 (Arsenal vs Spurs) + FL004_M1 (Brick Lane Street Food Tour) + FL024_M1 (Mario Kart Grand Prix Night) + FL025_M1 (Nintendo Direct Watch Party).
 
 Seed only runs once (guarded by `flock_nish_seeded` flag) so user's subsequent changes persist.
 
@@ -338,3 +338,20 @@ To deploy updates: bump `CACHE` to `flock-alt-v8`.
    - Clears all FL001_* keys from flock_roost_attendance
    - Member count returns to 84, attend buttons lock
 ```
+
+---
+
+## Messaging (Coming Soon)
+
+Both Flock-level and Roost-level messaging buttons are present in the UI but show a "coming soon" popup when tapped.
+
+### Flock messaging
+Available in the sticky CTA on the Flock detail page (`event.html`) when the user is a member. Button: "💬 Message the Flock". Intended for general group chat between all Flock members.
+
+### Roost messaging
+Available on each Roost card within the Flock detail page, also only when a member. Button: "💬 Chat with this Roost". Intended for coordinating attendance at a specific Roost - meetup spots, plans, hype.
+
+### Implementation
+Both call `showMsgPopup(type)` in `event.js` where `type` is `'flock'` or `'roost'`. The popup explains what the feature will do and shows a "Coming soon" notice. Backdrop click closes it.
+
+When messaging is built, replace `showMsgPopup()` with a real chat interface. The two-level model (Flock chat + per-Roost chat) maps naturally to group channels and event threads.

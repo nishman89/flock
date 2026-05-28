@@ -1174,3 +1174,20 @@ body {
   color: var(--text2); transition: all .15s; margin-left: 10px;
 }
 .ob-flock-join.joined { background: var(--primary); border-color: var(--primary); color: #fff }
+
+/* ── Message buttons ─────────────────────────────────────── */
+.btn-msg {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px; border-radius: var(--rs);
+  background: var(--bg); border: 1.5px solid var(--border);
+  color: var(--text2); font-family: var(--font); font-size: 15px; font-weight: 600;
+  cursor: pointer; margin-bottom: 10px; transition: background .15s;
+}
+.btn-msg:hover { background: var(--border) }
+.btn-msg-roost {
+  width: 100%; padding: 10px; border-radius: var(--rs);
+  background: transparent; border: 1.5px solid var(--border);
+  color: var(--text3); font-family: var(--font); font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-top: 8px; transition: background .15s; display: block;
+}
+.btn-msg-roost:hover { background: var(--bg) }

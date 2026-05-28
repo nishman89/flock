@@ -74,6 +74,7 @@ function render() {
   const joinLbl = `Join this Flock 🐦`;
   document.getElementById('detail-cta').innerHTML = isMember
     ? `<button class="btn btn-join" style="margin-bottom:10px" onclick="toggleMembership()">✓ You're a member - tap to leave</button>
+       <button class="btn-msg" onclick="showMsgPopup('flock')">💬 Message the Flock</button>
        <button class="btn-share" onclick="shareGroup()">🔗 Share this Flock</button>`
     : `<button class="btn btn-pr" style="margin-bottom:10px" onclick="toggleMembership()">${joinLbl}</button>
        <button class="btn-share" onclick="shareGroup()">🔗 Share this Flock</button>`;
@@ -131,6 +132,7 @@ function roostCard(m, i, isMember) {
           </a>
         </div>
         ${btn}
+        ${isMember ? `<button class="btn-msg-roost" onclick="event.preventDefault();showMsgPopup('roost')">💬 Chat with this Roost</button>` : ''}
       </div>
     </div>`;
 }
@@ -187,6 +189,34 @@ function promptJoinFirst() {
     Flock.joinFlock(id);
     render();
   }
+}
+
+function showMsgPopup(type) {
+  const isRoost = type === 'roost';
+  const title   = isRoost ? 'Roost Chat' : 'Flock Chat';
+  const desc    = isRoost
+    ? 'Chat with everyone attending this Roost - coordinate meetup spots, share plans and hype each other up.'
+    : 'Message all members of this Flock - share news, plan Roosts and keep the conversation going between meetups.';
+  let ov = document.getElementById('msg-popup');
+  if (ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'msg-popup';
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+  ov.innerHTML = `
+    <div style="background:var(--card);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">${isRoost ? '🪺' : '🐦'}</div>
+      <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">${title}</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:8px">${desc}</div>
+      <div style="font-size:13px;color:var(--primary);font-weight:600;background:var(--primary-lt);border-radius:10px;padding:10px;margin-bottom:20px">
+        Coming soon - messaging is on the way 🚀
+      </div>
+      <button onclick="document.getElementById('msg-popup').remove()"
+        style="padding:12px 0;width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font)">
+        Got it
+      </button>
+    </div>`;
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
 }
 
 function shareGroup() {
