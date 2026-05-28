@@ -32,7 +32,7 @@
     <div id="greeting-text" style="font-size:13px;color:var(--text3);font-weight:600"></div>
   </header>
 
-  <!-- City + distance filters -->
+  <!-- City + distance + sort filters -->
   <div class="filter-bar">
     <div class="filter-select-wrap" style="flex:1.2">
       <select class="filter-select" id="city-filter" name="city-filter" onchange="applyFilters()">
@@ -48,20 +48,38 @@
         <option value="999">Any distance</option>
       </select>
     </div>
+    <div class="sort-wrap">
+      <select class="sort-select" id="sort-filter" onchange="applyFilters()">
+        <option value="date">Soonest</option>
+        <option value="dist">Nearest</option>
+        <option value="going">Popular</option>
+        <option value="spots">Spots left</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search-input" type="search" placeholder="Search events, venues, tags…" oninput="applySearch(this)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
   </div>
 
   <!-- Category scroll tabs -->
   <div class="cat-scroll" id="cat-scroll">
-    <div class="cat-chip active" id="tab-all" data-cat="All" onclick="setCat('All',this)">🌟 All</div>
-    <div class="cat-chip"        id="tab-sports" data-cat="Sports" onclick="setCat('Sports',this)">⚽ Sports</div>
-    <div class="cat-chip"        id="tab-food" data-cat="Food & Drink" onclick="setCat('Food & Drink',this)">🍛 Food & Drink</div>
-    <div class="cat-chip"        id="tab-gaming" data-cat="Gaming" onclick="setCat('Gaming',this)">🎮 Gaming</div>
-    <div class="cat-chip"        id="tab-fitness" data-cat="Fitness" onclick="setCat('Fitness',this)">🏋️ Fitness</div>
-    <div class="cat-chip"        id="tab-social" data-cat="Social" onclick="setCat('Social',this)">🍺 Social</div>
-    <div class="cat-chip"        id="tab-wellness" data-cat="Wellness" onclick="setCat('Wellness',this)">🧘 Wellness</div>
-    <div class="cat-chip"        id="tab-outdoors" data-cat="Outdoors" onclick="setCat('Outdoors',this)">🥾 Outdoors</div>
-    <div class="cat-chip"        id="tab-music" data-cat="Music" onclick="setCat('Music',this)">🎵 Music</div>
-    <div class="cat-chip"        id="tab-arts" data-cat="Arts" onclick="setCat('Arts',this)">🎬 Arts</div>
+    <div class="cat-chip active" id="tab-all"      data-cat="All"          onclick="setCat('All',this)">🌟 All</div>
+    <div class="cat-chip"        id="tab-soon"     data-cat="Soon"         onclick="setCat('Soon',this)">⚡ Soon</div>
+    <div class="cat-chip"        id="tab-sports"   data-cat="Sports"       onclick="setCat('Sports',this)">⚽ Sports</div>
+    <div class="cat-chip"        id="tab-food"     data-cat="Food & Drink" onclick="setCat('Food & Drink',this)">🍛 Food & Drink</div>
+    <div class="cat-chip"        id="tab-gaming"   data-cat="Gaming"       onclick="setCat('Gaming',this)">🎮 Gaming</div>
+    <div class="cat-chip"        id="tab-fitness"  data-cat="Fitness"      onclick="setCat('Fitness',this)">🏋️ Fitness</div>
+    <div class="cat-chip"        id="tab-social"   data-cat="Social"       onclick="setCat('Social',this)">🍺 Social</div>
+    <div class="cat-chip"        id="tab-wellness" data-cat="Wellness"     onclick="setCat('Wellness',this)">🧘 Wellness</div>
+    <div class="cat-chip"        id="tab-outdoors" data-cat="Outdoors"     onclick="setCat('Outdoors',this)">🥾 Outdoors</div>
+    <div class="cat-chip"        id="tab-music"    data-cat="Music"        onclick="setCat('Music',this)">🎵 Music</div>
+    <div class="cat-chip"        id="tab-arts"     data-cat="Arts"         onclick="setCat('Arts',this)">🎬 Arts</div>
   </div>
 
   <div class="content">

@@ -3,11 +3,12 @@ Flock.requireAuth();
 if (Flock.isOnboarded()) window.location.href = 'home.html';
 
 let step = 1;
-let selectedAge = '';
+let selectedAge     = '';
+let selectedAvatar  = '🐦';
 let selectedInterests = new Set();
-let selectedCity = 'London';
-let selectedDist = 25;
-let selectedFriend = 'Both';
+let selectedCity    = 'London';
+let selectedDist    = 25;
+let selectedFriend  = 'Both';
 
 const STEPS = {
   label: ['Step 1 of 3','Step 2 of 3','Step 3 of 3'],
@@ -16,9 +17,9 @@ const STEPS = {
 
 const AGE_GROUPS = ['Under 18','18–24','25–34','35–49','50+'];
 const DISTANCES  = [5, 10, 25, 50];
+const AVATARS    = ['🐦','😎','🎉','🏃','🎨','🎸','⚽','🌟','🦊','🐻','🦁','🐧'];
 
 function render() {
-  // Progress bars
   [1,2,3].forEach(i => {
     document.getElementById('prog-' + i).classList.toggle('done', i <= step);
   });
@@ -29,6 +30,8 @@ function render() {
 
   if (step === 1) {
     const savedProfile = Flock.getProfile();
+    if (!selectedAge && savedProfile.age) selectedAge = savedProfile.age;
+    if (savedProfile.avatar) selectedAvatar = savedProfile.avatar;
     c.innerHTML = `
       <div class="field">
         <label>Your name</label>
@@ -42,18 +45,25 @@ function render() {
           <div class="age-chip ${(selectedAge||savedProfile.age)===a?'selected':''}"
                onclick="selectAge('${a}',this)">${a}</div>
         `).join('')}
+      </div>
+      <div class="field" style="margin-top:16px;margin-bottom:6px">
+        <label>Pick your avatar</label>
+      </div>
+      <div class="avatar-grid">
+        ${AVATARS.map(av => `
+          <div class="avatar-opt ${selectedAvatar===av?'selected':''}" onclick="selectAvatar('${av}',this)">${av}</div>
+        `).join('')}
       </div>`;
-    if (!selectedAge && savedProfile.age) selectedAge = savedProfile.age;
   }
 
   if (step === 2) {
     c.innerHTML = `
-      <p class="ob-hint">Select everything you enjoy  -  the more you pick, the better your event matches!</p>
+      <p class="ob-hint">Select everything you enjoy — the more you pick, the better your event matches!</p>
       <div class="interest-grid">
         ${INTERESTS.map(i => `
           <div class="interest-chip ${selectedInterests.has(i.label)?'selected':''}"
                onclick="toggleInterest('${i.label}',this)">
-            <span class="chip-emoji">${i.emoji}</span>
+            <span class="chip-emoji">${i.e}</span>
             <span>${i.label}</span>
           </div>
         `).join('')}
@@ -65,11 +75,11 @@ function render() {
       <div class="field">
         <label>Your city</label>
         <select id="ob-city" onchange="selectedCity=this.value">
-          ${CITIES.map(c => `<option value="${c}" ${selectedCity===c?'selected':''}>${c}</option>`).join('')}
+          ${CITIES.map(city => `<option value="${city}" ${selectedCity===city?'selected':''}>${city}</option>`).join('')}
         </select>
       </div>
       <div class="field" style="margin-bottom:8px">
-        <label>Distance  -  show events within</label>
+        <label>Distance — show events within</label>
       </div>
       <div class="dist-chips">
         ${DISTANCES.map(d => `
@@ -96,6 +106,11 @@ function selectAge(val, el) {
   document.querySelectorAll('.age-chip').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
 }
+function selectAvatar(val, el) {
+  selectedAvatar = val;
+  document.querySelectorAll('.avatar-opt').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
 function toggleInterest(val, el) {
   if (selectedInterests.has(val)) { selectedInterests.delete(val); el.classList.remove('selected'); }
   else { selectedInterests.add(val); el.classList.add('selected'); }
@@ -111,12 +126,21 @@ function selectFriend(val, el) {
   el.classList.add('selected');
 }
 
+function skipOnboarding() {
+  const name = document.getElementById('ob-name') ? document.getElementById('ob-name').value.trim() : '';
+  Flock.setProfile({ name: name || 'You', age: selectedAge || '18–24', avatar: selectedAvatar });
+  Flock.setInterests([]);
+  Flock.setPrefs({ city: 'London', distance: 25, friendType: 'Both' });
+  Flock.setOnboarded();
+  window.location.href = 'home.html';
+}
+
 function nextStep() {
   if (step === 1) {
     const name = document.getElementById('ob-name').value.trim();
     if (!name) { alert('Please enter your name'); return; }
     if (!selectedAge) { alert('Please select your age group'); return; }
-    Flock.setProfile({ name, age: selectedAge });
+    Flock.setProfile({ name, age: selectedAge, avatar: selectedAvatar });
     step = 2;
   } else if (step === 2) {
     if (selectedInterests.size < 1) { alert('Please select at least one interest'); return; }

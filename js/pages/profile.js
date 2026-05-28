@@ -9,9 +9,12 @@ function render() {
   const myEvCount = Flock.getMyEvents().length;
   const initials  = profile.name ? profile.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : 'ME';
   const distLabel = prefs.distance === 999 ? 'Any' : prefs.distance + ' miles';
+  const avatarDisp = profile.avatar
+    ? `<div class="profile-avatar" style="font-size:36px;line-height:1">${profile.avatar}</div>`
+    : `<div class="profile-avatar">${initials}</div>`;
 
   document.getElementById('profile-hero').innerHTML = `
-    <div class="profile-avatar">${initials}</div>
+    ${avatarDisp}
     <div class="profile-name">${profile.name || 'Your Name'}</div>
     <div class="profile-sub">${profile.age || ''} · ${prefs.city || 'London'}</div>`;
 
@@ -62,11 +65,16 @@ function render() {
     </div>` : ''}
 
     <div class="profile-section">
+    <div class="profile-section">
       <div class="profile-section-title">Account</div>
       <div class="profile-card">
         <div id="profile-username-row" class="profile-row">
           <span class="profile-row-label">Username</span>
           <span class="profile-row-val">${Flock.getUser()}</span>
+        </div>
+        <div class="dark-toggle-row" onclick="toggleDark()">
+          <span class="profile-row-label">🌙 Dark mode</span>
+          <div class="toggle-switch${Flock.getDarkMode() ? ' on' : ''}" id="dark-toggle"></div>
         </div>
         <div class="profile-row" style="cursor:pointer" onclick="window.location.href='onboarding.html'">
           <span class="profile-row-label">Edit interests &amp; preferences</span>
@@ -83,3 +91,8 @@ function render() {
 }
 
 render();
+
+function toggleDark() {
+  Flock.setDarkMode(!Flock.getDarkMode());
+  render(); // re-render so toggle reflects new state
+}

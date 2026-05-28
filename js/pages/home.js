@@ -34,9 +34,11 @@ CITIES.forEach(c => {
 });
 document.getElementById('distance-filter').value = prefs.dist || 999;
 
-let activeCity = prefs.city || 'London';
-let activeDist = prefs.dist || 999;
-let activeCat  = 'All';
+let activeCity  = prefs.city || 'London';
+let activeDist  = prefs.dist || 999;
+let activeCat   = 'All';
+let activeSort  = 'date';
+let searchQuery = '';
 
 function setCat(cat, el) {
   activeCat = cat;
@@ -48,6 +50,23 @@ function setCat(cat, el) {
 function applyFilters() {
   activeCity = document.getElementById('city-filter').value;
   activeDist = parseInt(document.getElementById('distance-filter').value);
+  activeSort = document.getElementById('sort-filter').value;
+  renderEvents();
+}
+
+function applySearch(input) {
+  searchQuery = input.value.trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  if (clearBtn) clearBtn.classList.toggle('show', searchQuery.length > 0);
+  renderEvents();
+}
+
+function clearSearch() {
+  searchQuery = '';
+  const inp = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  if (inp) inp.value = '';
+  if (clearBtn) clearBtn.classList.remove('show');
   renderEvents();
 }
 
@@ -68,11 +87,29 @@ function miniAvatars(count) {
 }
 
 function renderEvents() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const soon  = new Date(today); soon.setDate(soon.getDate() + 2);
+
   let items = EVENTS.filter(e => {
     if (e.city !== activeCity) return false;
     if (activeDist !== 999 && e.dist > activeDist) return false;
-    if (activeCat !== 'All' && e.cat !== activeCat) return false;
+    if (activeCat === 'Soon') {
+      const evDate = new Date(e.date + 'T00:00:00');
+      if (evDate > soon) return false;
+    } else if (activeCat !== 'All' && e.cat !== activeCat) return false;
+    if (searchQuery) {
+      const hay = [e.t, e.venue, e.desc, ...(e.tags || [])].join(' ').toLowerCase();
+      if (!hay.includes(searchQuery)) return false;
+    }
     return true;
+  });
+
+  // Sort
+  items = [...items].sort((a, b) => {
+    if (activeSort === 'dist')  return a.dist - b.dist;
+    if (activeSort === 'going') return b.going - a.going;
+    if (activeSort === 'spots') return (a.max - a.going) - (b.max - b.going);
+    return new Date(a.date) - new Date(b.date); // default: date
   });
 
   const list = document.getElementById('events-container');
@@ -82,7 +119,7 @@ function renderEvents() {
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
         <h3>No events found</h3>
-        <p>Try a different city, increasing your distance, or choosing a different category.</p>
+        <p>Try a different city, increasing your distance, or a different category.</p>
       </div>`;
     return;
   }
@@ -90,15 +127,19 @@ function renderEvents() {
   list.innerHTML = items.map(e => {
     const col   = EV_COLS[e.cat] || '#374151';
     const spots = e.max - e.going;
+    const full  = spots <= 0;
+    const recurringBadge = e.recurring
+      ? `<span class="recurring-badge">🔁 Weekly</span>` : '';
     return `
       <a id="event-card-${e.id}" class="event-card" href="event.html?id=${e.id}" data-event-id="${e.id}">
         <div class="card-head" style="background:${col}">
           <span class="card-emoji">${e.e}</span>
           <span class="card-cat-badge">${e.cat}</span>
-          <span class="card-price-badge">${e.price}</span>
+          <span class="card-price-badge">${full ? '🔴 Full' : e.price}</span>
         </div>
         <div class="card-body">
           <div class="card-title">${e.t}</div>
+          ${recurringBadge}
           <div class="card-meta">
             <span class="meta-item">📅 ${fmtDate(e.date)}</span>
             <span class="meta-item">🕐 ${e.time}</span>
@@ -110,7 +151,7 @@ function renderEvents() {
           <div class="card-foot">
             <div class="attendee-row">
               ${miniAvatars(e.going)}
-              <span class="att-count">${e.going} going · <span style="color:${spots < 5 ? 'var(--err)' : 'var(--text3)'}">${spots} left</span></span>
+              <span class="att-count">${e.going} going · <span style="color:${spots < 5 ? 'var(--err)' : 'var(--text3)'}">${full ? 'Full' : spots + ' left'}</span></span>
             </div>
             <span class="card-price">${e.price === 'Free' ? 'Free' : e.price}</span>
           </div>

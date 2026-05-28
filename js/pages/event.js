@@ -100,6 +100,18 @@ function render() {
         ${ev.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
       </div>
 
+      <div class="detail-section-title">Location</div>
+      <div class="detail-map-wrap">
+        <div id="event-map"></div>
+        <a id="directions-btn"
+           href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ev.addr)}"
+           target="_blank" rel="noopener"
+           class="detail-directions-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Get Directions
+        </a>
+      </div>
+
       <div class="detail-section-title">Who's going (${ev.going + (joined ? 1 : 0)})</div>
       ${joined ? `
         <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#F0FDF4;border:1px solid #BBF7D0;margin-bottom:12px">
@@ -112,19 +124,30 @@ function render() {
       ${buildAttendees()}
     </div>`;
 
-  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join  -  ${ev.price} 💳`;
-  document.getElementById('detail-cta').innerHTML = joined
-    ? `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're going - tap to leave</button>`
-    : `<button id="join-event-btn"  class="btn btn-pr"   style="margin-bottom:10px" onclick="toggleJoin()">${joinLbl}</button>`;
-  document.getElementById('detail-cta').innerHTML +=
-    `<button id="chat-btn" class="btn btn-chat" onclick="showChatPopup()">💬 Chat with attendees</button>`;
+  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join — ${ev.price} 💳`;
+  const onWaitlist = Flock.isOnWaitlist(id);
+  const full = ev.going >= ev.max && !joined;
+
+  let ctaHtml = '';
+  if (joined) {
+    ctaHtml += `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're going — tap to leave</button>`;
+  } else if (full) {
+    ctaHtml += onWaitlist
+      ? `<button class="btn-waitlist" style="cursor:default">⏳ You're on the waitlist</button>`
+      : `<button id="waitlist-btn" class="btn-waitlist" onclick="toggleWaitlist()">🔔 Join Waitlist</button>`;
+  } else {
+    ctaHtml += `<button id="join-event-btn" class="btn btn-pr" style="margin-bottom:10px" onclick="toggleJoin()">${joinLbl}</button>`;
+  }
+  ctaHtml += `<button id="chat-btn" class="btn btn-chat" style="margin-bottom:10px" onclick="showChatPopup()">💬 Chat with attendees</button>`;
+  ctaHtml += `<button id="share-btn" class="btn-share" onclick="shareEvent()">🔗 Share this event</button>`;
+  document.getElementById('detail-cta').innerHTML = ctaHtml;
 }
 
 function toggleJoin() {
   if (Flock.isJoined(id)) {
     if (confirm('Are you sure you want to leave this event?')) {
       Flock.leaveEvent(id);
-      render();
+      renderAndMap();
     }
   } else {
     if (!isFree) {
@@ -132,7 +155,7 @@ function toggleJoin() {
       window.location.href = 'checkout-info.html';
     } else {
       Flock.joinEvent(id);
-      render();
+      renderAndMap();
     }
   }
 }
@@ -162,4 +185,47 @@ function showChatPopup() {
   }
 }
 
-render();
+let _map = null;
+
+function initMap() {
+  if (!ev.lat || !ev.lng) return;
+  if (_map) { _map.remove(); _map = null; }
+  _map = L.map('event-map', { zoomControl: true, scrollWheelZoom: false })
+    .setView([ev.lat, ev.lng], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(_map);
+  const icon = L.divIcon({
+    html: `<div style="background:var(--primary);color:#fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.3)"><span style="transform:rotate(45deg)">${ev.e}</span></div>`,
+    iconSize: [32, 32], iconAnchor: [16, 32], className: ''
+  });
+  L.marker([ev.lat, ev.lng], { icon })
+    .addTo(_map)
+    .bindPopup(`<strong>${ev.venue}</strong><br>${ev.addr}`)
+    .openPopup();
+}
+
+function toggleWaitlist() {
+  if (Flock.isOnWaitlist(id)) {
+    Flock.leaveWaitlist(id);
+  } else {
+    Flock.joinWaitlist(id);
+  }
+  renderAndMap();
+}
+
+function shareEvent() {
+  const url  = location.href;
+  const text = `Check out "${ev.t}" on Flock — ${ev.venue}, ${fmtDate(ev.date)} at ${ev.time}`;
+  if (navigator.share) {
+    navigator.share({ title: ev.t, text, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('share-btn');
+      if (btn) { btn.textContent = '✓ Link copied!'; setTimeout(() => { btn.textContent = '🔗 Share this event'; }, 2000); }
+    });
+  }
+}
+
+renderAndMap();
