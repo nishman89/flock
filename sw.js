@@ -1,7 +1,7 @@
 'use strict';
-const CACHE = 'flock-v3';
+const CACHE = 'flock-v4';
 const ASSETS = [
-  'login.html','signup.html','onboarding.html',
+  'index.html','login.html','signup.html','onboarding.html',
   'home.html','event.html','my-events.html','profile.html',
   'checkout-info.html','checkout-overview.html','checkout-complete.html','about.html',
   'css/styles.css',
