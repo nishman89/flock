@@ -333,6 +333,7 @@ body {
 /* ── Search bar ──────────────────────────────────────────── */
 .search-bar {
   padding: 10px 16px;
+  display: flex; flex-direction: column; gap: 8px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -353,6 +354,20 @@ body {
   font-size: 16px; padding: 4px; line-height: 1; display: none;
 }
 .search-clear.show { display: block }
+
+/* ── Location button ─────────────────────────────────────── */
+.location-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--rs);
+  background: var(--primary-lt); border: 1.5px solid var(--primary);
+  color: var(--primary-dk); font-family: var(--font); font-size: 13px; font-weight: 600;
+  cursor: pointer; width: 100%; transition: background .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.location-btn:hover { background: #FDBA74 }
+.location-btn:disabled { opacity: .6; cursor: default }
+.location-btn.located { background: #DCFCE7; border-color: #16A34A; color: #15803D }
+.location-btn.error   { background: #FEE2E2; border-color: var(--err); color: var(--err) }
 
 /* ── Sort select ─────────────────────────────────────────── */
 .sort-wrap { position: relative; flex-shrink: 0 }
@@ -798,6 +813,7 @@ body {
   .content { padding-bottom: 40px }
   .filter-bar { padding: 16px 28px }
   .search-bar { padding: 10px 28px }
+  .location-btn { max-width: 220px }
   .cat-scroll { padding: 12px 28px }
 
   /* ── 2-column event grid ──────────────────────────────── */

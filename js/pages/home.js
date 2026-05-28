@@ -39,6 +39,79 @@ let activeDist  = prefs.dist || 999;
 let activeCat   = 'All';
 let activeSort  = 'date';
 let searchQuery = '';
+let userLat     = null;
+let userLng     = null;
+
+/* City centre coordinates for nearest-city detection */
+const CITY_COORDS = {
+  'London':     [51.5074, -0.1278],
+  'Manchester': [53.4808, -2.2426],
+  'Birmingham': [52.4862, -1.8904],
+  'Edinburgh':  [55.9533, -3.1883],
+  'Bristol':    [51.4545, -2.5879],
+  'Leeds':      [53.8008, -1.5491],
+  'Liverpool':  [53.4084, -2.9916],
+  'Glasgow':    [55.8642, -4.2518],
+  'Cardiff':    [51.4816, -3.1791],
+  'Newcastle':  [54.9783, -1.6178],
+};
+
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 3958.8;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function useMyLocation() {
+  if (!navigator.geolocation) {
+    setLocationBtn('error', '⚠ Not supported');
+    return;
+  }
+  setLocationBtn('loading', 'Getting location…');
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+
+      /* Find nearest city */
+      let nearest = CITIES[0]; let minD = Infinity;
+      CITIES.forEach(city => {
+        const cc = CITY_COORDS[city];
+        if (!cc) return;
+        const d = haversine(userLat, userLng, cc[0], cc[1]);
+        if (d < minD) { minD = d; nearest = city; }
+      });
+
+      activeCity = nearest;
+      document.getElementById('city-filter').value = nearest;
+      setLocationBtn('located', '📍 ' + nearest);
+      renderEvents();
+    },
+    err => {
+      userLat = null; userLng = null;
+      if (err.code === 1) {
+        setLocationBtn('error', '⚠ Permission denied');
+      } else {
+        setLocationBtn('error', '⚠ Could not get location');
+      }
+      setTimeout(() => setLocationBtn('', 'Use my location'), 3000);
+    },
+    { timeout: 10000, maximumAge: 60000, enableHighAccuracy: false }
+  );
+}
+
+function setLocationBtn(state, text) {
+  const btn  = document.getElementById('location-btn');
+  const span = document.getElementById('location-btn-text');
+  if (!btn || !span) return;
+  btn.className = 'location-btn' + (state ? ' ' + state : '');
+  btn.disabled  = state === 'loading';
+  span.textContent = text;
+}
 
 function setCat(cat, el) {
   activeCat = cat;
@@ -92,7 +165,8 @@ function renderEvents() {
 
   let items = EVENTS.filter(e => {
     if (e.city !== activeCity) return false;
-    if (activeDist !== 999 && e.dist > activeDist) return false;
+    const dist = (userLat && e.lat) ? haversine(userLat, userLng, e.lat, e.lng) : e.dist;
+    if (activeDist !== 999 && dist > activeDist) return false;
     if (activeCat === 'Soon') {
       const evDate = new Date(e.date + 'T00:00:00');
       if (evDate > soon) return false;
@@ -102,14 +176,16 @@ function renderEvents() {
       if (!hay.includes(searchQuery)) return false;
     }
     return true;
-  });
+  }).map(e => ({
+    ...e,
+    _dist: (userLat && e.lat) ? haversine(userLat, userLng, e.lat, e.lng) : e.dist
+  }));
 
-  // Sort
   items = [...items].sort((a, b) => {
-    if (activeSort === 'dist')  return a.dist - b.dist;
+    if (activeSort === 'dist')  return a._dist - b._dist;
     if (activeSort === 'going') return b.going - a.going;
     if (activeSort === 'spots') return (a.max - a.going) - (b.max - b.going);
-    return new Date(a.date) - new Date(b.date); // default: date
+    return new Date(a.date) - new Date(b.date);
   });
 
   const list = document.getElementById('events-container');
@@ -128,8 +204,8 @@ function renderEvents() {
     const col   = EV_COLS[e.cat] || '#374151';
     const spots = e.max - e.going;
     const full  = spots <= 0;
-    const recurringBadge = e.recurring
-      ? `<span class="recurring-badge">🔁 Weekly</span>` : '';
+    const dist  = e._dist;
+    const recurringBadge = e.recurring ? `<span class="recurring-badge">🔁 Weekly</span>` : '';
     return `
       <a id="event-card-${e.id}" class="event-card" href="event.html?id=${e.id}" data-event-id="${e.id}">
         <div class="card-head" style="background:${col}">
@@ -144,8 +220,8 @@ function renderEvents() {
             <span class="meta-item">📅 ${fmtDate(e.date)}</span>
             <span class="meta-item">🕐 ${e.time}</span>
             <span class="meta-item">📍 ${e.venue}</span>
-            <span class="meta-item" style="color:${e.dist > 10 ? 'var(--text3)' : 'var(--ok)'}">
-              ${e.dist < 1 ? 'Nearby' : e.dist + ' mi away'}
+            <span class="meta-item" style="color:${dist > 10 ? 'var(--text3)' : 'var(--ok)'}">
+              ${dist < 1 ? 'Nearby' : dist.toFixed(1) + ' mi away'}
             </span>
           </div>
           <div class="card-foot">
