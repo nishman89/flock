@@ -61,7 +61,7 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   } else if (/\s/.test(username)) {
     showErr('username', 'No spaces allowed in username'); valid = false;
   } else if (usernameExists(username) || username === 'nish') {
-    showErr('username', 'That username is already taken — try another'); valid = false;
+    showErr('username', 'That username is already taken  -  try another'); valid = false;
   }
   if (!password || password.length < 6) {
     showErr('password', 'Password must be at least 6 characters'); valid = false;

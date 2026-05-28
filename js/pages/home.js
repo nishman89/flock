@@ -94,7 +94,7 @@ function useMyLocation() {
     err => {
       userLat = null; userLng = null;
       if (err.code === 1) {
-        // Permission denied — guide user to fix it
+        // Permission denied  -  guide user to fix it
         setLocationBtn('error', '⚠ Location blocked');
         // Show a helpful tip below the button
         const btn = document.getElementById('location-btn');

@@ -81,7 +81,7 @@ function render() {
           <span class="detail-info-icon">👥</span>
           <div class="detail-info-text">
             <span class="detail-info-label">Attendance</span>
-            ${liveGoing} going · <span style="color:${spotsLeft <= 0 ? 'var(--err)' : spotsLeft < 5 ? 'var(--err)' : 'var(--ok)'">${spotsLeft <= 0 ? 'Full' : spotsLeft + ' spot' + (spotsLeft === 1 ? '' : 's') + ' left'}</span>
+            ${liveGoing} going &middot; <span class="${spotsLeft <= 0 ? 'txt-err' : spotsLeft < 5 ? 'txt-err' : 'txt-ok'}">${spotsLeft <= 0 ? 'Full' : spotsLeft + ' spot' + (spotsLeft === 1 ? '' : 's') + ' left'}</span>
           </div>
         </div>
         <div class="detail-info-row">
@@ -125,13 +125,13 @@ function render() {
       ${buildAttendees(liveGoing)}
     </div>`;
 
-  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join — ${ev.price} 💳`;
+  const joinLbl = isFree ? 'Join Flock! 🐦' : `Pay &amp; Join  -  ${ev.price} 💳`;
   const onWaitlist = Flock.isOnWaitlist(id);
   const full = liveGoing >= ev.max && !joined;
 
   let ctaHtml = '';
   if (joined) {
-    ctaHtml += `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're in this Flock — tap to leave</button>`;
+    ctaHtml += `<button id="leave-event-btn" class="btn btn-join" style="margin-bottom:10px" onclick="toggleJoin()">✓ You're in this Flock  -  tap to leave</button>`;
   } else if (full) {
     ctaHtml += onWaitlist
       ? `<button class="btn-waitlist" style="cursor:default">⏳ You're on the waitlist</button>`
@@ -218,7 +218,7 @@ function toggleWaitlist() {
 
 function shareEvent() {
   const url  = location.href;
-  const text = `Check out "${ev.t}" on Flock — ${ev.venue}, ${fmtDate(ev.date)} at ${ev.time}`;
+  const text = `Check out "${ev.t}" on Flock  -  ${ev.venue}, ${fmtDate(ev.date)} at ${ev.time}`;
   if (navigator.share) {
     navigator.share({ title: ev.t, text, url }).catch(() => {});
   } else {

@@ -2,15 +2,15 @@
 
 **Make genuine friends through shared Flocks.**
 
-A mobile-first web app that connects you with local people who share your interests. Join a Flock — a football watch party, a food tour, a board game night, a hike — show up, and meet people who are actually like you.
+A mobile-first web app that connects you with local people who share your interests. Join a Flock  -  a football watch party, a food tour, a board game night, a hike  -  show up, and meet people who are actually like you.
 
-> "Birds of a feather Flock together." That's not just a saying — it's the whole idea.
+> "Birds of a feather Flock together." That's not just a saying  -  it's the whole idea.
 
 ---
 
 ## What's a Flock?
 
-A **Flock** is what we call every event on the app. Each Flock has a fixed number of spots, a time, a place, and a shared vibe. You join a Flock, show up, and meet your people. When you join, the going count increases and the spots decrease in real time — so you always know exactly how many spaces are left.
+A **Flock** is what we call every event on the app. Each Flock has a fixed number of spots, a time, a place, and a shared vibe. You join a Flock, show up, and meet your people. When you join, the going count increases and the spots decrease in real time  -  so you always know exactly how many spaces are left.
 
 ---
 
@@ -35,7 +35,7 @@ Nish Mandal · DOB 02/02/2000 · London
 
 ## Getting a Live URL
 
-### Option 1 — GitHub Pages (free)
+### Option 1  -  GitHub Pages (free)
 
 1. Create a free account at **[github.com](https://github.com)**
 2. Create a new repository called `flock` (set to **Public**)
@@ -43,7 +43,7 @@ Nish Mandal · DOB 02/02/2000 · London
 4. Go to **Settings → Pages → Source → select `main` branch → Save**
 5. Your URL: `https://yourusername.github.io/flock`
 
-### Option 2 — Netlify (free, even easier)
+### Option 2  -  Netlify (free, even easier)
 
 1. Go to **[netlify.com](https://netlify.com)** and sign up free
 2. Drag and drop the entire `flock` folder onto the deploy area
@@ -61,7 +61,7 @@ Once you have a live HTTPS URL, open it in **Safari on iPhone**:
 2. Scroll down and tap **"Add to Home Screen"**
 3. Tap **"Add"** in the top right
 
-Flock now lives on your home screen and opens full screen with no browser chrome — exactly like a native app. Works offline once cached.
+Flock now lives on your home screen and opens full screen with no browser chrome  -  exactly like a native app. Works offline once cached.
 
 ---
 
@@ -69,18 +69,18 @@ Flock now lives on your home screen and opens full screen with no browser chrome
 
 | File | Description |
 |------|-------------|
-| `index.html` | Entry point — routes to `home.html` if signed in, `login.html` if not |
+| `index.html` | Entry point  -  routes to `home.html` if signed in, `login.html` if not |
 | `login.html` | Login with username + password |
-| `signup.html` | Sign up — first name, last name, username, password |
+| `signup.html` | Sign up  -  first name, last name, username, password |
 | `onboarding.html` | 3-step setup: name/DOB/avatar → interests → city/preferences |
-| `home.html` | Flocks feed — search, sort, filter by city/distance/category |
-| `event.html` | Flock detail — map, attendees, join/leave, share, waitlist |
-| `my-events.html` | My Flocks — upcoming and past |
-| `profile.html` | Profile — edit name/DOB/avatar, city, interests, looking to meet |
-| `checkout-info.html` | Checkout step 1 — personal & card details (paid Flocks) |
-| `checkout-overview.html` | Checkout step 2 — order review |
-| `checkout-complete.html` | Checkout step 3 — confirmation |
-| `about.html` | About Flock — what a Flock is, how it works, who it's for |
+| `home.html` | Flocks feed  -  search, sort, filter by city/distance/category |
+| `event.html` | Flock detail  -  map, attendees, join/leave, share, waitlist |
+| `my-events.html` | My Flocks  -  upcoming and past |
+| `profile.html` | Profile  -  edit name/DOB/avatar, city, interests, looking to meet |
+| `checkout-info.html` | Checkout step 1  -  personal & card details (paid Flocks) |
+| `checkout-overview.html` | Checkout step 2  -  order review |
+| `checkout-complete.html` | Checkout step 3  -  confirmation |
+| `about.html` | About Flock  -  what a Flock is, how it works, who it's for |
 
 ---
 
@@ -88,16 +88,16 @@ Flock now lives on your home screen and opens full screen with no browser chrome
 
 **Flocks & Discovery**
 - 52 Flocks across 10 UK cities: London, Manchester, Birmingham, Edinburgh, Bristol, Leeds, Liverpool, Glasgow, Cardiff, Newcastle
-- Dates always 1–10 days from today — dynamically generated, never stale
+- Dates always 1-10 days from today  -  dynamically generated, never stale
 - Search by keyword (title, venue, tags, description)
 - Sort by: Soonest, Nearest, Popular, Spots left
-- Filter by city, distance (5–50 miles or any) and category
+- Filter by city, distance (5-50 miles or any) and category
 - Category tabs: All, ⚡ Soon, Sports, Food & Drink, Gaming, Fitness, Social, Wellness, Outdoors, Music, Arts
 - 🔁 Recurring badge on weekly Flocks
 - 🔴 Full badge when a Flock is at capacity
 
 **Joining**
-- Join and leave Flocks — going count increases/decreases live
+- Join and leave Flocks  -  going count increases/decreases live
 - Spots remaining updates instantly and persists across page loads
 - Waitlist for full Flocks
 - Free Flocks: join instantly; Paid Flocks: 3-step checkout flow
@@ -109,7 +109,7 @@ Flock now lives on your home screen and opens full screen with no browser chrome
 - "Get Directions" button deep-links to Google Maps
 
 **Location**
-- "Use my location" button — finds nearest city using GPS/wifi
+- "Use my location" button  -  finds nearest city using GPS/wifi
 - Calculates real distances to Flocks when location is granted
 - Helpful error messages if permission is denied (with OS-specific instructions)
 
@@ -118,18 +118,18 @@ Flock now lives on your home screen and opens full screen with no browser chrome
 - 12 emoji avatars to pick from
 - Edit profile via bottom-sheet modal
 - City and "looking to meet" editable inline
-- All 19 interests editable inline — tap to add/remove
+- All 19 interests editable inline  -  tap to add/remove
 - Flocks joined count
 
 **Accounts & Onboarding**
 - Signup: first name + last name + username + password
 - Username uniqueness checked against localStorage registry
-- 3-step onboarding (mandatory — no skip)
+- 3-step onboarding (mandatory  -  no skip)
 - Name from signup pre-fills into onboarding step 1
 - `index.html` routes to home or login based on session
 
 **Technical**
-- 100% static — no backend, no API keys, no server
+- 100% static  -  no backend, no API keys, no server
 - All data in localStorage
 - PWA: installable, offline-capable (service worker `flock-v11`)
 - Responsive: fixed bottom nav on mobile, sticky sidebar on desktop ≥ 768px
@@ -181,4 +181,39 @@ flock/
 
 ---
 
-*Flock — proof of concept. No backend. No API keys. Just a Flock.*
+*Flock  -  proof of concept. No backend. No API keys. Just a Flock.*
+
+
+---
+
+## Test Automation Guide
+
+See `explanation-of-code.md` for the full testability assessment and ID reference.
+
+### Quick start — key selectors
+
+| Element | Selector |
+|---------|----------|
+| Login username | `#login-username` |
+| Login password | `#login-password` |
+| Login submit | `#login-submit-btn` |
+| Signup first name | `#signup-firstname` |
+| Signup username | `#signup-username` |
+| Signup submit | `#signup-submit-btn` |
+| Flock cards (home) | `[id^="event-card-"]` |
+| Join button | `#join-event-btn` |
+| Leave button | `#leave-event-btn` |
+| Waitlist button | `#waitlist-btn` |
+| Share button | `#share-btn` |
+| Search input | `#search-input` |
+| City filter | `#city-filter` |
+| Sort filter | `#sort-filter` |
+| Location button | `#location-btn` |
+| Bottom nav items | `.nav-item[data-page="home"]` etc. |
+| Sidebar nav items | `#sidebar-nav-home` etc. |
+
+### Known limitations for automation
+- localStorage only - no network requests to stub
+- Geolocation requires browser permission grant (mock in test config)
+- Leaflet map loads tiles from OpenStreetMap CDN (can be mocked or ignored)
+- Chat popup is UI-only (no state to assert beyond visibility)

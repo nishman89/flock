@@ -48,8 +48,6 @@ const Flock = {
     if (!e.includes(id)) {
       e.push(id);
       localStorage.setItem('flock_my_events', JSON.stringify(e));
-      const d = this.getGoingDeltas(); d[id] = (d[id] || 0) + 1;
-      localStorage.setItem('flock_going_deltas', JSON.stringify(d));
     }
     this.leaveWaitlist(id);
   },
@@ -57,8 +55,6 @@ const Flock = {
     const e = this.getMyEvents();
     if (e.includes(id)) {
       localStorage.setItem('flock_my_events', JSON.stringify(e.filter(x => x !== id)));
-      const d = this.getGoingDeltas(); d[id] = (d[id] || 0) - 1;
-      localStorage.setItem('flock_going_deltas', JSON.stringify(d));
     }
   },
   isJoined(id) { return this.getMyEvents().includes(id); },

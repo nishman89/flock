@@ -1,4 +1,4 @@
-# Flock — Code Explanation
+# Flock  -  Code Explanation
 
 A full technical walkthrough of every file in the project. Written so any developer can pick this up, understand it, and extend it.
 
@@ -6,7 +6,7 @@ A full technical walkthrough of every file in the project. Written so any develo
 
 ## What is a Flock?
 
-A **Flock** is the core unit of the app — what other apps might call an "event". Each Flock has a fixed capacity, a date, a venue, a category, and a vibe. When a user joins a Flock, the going count goes up and the spots left go down in real time. The terminology is used consistently throughout the codebase and UI.
+A **Flock** is the core unit of the app  -  what other apps might call an "event". Each Flock has a fixed capacity, a date, a venue, a category, and a vibe. When a user joins a Flock, the going count goes up and the spots left go down in real time. The terminology is used consistently throughout the codebase and UI.
 
 ---
 
@@ -36,7 +36,7 @@ flock/
 
 ## HTML Pages
 
-All pages follow the same pattern — scripts load at the bottom in order:
+All pages follow the same pattern  -  scripts load at the bottom in order:
 
 ```html
 <script src="js/data.js"></script>      <!-- globals: EVENTS, INTERESTS, CITIES, EV_COLS -->
@@ -46,7 +46,7 @@ All pages follow the same pattern — scripts load at the bottom in order:
 ```
 
 ### index.html
-Auth router — no visible content. Checks `localStorage` and redirects:
+Auth router  -  no visible content. Checks `localStorage` and redirects:
 ```javascript
 const user = localStorage.getItem('flock_user');
 window.location.replace(user ? 'home.html' : 'login.html');
@@ -56,42 +56,42 @@ Uses `replace()` not `href` so the router doesn't appear in browser history.
 
 ### signup.html
 First name + last name side by side, username, password, confirm password.
-- Checks username against `flock_registered` array in localStorage — shows "already taken" inline without a page reload
+- Checks username against `flock_registered` array in localStorage  -  shows "already taken" inline without a page reload
 - `nish` is always reserved
 - On success: saves `firstName`/`lastName` to profile, registers username, redirects to `onboarding.html`
 
 ### onboarding.html
 3-step mandatory wizard. No skip button.
 - **Step 1:** First name (pre-filled from signup), last name, date of birth (native date picker), avatar picker (12 emojis)
-- **Step 2:** Interest chips — tap to select, minimum 1 required
+- **Step 2:** Interest chips  -  tap to select, minimum 1 required
 - **Step 3:** City dropdown, distance chips, "looking to meet" chips
-- Each step saves to localStorage before advancing — data is never lost if user navigates away
+- Each step saves to localStorage before advancing  -  data is never lost if user navigates away
 
 ### home.html
 Main feed. Contains empty containers filled by `home.js`:
 - Filter bar: city dropdown, distance dropdown, sort dropdown
 - Search bar + "Use my location" button
 - Category chips: All, ⚡ Soon, Sports, Food & Drink, Gaming, Fitness, Social, Wellness, Outdoors, Music, Arts
-- `#events-container` — filled with Flock cards
+- `#events-container`  -  filled with Flock cards
 
 ### event.html
 Flock detail. Reads `?id=EV001` from URL. Loads Leaflet from CDN for the map. Key areas:
-- `#detail-content` — hero, info rows, description, map, attendees
-- `#detail-cta` — sticky bottom CTA (Join/Leave/Waitlist/Pay + Share)
+- `#detail-content`  -  hero, info rows, description, map, attendees
+- `#detail-cta`  -  sticky bottom CTA (Join/Leave/Waitlist/Pay + Share)
 
 ### my-events.html
 Lists joined Flocks split into upcoming (sorted soonest first) and past (sorted most recent first). Past Flocks shown dimmed.
 
 ### profile.html
-No `<header>` — the orange hero fills from the very top. All content rendered by JS. Editable inline:
-- City via `<select>` — saves instantly on change
-- Looking to meet via chips — saves instantly on tap
-- All 19 interests as chips — tap to toggle, saves instantly
+No `<header>`  -  the orange hero fills from the very top. All content rendered by JS. Editable inline:
+- City via `<select>`  -  saves instantly on change
+- Looking to meet via chips  -  saves instantly on tap
+- All 19 interests as chips  -  tap to toggle, saves instantly
 - "Edit profile" button opens a bottom-sheet modal for name/DOB/avatar
 
 ---
 
-## CSS — `css/styles.css`
+## CSS  -  `css/styles.css`
 
 One stylesheet for all pages, mobile-first.
 
@@ -120,16 +120,16 @@ Mobile-first. Single breakpoint at `768px`.
 
 **Mobile (< 768px):**
 - `.app-shell` full width, max 480px, centred at wider screens
-- `.bottom-nav` — `position: fixed; bottom: 0; left: 0; right: 0; z-index: 100` — always visible regardless of scroll
+- `.bottom-nav`  -  `position: fixed; bottom: 0; left: 0; right: 0; z-index: 100`  -  always visible regardless of scroll
 - `.content` has `padding-bottom` equal to nav height so nothing is hidden behind it
-- `.sb`, `.page-wrap`, `.page-main` default to `display: none` / `display: contents` — prevents broken sidebar HTML showing on resize
+- `.sb`, `.page-wrap`, `.page-main` default to `display: none` / `display: contents`  -  prevents broken sidebar HTML showing on resize
 
 **Desktop (≥ 768px):**
-- `.sb` — `display: flex; width: 240px; position: sticky; top: 0; height: 100vh`
-- `.page-wrap` — `display: flex` (sidebar + main side by side)
-- `.bottom-nav` — `display: none !important`
-- `.page-wrap .my-list` — `max-width: 560px` (keeps My Flocks cards proportional)
-- Home events grid — `grid-template-columns: repeat(2, 1fr)`
+- `.sb`  -  `display: flex; width: 240px; position: sticky; top: 0; height: 100vh`
+- `.page-wrap`  -  `display: flex` (sidebar + main side by side)
+- `.bottom-nav`  -  `display: none !important`
+- `.page-wrap .my-list`  -  `max-width: 560px` (keeps My Flocks cards proportional)
+- Home events grid  -  `grid-template-columns: repeat(2, 1fr)`
 
 ---
 
@@ -137,7 +137,7 @@ Mobile-first. Single breakpoint at `768px`.
 
 ### `js/data.js`
 
-#### `d(n)` — dynamic date helper
+#### `d(n)`  -  dynamic date helper
 ```javascript
 function d(n) {
   const dt = new Date();
@@ -148,7 +148,7 @@ function d(n) {
 Returns an ISO date string `n` days from today. Every Flock uses this so dates are always upcoming and never stale.
 
 #### `INTERESTS`
-19 items. Each: `{ e: '⚽', label: 'Football' }`. The emoji field is `e` — not `emoji`. Any code referencing interests must use `match.e`.
+19 items. Each: `{ e: '⚽', label: 'Football' }`. The emoji field is `e`  -  not `emoji`. Any code referencing interests must use `match.e`.
 
 Includes: Football, Rugby, Formula 1, Gym & Fitness, Running, Yoga & Wellness, Hiking & Outdoors, Food & Dining, Coffee & Cafés, Pub & Social, Video Games, Board Games, Shopping, Live Music, Cinema, Book Club, Arts & Culture, Swimming, Dancing.
 
@@ -171,7 +171,7 @@ Includes: Football, Rugby, Formula 1, Gym & Fitness, Running, Yoga & Wellness, H
   date:       d(1),                          // always upcoming
   time:       '15:00',
   dur:        '2 hrs',
-  price:      'Free',                        // 'Free' or '£X' — never a range
+  price:      'Free',                        // 'Free' or '£X'  -  never a range
   going:      24,                            // base count (real count = going + delta)
   max:        40,
   e:          '⚽',                          // emoji for pin and card
@@ -182,7 +182,7 @@ Includes: Football, Rugby, Formula 1, Gym & Fitness, Running, Yoga & Wellness, H
   tags:       ['Football','Sports','Social'],
   ages:       '18+',
   ft:         'Both',                        // 'Both', 'Girls', 'Boys'
-  recurring:  true,                          // optional — shows 🔁 Weekly badge
+  recurring:  true,                          // optional  -  shows 🔁 Weekly badge
 }
 ```
 
@@ -196,20 +196,20 @@ All state lives in `localStorage`. The `Flock` object is a global namespace for 
 | Method | Key | Notes |
 |--------|-----|-------|
 | `Flock.login(u)` | `flock_user` | Saves username |
-| `Flock.getUser()` | — | Returns username or null |
-| `Flock.logout()` | — | `localStorage.clear()`, redirect to login |
-| `Flock.requireAuth()` | — | Redirects to login if no user |
+| `Flock.getUser()` |  -  | Returns username or null |
+| `Flock.logout()` |  -  | `localStorage.clear()`, redirect to login |
+| `Flock.requireAuth()` |  -  | Redirects to login if no user |
 | `Flock.isOnboarded()` | `flock_onboarded` | Returns boolean |
-| `Flock.setOnboarded()` | — | Marks onboarding complete |
+| `Flock.setOnboarded()` |  -  | Marks onboarding complete |
 
 #### Profile
-Stored as `flock_profile`: `{ firstName, lastName, dob, avatar }`. DOB is ISO string `YYYY-MM-DD`. Age is always calculated from DOB at render time — never stored.
+Stored as `flock_profile`: `{ firstName, lastName, dob, avatar }`. DOB is ISO string `YYYY-MM-DD`. Age is always calculated from DOB at render time  -  never stored.
 
 #### Preferences
 Stored as `flock_prefs`: `{ city, dist, friendType }`.
-- `city` — string matching CITIES
-- `dist` — number (5, 10, 25, 50, or 999 = any)
-- `friendType` — `'Girls'`, `'Boys'`, or `'Both'`
+- `city`  -  string matching CITIES
+- `dist`  -  number (5, 10, 25, 50, or 999 = any)
+- `friendType`  -  `'Girls'`, `'Boys'`, or `'Both'`
 
 #### Interests
 Stored as `flock_interests`: array of label strings e.g. `['Football', 'Cinema']`.
@@ -218,9 +218,9 @@ Stored as `flock_interests`: array of label strings e.g. `['Football', 'Cinema']
 | Method | Key | Notes |
 |--------|-----|-------|
 | `Flock.getMyEvents()` | `flock_my_events` | Array of joined Flock IDs |
-| `Flock.joinEvent(id)` | — | Adds ID, increments going delta, clears waitlist |
-| `Flock.leaveEvent(id)` | — | Removes ID, decrements going delta |
-| `Flock.isJoined(id)` | — | Returns boolean |
+| `Flock.joinEvent(id)` |  -  | Adds ID, increments going delta, clears waitlist |
+| `Flock.leaveEvent(id)` |  -  | Removes ID, decrements going delta |
+| `Flock.isJoined(id)` |  -  | Returns boolean |
 
 #### Going count deltas
 Stored as `flock_going_deltas`: `{ 'EV001': 1, 'EV003': -1, ... }`.
@@ -277,17 +277,17 @@ function haversine(lat1, lng1, lat2, lng2) { ... }
 
 On error code 1 (permission denied): shows OS-specific instructions (iOS: Settings → Safari → Location; Android: address bar padlock). Auto-dismisses after 6 seconds.
 
-**Requires HTTPS** — works automatically on GitHub Pages and Netlify. Will silently fail on `file://` or `http://`.
+**Requires HTTPS**  -  works automatically on GitHub Pages and Netlify. Will silently fail on `file://` or `http://`.
 
 #### Filters and search
-- `activeCity`, `activeDist`, `activeCat`, `activeSort`, `searchQuery`, `userLat`, `userLng` — module-level state
-- `renderEvents()` — filters, sorts, renders all in one pass
-- `⚡ Soon` category — shows Flocks within the next 2 days
+- `activeCity`, `activeDist`, `activeCat`, `activeSort`, `searchQuery`, `userLat`, `userLng`  -  module-level state
+- `renderEvents()`  -  filters, sorts, renders all in one pass
+- `⚡ Soon` category  -  shows Flocks within the next 2 days
 - Search matches against: title, venue, description, tags
-- Sort options: `date` (soonest), `dist` (nearest — uses real distance if location granted), `going` (most popular), `spots` (fewest spots left)
+- Sort options: `date` (soonest), `dist` (nearest  -  uses real distance if location granted), `going` (most popular), `spots` (fewest spots left)
 
 #### Going count on cards
-Cards show `e._dist` (real or fallback distance) and the base `e.going` count. The live going delta is only applied on the Flock detail page — home cards show the base count for performance.
+Cards show `e._dist` (real or fallback distance) and the base `e.going` count. The live going delta is only applied on the Flock detail page  -  home cards show the base count for performance.
 
 ---
 
@@ -298,7 +298,7 @@ Cards show `e._dist` (real or fallback distance) and the base `e.going` count. T
 const liveGoing = Flock.getGoingCount(id, ev.going) + (joined ? 1 : 0);
 const spotsLeft = ev.max - liveGoing;
 ```
-The `+ (joined ? 1 : 0)` is because the delta only records the *other users' changes* — the current user's join is always reflected via `isJoined()`.
+The `+ (joined ? 1 : 0)` is because the delta only records the *other users' changes*  -  the current user's join is always reflected via `isJoined()`.
 
 #### Leaflet map
 Initialised after render. Destroyed and re-initialised on re-render (join/leave) to avoid duplicate map instances. Custom emoji pin using `L.divIcon`:
@@ -314,8 +314,8 @@ const icon = L.divIcon({
 | State | Button shown |
 |-------|-------------|
 | Free, not joined | "Join Flock! 🐦" |
-| Paid, not joined | "Pay & Join — £X 💳" |
-| Joined | "✓ You're in this Flock — tap to leave" |
+| Paid, not joined | "Pay & Join  -  £X 💳" |
+| Joined | "✓ You're in this Flock  -  tap to leave" |
 | Full, not on waitlist | "🔔 Join Waitlist" |
 | Full, on waitlist | "⏳ You're on the waitlist" |
 
@@ -345,9 +345,9 @@ function calcAge(dob) {
 Correctly handles birthdays that haven't occurred yet this year.
 
 #### Inline editing
-- **City** — `<select>` with `onchange="savePrefs({city:this.value});render()"` — saves and re-renders immediately
-- **Looking to meet** — chips with `onclick="savePrefs({friendType:'X'});render()"`
-- **Interests** — all 19 INTERESTS rendered as chips, `toggleInterest(label)` adds/removes from the array and re-renders
+- **City**  -  `<select>` with `onchange="savePrefs({city:this.value});render()"`  -  saves and re-renders immediately
+- **Looking to meet**  -  chips with `onclick="savePrefs({friendType:'X'});render()"`
+- **Interests**  -  all 19 INTERESTS rendered as chips, `toggleInterest(label)` adds/removes from the array and re-renders
 
 #### Edit profile modal
 Bottom-sheet (`align-items: flex-end`) with first name, last name, DOB, and avatar grid. Closes on backdrop tap. Saves via `Flock.setProfile({...existing, firstName, lastName, dob, avatar})` to preserve any extra fields.
@@ -356,7 +356,7 @@ Bottom-sheet (`align-items: flex-end`) with first name, last name, DOB, and avat
 
 ### `js/pages/onboarding.js`
 
-Step 1 reads existing profile (pre-filled from signup). Avatar defaults to 🐦. Step 3 saves prefs with keys `{ city, dist, friendType }` — these match `getPrefs()` defaults exactly.
+Step 1 reads existing profile (pre-filled from signup). Avatar defaults to 🐦. Step 3 saves prefs with keys `{ city, dist, friendType }`  -  these match `getPrefs()` defaults exactly.
 
 `setOnboarded()` is called only at the end of step 3, or by `seedNish()`. `requireAuth()` + `isOnboarded()` check at the top means already-onboarded users are immediately redirected to home.
 
@@ -378,11 +378,11 @@ function usernameExists(username) {
 ## PWA
 
 ### `manifest.json`
-- `start_url: "index.html"` — so PWA launch always routes correctly (auth check)
-- `display: "standalone"` — no browser chrome when installed
-- `theme_color: "#F97316"` — orange status bar on Android
+- `start_url: "index.html"`  -  so PWA launch always routes correctly (auth check)
+- `display: "standalone"`  -  no browser chrome when installed
+- `theme_color: "#F97316"`  -  orange status bar on Android
 
-### `sw.js` — Service Worker (flock-v11)
+### `sw.js`  -  Service Worker (flock-v11)
 Cache-first strategy. On install, pre-caches all HTML, CSS, JS and manifest. On activate, takes control immediately. On fetch, serves from cache then updates cache in background.
 
 To deploy a new version: bump `CACHE = 'flock-v12'`. Browser installs new SW, discards old cache.
@@ -434,3 +434,183 @@ To deploy a new version: bump `CACHE = 'flock-v12'`. Browser installs new SW, di
 - Nav items: `data-page="home"`, `data-page="my-events"`, `data-page="profile"`
 - Flock cards: `id="event-card-EV001"` etc.
 - CTA buttons: `join-event-btn`, `leave-event-btn`, `waitlist-btn`, `share-btn`
+
+
+---
+
+## Test Automation Assessment
+
+### Overall testability: Good
+
+The app is fully static (no backend, no network calls for data), which makes automation straightforward. All state is in `localStorage`, all interactive elements have `id` attributes, and every page has a predictable URL. A Playwright or Cypress test suite can cover the full user journey without any mocking of APIs.
+
+---
+
+### What makes it easy to test
+
+- All form inputs have `id` attributes (`login-username`, `signup-firstname` etc.)
+- All submit buttons have `id` attributes (`login-submit-btn`, `signup-submit-btn`)
+- Flock cards have IDs: `event-card-EV001` through `event-card-EV052`
+- CTA buttons have stable IDs: `join-event-btn`, `leave-event-btn`, `waitlist-btn`, `share-btn`
+- Nav items have `data-page` attributes for reliable selection
+- Sidebar nav items have `id="sidebar-nav-home"` etc.
+- Error spans have `id="err-signup-username"` etc. and class `show` when visible
+- `localStorage` can be seeded or cleared before each test
+- No animations that require `waitForAnimation` - transitions are CSS only (< 200ms)
+- `index.html` routing is deterministic based on `flock_user` in localStorage
+
+---
+
+### Complete ID reference
+
+#### Login page (`login.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| Username input | `#login-username` |
+| Password input | `#login-password` |
+| Submit button | `#login-submit-btn` |
+| Error message | `#login-error` |
+| Sign up link | `#login-signup-link` |
+
+#### Signup page (`signup.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| First name input | `#signup-firstname` |
+| Last name input | `#signup-lastname` |
+| Username input | `#signup-username` |
+| Password input | `#signup-password` |
+| Confirm password | `#signup-confirm` |
+| Submit button | `#signup-submit-btn` |
+| First name error | `#err-signup-firstname` (class `show` when visible) |
+| Username error | `#err-signup-username` |
+| Password error | `#err-signup-password` |
+| Confirm error | `#err-signup-confirm` |
+| General error | `#signup-error` |
+
+#### Onboarding (`onboarding.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| First name input | `#ob-first` |
+| Last name input | `#ob-last` |
+| DOB input | `#ob-dob` |
+| Avatar options | `.avatar-opt` (class `selected` when chosen) |
+| Interest chips | `.interest-chip` (class `selected` when chosen) |
+| City select | `#ob-city` |
+| Distance chips | `#ob-dist-5`, `#ob-dist-10`, `#ob-dist-25`, `#ob-dist-50`, `#ob-dist-any` |
+| Continue button | `#next-btn` |
+| Progress steps | `#prog-1`, `#prog-2`, `#prog-3` (class `done` when complete) |
+
+#### Home page (`home.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| Greeting text | `#greeting-text` |
+| City dropdown | `#city-filter` |
+| Distance dropdown | `#distance-filter` |
+| Sort dropdown | `#sort-filter` |
+| Search input | `#search-input` |
+| Search clear button | `#search-clear` (class `show` when visible) |
+| Location button | `#location-btn` |
+| Location button text | `#location-btn-text` |
+| Category chips | `#tab-all`, `#tab-soon`, `#tab-sports`, `#tab-food`, `#tab-gaming`, `#tab-fitness`, `#tab-social`, `#tab-wellness`, `#tab-outdoors`, `#tab-music`, `#tab-arts` |
+| Events container | `#events-container` |
+| Flock cards | `#event-card-EV001` ... `#event-card-EV052` |
+| Empty state | `.empty-state` (present when no results) |
+
+#### Flock detail (`event.html?id=EV001`)
+| Element | ID / Selector |
+|---------|--------------|
+| Detail content area | `#detail-content` |
+| CTA area | `#detail-cta` |
+| Join button | `#join-event-btn` |
+| Leave button | `#leave-event-btn` |
+| Waitlist button | `#waitlist-btn` |
+| Share button | `#share-btn` |
+| Chat button | `#chat-btn` |
+| Map container | `#event-map` |
+| Directions link | `#directions-btn` |
+| Back button | `#detail-back-btn` |
+
+#### My Flocks (`my-events.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| Events container | `#my-events-container` |
+| Flock cards | `#my-event-card-EV001` etc. |
+| Empty state | `#my-events-empty` |
+
+#### Profile (`profile.html`)
+| Element | ID / Selector |
+|---------|--------------|
+| Hero section | `#profile-hero` |
+| Body section | `#profile-body` |
+| Events joined row | `#profile-events-joined` |
+| Username row | `#profile-username-row` |
+| Sign out button | `#signout-btn` |
+| Edit profile button | `.profile-edit-btn` |
+| Edit overlay | `#edit-profile-overlay` (when open) |
+| First name input (modal) | `#ep-first` |
+| Last name input (modal) | `#ep-last` |
+| DOB input (modal) | `#ep-dob` |
+
+#### Navigation
+| Element | ID / Selector |
+|---------|--------------|
+| Bottom nav | `.bottom-nav` |
+| Nav: Discover | `.nav-item[data-page="home"]` |
+| Nav: My Flocks | `.nav-item[data-page="my-events"]` |
+| Nav: Profile | `.nav-item[data-page="profile"]` |
+| Nav: About | `.nav-item[data-page="about"]` |
+| Sidebar (desktop) | `.sb` |
+| Sidebar: Discover | `#sidebar-nav-home` |
+| Sidebar: My Flocks | `#sidebar-nav-my-flocks` |
+| Sidebar: Profile | `#sidebar-nav-profile` |
+| Sidebar: About | `#sidebar-nav-about` |
+| Sidebar: Sign out | `#sidebar-signout-btn` |
+
+---
+
+### Recommended test scenarios
+
+#### Auth flow
+1. Open `index.html` with empty localStorage - assert redirect to `login.html`
+2. Open `index.html` with `flock_user` set - assert redirect to `home.html`
+3. Login with `nish`/`mandal` - assert `home.html` loads and `#greeting-text` contains "Nish"
+4. Login with wrong password - assert `#login-error` is visible
+5. Signup with existing username (`nish`) - assert `#err-signup-username` has class `show`
+6. Signup with mismatched passwords - assert `#err-signup-confirm` has class `show`
+7. Complete full signup + onboarding flow - assert lands on `home.html`
+
+#### Flock browsing
+8. Home loads - assert `#events-container` has at least one `[id^="event-card-"]`
+9. Type in `#search-input` - assert card count changes
+10. Select `#tab-soon` - assert only near-future Flocks shown
+11. Change `#city-filter` to "Glasgow" - assert Glasgow Flocks appear
+12. Change `#sort-filter` to "dist" - assert first card has lowest distance
+13. Click a Flock card - assert navigates to `event.html?id=`
+
+#### Joining a Flock
+14. Open a free Flock detail - assert `#join-event-btn` is visible
+15. Click `#join-event-btn` - assert `#leave-event-btn` appears
+16. Assert going count increased by 1, spots decreased by 1
+17. Click `#leave-event-btn` - assert `#join-event-btn` returns
+18. Assert going count back to original
+19. Navigate to `my-events.html` - assert joined Flock appears in `#my-events-container`
+20. Open a full Flock - assert `#waitlist-btn` is visible (not `#join-event-btn`)
+
+#### Profile
+21. Profile hero shows correct name and age calculated from DOB
+22. Click city dropdown - change to "Manchester" - assert save persists on reload
+23. Click an interest chip - assert class toggles `active`
+24. Click `.profile-edit-btn` - assert `#edit-profile-overlay` appears
+25. Submit edit with blank first name - assert alert fires (or validation shown)
+26. Click `#signout-btn` - confirm dialog - assert redirects to `login.html`
+
+---
+
+### Gaps / things that need manual testing
+
+- **Geolocation** - `navigator.geolocation` must be mocked in Playwright (`page.setGeolocation()`) or granted via browser context. Test the denied path by denying permission and asserting error text appears on `#location-btn`.
+- **Leaflet map** - tiles load from OpenStreetMap CDN. In CI, either allow external requests or assert only that `#event-map` exists and has non-zero height.
+- **Native share sheet** - `navigator.share` is not available in headless Chromium. Assert the clipboard fallback fires instead (mock `navigator.clipboard.writeText` and assert it was called).
+- **PWA install / service worker** - not automatable in standard headless mode; test manually on device.
+- **iOS Safari-specific layout** - test manually on real iPhone (or BrowserStack). Focus on: safe area insets, bottom nav height, date picker rendering on `#ob-dob`.
+- **Resize behaviour** - resize window from > 768px to < 768px and assert sidebar disappears and bottom nav reappears. Playwright `page.setViewportSize()` works for this.

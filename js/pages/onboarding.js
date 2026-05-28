@@ -54,7 +54,7 @@ function render() {
 
   if (step === 2) {
     c.innerHTML = `
-      <p class="ob-hint">Select everything you enjoy — the more you pick, the better your matches!</p>
+      <p class="ob-hint">Select everything you enjoy  -  the more you pick, the better your matches!</p>
       <div class="interest-grid">
         ${INTERESTS.map(i => `
           <div class="interest-chip ${selectedInterests.has(i.label)?'selected':''}"

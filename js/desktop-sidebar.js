@@ -23,7 +23,9 @@ function initDesktop() {
   }
 
   function navLink(href, id, label, svgPaths) {
-    const active = page === href ? 'active' : '';
+    // event.html is a detail page  -  highlight Discover
+    const effectivePage = page === 'event.html' ? 'home.html' : page;
+    const active = effectivePage === href ? 'active' : '';
     return `<a id="sidebar-nav-${id}" class="sb-link ${active}" href="${href}">${icon(svgPaths)}<span>${label}</span></a>`;
   }
 

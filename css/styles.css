@@ -84,7 +84,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   APP SHELL — fills screen on mobile, centred on desktop
+   APP SHELL  -  fills screen on mobile, centred on desktop
 ══════════════════════════════════════════════════════════ */
 .app-shell {
   width: 100%;
@@ -108,7 +108,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   AUTH PAGES (login, signup) — full gradient fill
+   AUTH PAGES (login, signup)  -  full gradient fill
 ══════════════════════════════════════════════════════════ */
 .auth-shell {
   width: 100%;
@@ -297,7 +297,7 @@ body {
 .nav-icon { width: 24px; height: 24px }
 
 /* ══════════════════════════════════════════════════════════
-   HOME — FILTER BAR
+   HOME  -  FILTER BAR
 ══════════════════════════════════════════════════════════ */
 .filter-bar {
   padding: 14px 16px 10px;
@@ -343,6 +343,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 .cat-chip.active { background: var(--primary); border-color: var(--primary); color: #fff }
+
+/* ── Utility colour classes ──────────────────────────────── */
+.txt-ok  { color: var(--ok) }
+.txt-err { color: var(--err) }
 
 /* ── Search bar ──────────────────────────────────────────── */
 .search-bar {
@@ -715,7 +719,7 @@ body {
 ══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
 
-  /* Kill the narrow column — full width on desktop */
+  /* Kill the narrow column  -  full width on desktop */
   .app-shell {
     max-width: none !important;
     margin: 0 !important;
@@ -783,13 +787,13 @@ body {
   .sb-link {
     display: flex; align-items: center; gap: 12px;
     padding: 11px 14px; border-radius: 12px;
-    text-decoration: none; color: var(--text2);
-    font-family: var(--font); font-size: 15px; font-weight: 600;
+    text-decoration: none; color: var(--text3);
+    font-family: var(--font); font-size: 15px; font-weight: 500;
     transition: all .15s;
   }
 
-  .sb-link:hover  { background: var(--bg); color: var(--text) }
-  .sb-link.active { background: var(--primary-lt); color: var(--primary-dk) }
+  .sb-link:hover  { background: var(--bg); color: var(--text); font-weight: 600 }
+  .sb-link.active { background: var(--primary-lt); color: var(--primary-dk); font-weight: 700 }
   .sb-link.active svg { stroke: var(--primary-dk) }
 
   .sb-foot {
@@ -843,7 +847,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   DESKTOP — AUTH PAGES (login / signup)
+   DESKTOP  -  AUTH PAGES (login / signup)
    Split layout: orange brand panel left, form right
 ══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
@@ -888,7 +892,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   DESKTOP — ONBOARDING
+   DESKTOP  -  ONBOARDING
    Centred card on a warm background
 ══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
@@ -916,7 +920,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   DESKTOP — EVENT DETAIL PAGE
+   DESKTOP  -  EVENT DETAIL PAGE
    Fix detail-shell height inside sidebar layout
 ══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
@@ -951,7 +955,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   DESKTOP — PROFILE & MY EVENTS
+   DESKTOP  -  PROFILE & MY EVENTS
    Remove mobile nav padding, better layout
 ══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
@@ -1066,7 +1070,7 @@ body {
 .co-err { font-size: 12px; color: var(--err); display: none; margin-top: 3px }
 .co-err.show { display: block }
 
-/* Pay button — orange with lock icon feel */
+/* Pay button  -  orange with lock icon feel */
 .btn-pr { background: var(--primary); color: #fff; border: none }
 .btn-pr:hover { background: var(--primary-dk) }
 
