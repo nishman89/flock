@@ -14,6 +14,12 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<!-- Sign-out success banner -->
+<div id="signout-success" style="display:none;position:fixed;top:0;left:0;right:0;z-index:999;background:#16A34A;color:#fff;padding:14px 20px;align-items:center;justify-content:center;gap:10px;font-family:sans-serif;font-size:14px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,.2)">
+  <span style="font-size:18px">✓</span>
+  Successfully signed out
+</div>
+
 <div class="auth-shell" id="login-page">
 
   <div class="auth-hero">
@@ -78,5 +84,11 @@
 <script src="js/state.js"></script>
 <script src="js/pages/login.js"></script>
 <script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+<script>
+function fillDemo() {
+  document.getElementById('login-username').value = 'nish';
+  document.getElementById('login-password').value = 'mandal';
+}
+</script>
 </body>
 </html>

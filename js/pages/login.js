@@ -1,3 +1,11 @@
+
+/* Show sign-out success banner */
+if (new URLSearchParams(location.search).get('bye') === '1') {
+  const banner = document.getElementById('signout-success');
+  if (banner) banner.style.display = 'flex';
+  // Clean the URL without reloading
+  history.replaceState(null, '', 'login.html');
+}
 'use strict';
 if (Flock.getUser()) {
   window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';

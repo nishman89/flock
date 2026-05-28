@@ -18,7 +18,7 @@ const Flock = {
   /* ── Auth ────────────────────────────────────────────── */
   login(u)      { localStorage.setItem('flock_user', u); },
   getUser()     { return localStorage.getItem('flock_user'); },
-  logout()      { localStorage.clear(); window.location.href = 'login.html'; },
+  logout()      { localStorage.clear(); window.location.href = 'login.html?bye=1'; },
   requireAuth() { if (!this.getUser()) window.location.href = 'login.html'; },
 
   /* ── Onboarding ──────────────────────────────────────── */

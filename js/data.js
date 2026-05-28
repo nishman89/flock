@@ -1,5 +1,17 @@
 'use strict';
 
+const EV_COLS = {
+  'Sports':       '#166534',
+  'Gaming':       '#4C1D95',
+  'Social':       '#831843',
+  'Fitness':      '#1E3A5F',
+  'Food & Drink': '#78350F',
+  'Wellness':     '#065F46',
+  'Music':        '#3B0764',
+  'Outdoors':     '#365314',
+  'Arts':         '#0C4A6E',
+};
+
 const INTERESTS = [
   {emoji:'⚽',label:'Football'},{emoji:'🏉',label:'Rugby'},
   {emoji:'🏎️',label:'Formula 1'},{emoji:'🏋️',label:'Gym & Fitness'},
