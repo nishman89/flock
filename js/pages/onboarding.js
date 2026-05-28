@@ -32,7 +32,7 @@ function render() {
     c.innerHTML = `
       <div class="field">
         <label>Your name</label>
-        <input type="text" id="ob-name" placeholder="e.g. Jags" value="${savedProfile.name||''}" maxlength="40">
+        <input type="text" id="ob-name" placeholder="e.g. Nish" value="${savedProfile.name||''}" maxlength="40">
       </div>
       <div class="field" style="margin-bottom:0">
         <label>Your age group</label>

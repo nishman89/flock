@@ -27,8 +27,8 @@ It covers:
 
 | Field    | Value    |
 |----------|----------|
-| Username | `jags`   |
-| Password | `choongh`|
+| Username | `nish`   |
+| Password | `mandal`|
 
 ---
 

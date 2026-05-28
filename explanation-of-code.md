@@ -244,10 +244,10 @@ const Flock = { ... }
 | `Flock.getCheckoutInfo()` | Returns saved checkout form data |
 | `Flock.completeCheckout()` | Calls `joinEvent()` then clears both checkout keys |
 
-**`Flock.seedJags()`**
+**`Flock.seedNish()`**
 
-A special method called every time the demo user `jags` logs in. It always overwrites his profile with pre-set data so the demo is consistent:
-- Name: Jags Choongh, Age: 25–34, City: London
+A special method called every time the demo user `nish` logs in. It always overwrites his profile with pre-set data so the demo is consistent:
+- Name: Nish Mandal, Age: 25–34, City: London
 - Interests: Football, Swimming, Dancing, Pub & Social, Food & Dining, Cinema, Gym & Fitness
 - His joined events list is preserved after first login (so testing joining/leaving works)
 
@@ -272,7 +272,7 @@ Why JS instead of static HTML? The sidebar is the same across all app pages. Put
 
 - Checks if a user is already logged in on page load — if so, skips straight to `home.html` or `onboarding.html`
 - Listens to form submit, validates that both fields are filled
-- If `jags` / `choongh`: calls `Flock.login()`, `Flock.seedJags()`, redirects to `home.html`
+- If `nish` / `mandal`: calls `Flock.login()`, `Flock.seedNish()`, redirects to `home.html`
 - Any other combination: shows the `#login-error` inline error
 
 ---
@@ -281,7 +281,7 @@ Why JS instead of static HTML? The sidebar is the same across all app pages. Put
 
 Validates the sign-up form with rules:
 - Full name: at least 2 characters
-- Username: at least 3 characters, no spaces, not already `jags`
+- Username: at least 3 characters, no spaces, not already `nish`
 - Password: at least 6 characters
 - Confirm password: must match password
 
@@ -432,9 +432,9 @@ Here is how data moves through the app for a typical user journey:
 
 ```
 1. User lands on login.html
-   └── Enters jags / choongh
-       └── login.js calls Flock.login('jags') + Flock.seedJags()
-           └── localStorage: flock_user='jags', flock_profile={...}, flock_interests=[...], flock_prefs={...}
+   └── Enters nish / mandal
+       └── login.js calls Flock.login('nish') + Flock.seedNish()
+           └── localStorage: flock_user='nish', flock_profile={...}, flock_interests=[...], flock_prefs={...}
 
 2. Redirected to home.html
    └── home.js calls Flock.requireAuth() → passes

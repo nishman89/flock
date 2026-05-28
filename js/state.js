@@ -2,10 +2,10 @@
 
 /* ══════════════════════════════════════════════════════════
    JAGS — pre-seeded demo account
-   Applied every time jags logs in so it's always consistent
+   Applied every time nish logs in so it's always consistent
 ══════════════════════════════════════════════════════════ */
 const JAGS = {
-  profile:   { name: 'Jags', fullName: 'Jags Choongh', age: '25–34' },
+  profile:   { name: 'Nish', fullName: 'Nish Mandal', age: '25–34' },
   interests: ['Football', 'Swimming', 'Dancing', 'Pub & Social', 'Food & Dining', 'Cinema', 'Gym & Fitness'],
   prefs:     { city: 'London', dist: 25, ft: 'Both' }
 };
@@ -58,15 +58,15 @@ const Flock = {
   },
   isJoined(id) { return this.getMyEvents().includes(id); },
 
-  /* ── Jags demo seed ──────────────────────────────────── */
-  seedJags() {
+  /* ── Nish demo seed ──────────────────────────────────── */
+  seedNish() {
     this.setProfile(JAGS.profile);
     this.setInterests(JAGS.interests);
     this.setPrefs(JAGS.prefs);
-    // Preserve any events Jags has joined, but start fresh on first seed
-    if (!localStorage.getItem('flock_jags_seeded')) {
+    // Preserve any events Nish has joined, but start fresh on first seed
+    if (!localStorage.getItem('flock_nish_seeded')) {
       localStorage.setItem('flock_my_events', '[]');
-      localStorage.setItem('flock_jags_seeded', '1');
+      localStorage.setItem('flock_nish_seeded', '1');
     }
     this.setOnboarded();
   },

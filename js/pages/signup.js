@@ -36,7 +36,7 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
   }
   if (!username || username.length < 3) {
     showErr('username', 'Username must be at least 3 characters'); valid = false;
-  } else if (username === 'jags') {
+  } else if (username === 'nish') {
     showErr('username', 'That username is already taken — try another'); valid = false;
   } else if (/\s/.test(username)) {
     showErr('username', 'Username cannot contain spaces'); valid = false;

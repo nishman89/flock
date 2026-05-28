@@ -18,9 +18,9 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   if (!p) { errP.classList.add('show'); ok = false; }
   if (!ok) return;
 
-  if (u.toLowerCase() === 'jags' && p === 'choongh') {
-    Flock.login('jags');
-    Flock.seedJags();          // pre-load Jags' profile every login
+  if (u.toLowerCase() === 'nish' && p === 'mandal') {
+    Flock.login('nish');
+    Flock.seedNish();          // pre-load Nish' profile every login
     window.location.href = 'home.html';
   } else {
     errG.style.display = 'block';
