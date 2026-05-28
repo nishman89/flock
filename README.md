@@ -4,7 +4,7 @@
 
 A mobile-first web app that connects you with local people who share your interests. Join a **Flock** (a group), show up to a **Roost** (a specific gathering), and make real friends through repeated shared experiences.
 
-> "Birds of a feather Flock together." That's not just a saying - it's the whole idea.
+> "Find your Flock."
 
 ---
 
