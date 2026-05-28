@@ -110,14 +110,7 @@ body {
   background: rgba(255,255,255,.06); pointer-events: none;
 }
 
-@media (min-width: 600px) {
-  .auth-shell {
-    max-width: 480px;
-    margin: 0 auto;
-    border-left: 1px solid rgba(255,255,255,.15);
-    border-right: 1px solid rgba(255,255,255,.15);
-  }
-}
+
 
 /* ── Auth hero (top area) ────────────────────────────────── */
 .auth-hero {
@@ -152,9 +145,7 @@ body {
   padding: 28px 24px calc(28px + env(safe-area-inset-bottom, 0px));
   width: 100%;
 }
-@media (min-width: 600px) {
-  .auth-card { border-radius: 0 }
-}
+
 .auth-card h2 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px }
 .auth-card .sub { font-size: 14px; color: var(--text3); margin-bottom: 24px }
 .auth-link {
@@ -459,9 +450,7 @@ body {
   width: 100%; min-height: 100svh;
   display: flex; flex-direction: column; background: var(--bg);
 }
-@media (min-width: 500px) {
-  .ob-shell { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 40px 80px rgba(140,70,0,.40); overflow: hidden; min-height: 0; flex-shrink: 0 }
-}
+
 .ob-header {
   padding: calc(env(safe-area-inset-top, 12px) + 12px) 20px 16px;
   background: var(--card); border-bottom: 1px solid var(--border);
@@ -704,4 +693,132 @@ body {
 
   /* ── inv-wrap desktop ─────────────────────────────────── */
   .inv-wrap { padding: 0 }
+}
+
+/* ══════════════════════════════════════════════════════════
+   DESKTOP — AUTH PAGES (login / signup)
+   Split layout: orange brand panel left, form right
+══════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .auth-shell {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    max-width: none;
+    margin: 0;
+    border: none;
+    min-height: 100vh;
+  }
+  .auth-shell::before { top: -120px; left: -80px; width: 420px; height: 420px }
+  .auth-shell::after  { bottom: -100px; right: -60px; width: 360px; height: 360px }
+
+  .auth-hero {
+    flex: 1;
+    min-height: 100vh;
+    padding: 60px 52px;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-end;
+    padding-bottom: 80px;
+  }
+  .auth-hero h1 { font-size: 56px }
+  .auth-logo-wrap { width: 96px; height: 96px; border-radius: 28px; margin-bottom: 24px }
+
+  .auth-card {
+    width: 480px;
+    flex-shrink: 0;
+    border-radius: 0;
+    padding: 0 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-y: auto;
+    box-shadow: -4px 0 24px rgba(0,0,0,.08);
+  }
+  .auth-card h2 { font-size: 26px; margin-bottom: 6px }
+}
+
+/* ══════════════════════════════════════════════════════════
+   DESKTOP — ONBOARDING
+   Centred card on a warm background
+══════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .ob-page-bg {
+    background: #EFE8DF;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 24px 80px;
+  }
+  .ob-shell {
+    max-width: 580px;
+    width: 100%;
+    min-height: auto;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,.09);
+    overflow: hidden;
+  }
+  .ob-content { padding: 24px 28px }
+  .ob-footer   { padding: 16px 28px 24px }
+  .ob-header   { padding: 24px 28px 18px }
+  .interest-grid { grid-template-columns: repeat(3, 1fr) }
+}
+
+/* ══════════════════════════════════════════════════════════
+   DESKTOP — EVENT DETAIL PAGE
+   Fix detail-shell height inside sidebar layout
+══════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .detail-shell {
+    height: auto !important;
+    min-height: 100vh;
+    flex: 1;
+  }
+  .detail-scroll {
+    flex: 1;
+    overflow-y: visible;
+    overflow: unset;
+  }
+  .detail-hero {
+    height: 240px;
+  }
+  .detail-cta {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg);
+  }
+  /* Wider detail body on desktop */
+  .detail-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 40px;
+  }
+  .detail-back {
+    top: 16px;
+    left: 16px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   DESKTOP — PROFILE & MY EVENTS
+   Remove mobile nav padding, better layout
+══════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  /* Remove the inline nav padding on profile content */
+  .page-main .content { padding-bottom: 40px !important }
+
+  /* Profile hero stays full width, body gets max-width */
+  .profile-hero { padding: 36px 40px 32px }
+  .profile-body { max-width: 680px; padding: 0 40px 40px }
+
+  /* My events page */
+  .page-main .my-list { padding: 20px 32px }
+
+  /* Desktop basket / checkout */
+  .page-main .basket-wrap { max-width: 100%; padding: 28px 40px }
+  .page-main .co-wrap    { max-width: 100%; padding: 28px 40px }
 }

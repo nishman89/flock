@@ -15,9 +15,9 @@
   <title>Flock — Event</title>
   <link rel="stylesheet" href="css/styles.css">
   <style>
-    body { overflow: hidden }
-    .detail-shell { height: 100svh; display:flex; flex-direction:column; }
-    @media(min-width:500px){ .detail-shell{ height:844px } }
+    /* overflow managed by flex */
+    .detail-shell { min-height: 100svh; display:flex; flex-direction:column; }
+    
     .detail-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom: 0 }
   </style>
 </head>
