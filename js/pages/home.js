@@ -22,7 +22,7 @@ const profile = Flock.getProfile();
 const hr        = new Date().getHours();
 const greetWord = hr < 12 ? 'Morning' : hr < 17 ? 'Afternoon' : 'Evening';
 document.getElementById('greeting-text').textContent =
-  `Good ${greetWord}${profile.name ? ', ' + profile.name.split(' ')[0] : ''} 👋`;
+  `Good ${greetWord}${profile.firstName ? ', ' + profile.firstName : ''} 👋`;
 
 /* Populate city select */
 const citySel = document.getElementById('city-filter');
@@ -94,11 +94,28 @@ function useMyLocation() {
     err => {
       userLat = null; userLng = null;
       if (err.code === 1) {
-        setLocationBtn('error', '⚠ Permission denied');
+        // Permission denied — guide user to fix it
+        setLocationBtn('error', '⚠ Location blocked');
+        // Show a helpful tip below the button
+        const btn = document.getElementById('location-btn');
+        if (btn) {
+          let tip = document.getElementById('location-tip');
+          if (!tip) {
+            tip = document.createElement('p');
+            tip.id = 'location-tip';
+            tip.style.cssText = 'font-size:12px;color:var(--text3);margin:4px 0 0;text-align:center';
+            btn.parentNode.insertBefore(tip, btn.nextSibling);
+          }
+          const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+          tip.textContent = isIOS
+            ? 'To allow: Settings → Safari → Location → Allow'
+            : 'Tap the 🔒 in your browser address bar and allow Location.';
+          setTimeout(() => { tip.remove(); setLocationBtn('', 'Use my location'); }, 6000);
+        }
       } else {
         setLocationBtn('error', '⚠ Could not get location');
+        setTimeout(() => setLocationBtn('', 'Use my location'), 3000);
       }
-      setTimeout(() => setLocationBtn('', 'Use my location'), 3000);
     },
     { timeout: 10000, maximumAge: 60000, enableHighAccuracy: false }
   );

@@ -1,50 +1,38 @@
 'use strict';
 
-/* ══════════════════════════════════════════════════════════
-   JAGS  -  pre-seeded demo account
-══════════════════════════════════════════════════════════ */
 const JAGS = {
-  profile:   { name: 'Nish', fullName: 'Nish Mandal', age: '25–34', avatar: '🐦' },
+  profile:   { firstName: 'Nish', lastName: 'Mandal', dob: '2000-02-02', avatar: '🐦' },
   interests: ['Football', 'Swimming', 'Dancing', 'Pub & Social', 'Food & Dining', 'Cinema', 'Gym & Fitness'],
-  prefs:     { city: 'London', dist: 25, ft: 'Both' }
+  prefs:     { city: 'London', dist: 25, friendType: 'Both' }
 };
 
-/* ══════════════════════════════════════════════════════════
-   STATE HELPERS  (localStorage)
-══════════════════════════════════════════════════════════ */
 const Flock = {
 
-  /* ── Auth ────────────────────────────────────────────── */
   login(u)      { localStorage.setItem('flock_user', u); },
   getUser()     { return localStorage.getItem('flock_user'); },
   logout()      { localStorage.clear(); window.location.href = 'login.html?bye=1'; },
   requireAuth() { if (!this.getUser()) window.location.href = 'login.html'; },
 
-  /* ── Onboarding ──────────────────────────────────────── */
   isOnboarded()  { return !!localStorage.getItem('flock_onboarded'); },
   setOnboarded() { localStorage.setItem('flock_onboarded', '1'); },
 
-  /* ── Profile ─────────────────────────────────────────── */
   getProfile() {
     try { return JSON.parse(localStorage.getItem('flock_profile') || '{}'); } catch { return {}; }
   },
   setProfile(p) { localStorage.setItem('flock_profile', JSON.stringify(p)); },
 
-  /* ── Interests ───────────────────────────────────────── */
   getInterests() {
     try { return JSON.parse(localStorage.getItem('flock_interests') || '[]'); } catch { return []; }
   },
   setInterests(a) { localStorage.setItem('flock_interests', JSON.stringify(a)); },
 
-  /* ── Preferences ─────────────────────────────────────── */
   getPrefs() {
     try {
-      return JSON.parse(localStorage.getItem('flock_prefs') || '{"city":"London","dist":25,"ft":"Both"}');
-    } catch { return { city: 'London', dist: 25, ft: 'Both' }; }
+      return JSON.parse(localStorage.getItem('flock_prefs') || '{"city":"London","dist":25,"friendType":"Both"}');
+    } catch { return { city: 'London', dist: 25, friendType: 'Both' }; }
   },
   setPrefs(p) { localStorage.setItem('flock_prefs', JSON.stringify(p)); },
 
-  /* ── My Events ───────────────────────────────────────── */
   getMyEvents() {
     try { return JSON.parse(localStorage.getItem('flock_my_events') || '[]'); } catch { return []; }
   },
@@ -58,7 +46,6 @@ const Flock = {
   },
   isJoined(id) { return this.getMyEvents().includes(id); },
 
-  /* ── Waitlist ────────────────────────────────────────── */
   getWaitlist() {
     try { return JSON.parse(localStorage.getItem('flock_waitlist') || '[]'); } catch { return []; }
   },
@@ -71,17 +58,6 @@ const Flock = {
   },
   isOnWaitlist(id) { return this.getWaitlist().includes(id); },
 
-  /* ── Dark Mode ───────────────────────────────────────── */
-  getDarkMode()   { return localStorage.getItem('flock_dark') === '1'; },
-  setDarkMode(on) {
-    localStorage.setItem('flock_dark', on ? '1' : '0');
-    this.applyTheme();
-  },
-  applyTheme() {
-    document.documentElement.setAttribute('data-theme', this.getDarkMode() ? 'dark' : 'light');
-  },
-
-  /* ── Nish demo seed ──────────────────────────────────── */
   seedNish() {
     this.setProfile(JAGS.profile);
     this.setInterests(JAGS.interests);
@@ -93,7 +69,6 @@ const Flock = {
     this.setOnboarded();
   },
 
-  /* ── Checkout ────────────────────────────────────────── */
   setCheckoutEvent(id) { localStorage.setItem('flock_checkout_event', id); },
   getCheckoutEvent()   { return localStorage.getItem('flock_checkout_event'); },
   clearCheckoutEvent() { localStorage.removeItem('flock_checkout_event'); },
@@ -108,17 +83,10 @@ const Flock = {
     this.clearCheckoutEvent();
     this.clearCheckoutInfo();
   }
-
 };
 
-/* ══════════════════════════════════════════════════════════
-   SHARED UI HELPERS
-══════════════════════════════════════════════════════════ */
 function setActiveNav(page) {
   document.querySelectorAll('.nav-item').forEach(el => {
     el.classList.toggle('active', el.dataset.page === page);
   });
 }
-
-/* Apply theme on every page load */
-Flock.applyTheme();

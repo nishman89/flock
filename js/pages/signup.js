@@ -5,41 +5,63 @@ if (Flock.getUser()) {
 
 function showErr(id, msg) {
   const el = document.getElementById('err-signup-' + id);
-  if (msg) el.textContent = msg;
-  el.classList.add('show');
-  document.getElementById('signup-' + id).classList.add('invalid');
+  if (el) { if (msg) el.textContent = msg; el.classList.add('show'); }
+  const inp = document.getElementById('signup-' + id);
+  if (inp) inp.classList.add('invalid');
 }
 
 function clearErrs() {
-  ['fullname','username','password','confirm'].forEach(function(k) {
-    const el = document.getElementById('err-signup-' + k);
-    if (el) { el.classList.remove('show'); }
+  ['firstname','username','password','confirm'].forEach(k => {
+    const el  = document.getElementById('err-signup-' + k);
     const inp = document.getElementById('signup-' + k);
-    if (inp) { inp.classList.remove('invalid'); }
+    if (el)  el.classList.remove('show');
+    if (inp) inp.classList.remove('invalid');
   });
-  document.getElementById('signup-error').style.display = 'none';
+  const ge = document.getElementById('signup-error');
+  if (ge) ge.style.display = 'none';
+}
+
+/* Check if a username is already registered in localStorage */
+function usernameExists(username) {
+  // The only registered user stored is whoever last logged in
+  // We store all registered usernames in flock_registered
+  try {
+    const reg = JSON.parse(localStorage.getItem('flock_registered') || '[]');
+    return reg.map(u => u.toLowerCase()).includes(username.toLowerCase());
+  } catch { return false; }
+}
+
+function registerUsername(username) {
+  try {
+    const reg = JSON.parse(localStorage.getItem('flock_registered') || '[]');
+    if (!reg.map(u => u.toLowerCase()).includes(username.toLowerCase())) {
+      reg.push(username);
+      localStorage.setItem('flock_registered', JSON.stringify(reg));
+    }
+  } catch {}
 }
 
 document.getElementById('signup-form').addEventListener('submit', function(e) {
   e.preventDefault();
   clearErrs();
 
-  const name     = document.getElementById('signup-fullname').value.trim();
-  const username = document.getElementById('signup-username').value.trim().toLowerCase();
-  const password = document.getElementById('signup-password').value;
-  const confirm  = document.getElementById('signup-confirm').value;
+  const firstName = document.getElementById('signup-firstname').value.trim();
+  const lastName  = document.getElementById('signup-lastname').value.trim();
+  const username  = document.getElementById('signup-username').value.trim().toLowerCase();
+  const password  = document.getElementById('signup-password').value;
+  const confirm   = document.getElementById('signup-confirm').value;
 
   let valid = true;
 
-  if (!name || name.length < 2) {
-    showErr('fullname', 'Please enter your full name'); valid = false;
+  if (!firstName || firstName.length < 2) {
+    showErr('firstname', 'Please enter your first name'); valid = false;
   }
   if (!username || username.length < 3) {
     showErr('username', 'Username must be at least 3 characters'); valid = false;
-  } else if (username === 'nish') {
-    showErr('username', 'That username is already taken  -  try another'); valid = false;
   } else if (/\s/.test(username)) {
-    showErr('username', 'Username cannot contain spaces'); valid = false;
+    showErr('username', 'No spaces allowed in username'); valid = false;
+  } else if (usernameExists(username) || username === 'nish') {
+    showErr('username', 'That username is already taken — try another'); valid = false;
   }
   if (!password || password.length < 6) {
     showErr('password', 'Password must be at least 6 characters'); valid = false;
@@ -50,9 +72,8 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
 
   if (!valid) return;
 
-  // Create the account in localStorage
+  registerUsername(username);
   Flock.login(username);
-  Flock.setProfile({ name: name.split(' ')[0], fullName: name, age: '' });
-  // Not onboarded yet  -  send to onboarding to set preferences
+  Flock.setProfile({ firstName, lastName, dob: '', avatar: '🐦' });
   window.location.href = 'onboarding.html';
 });

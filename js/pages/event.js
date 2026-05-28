@@ -115,10 +115,10 @@ function render() {
       <div class="detail-section-title">Who's going (${ev.going + (joined ? 1 : 0)})</div>
       ${joined ? `
         <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#F0FDF4;border:1px solid #BBF7D0;margin-bottom:12px">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${(profile.name || 'Y')[0].toUpperCase()}</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff">${(profile.firstName || 'Y')[0].toUpperCase()}</div>
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--ok)">You're going! 🎉</div>
-            <div style="font-size:12px;color:var(--text3)">${profile.name || 'You'}</div>
+            <div style="font-size:12px;color:var(--text3)">${profile.firstName || 'You'}</div>
           </div>
         </div>` : ''}
       ${buildAttendees()}
