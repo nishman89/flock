@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Flock — Sign In</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="auth-shell">
+
+  <div class="auth-hero">
+    <div class="auth-logo-wrap">
+      <!-- Bird / flock SVG logo -->
+      <svg width="48" height="36" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 18 Q16 6 24 18" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M24 18 Q32 6 40 18" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <path d="M18 28 Q23 20 28 28" stroke="rgba(255,255,255,.65)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M2 10 Q6 5 10 10" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <h1>Flock</h1>
+    <p>Make friends through shared events</p>
+  </div>
+
+  <div class="auth-card">
+    <h2>Welcome back 👋</h2>
+    <p class="sub">Sign in to find events near you</p>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" data-test="username" placeholder="Enter your username" autocomplete="username" inputmode="text">
+        <span class="field-error" id="err-user">Please enter your username</span>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" data-test="password" placeholder="Enter your password" autocomplete="current-password">
+        <span class="field-error" id="err-pass">Please enter your password</span>
+      </div>
+      <div class="field-error" id="err-creds" style="margin-bottom:12px;display:none">
+        ❌ Incorrect username or password
+      </div>
+      <button type="submit" class="btn btn-primary" data-test="login-button">Sign In</button>
+    </form>
+
+    <div class="auth-link">
+      Don't have an account? <a href="signup.html">Sign up</a>
+    </div>
+
+    <!-- Dev hint -->
+    <div style="margin-top:20px;padding:12px;background:#FFF8EF;border-radius:10px;border:1px solid #FDE8D0;text-align:center">
+      <span style="font-size:12px;color:#A8784A;font-weight:500">Demo: <strong style="color:#C2410C">jags</strong> / <strong style="color:#C2410C">choongh</strong></span>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script>
+  'use strict';
+  // Skip login if already authed
+  if (Flock.getUser()) {
+    window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
+  }
+
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    const errU = document.getElementById('err-user');
+    const errP = document.getElementById('err-pass');
+    const errC = document.getElementById('err-creds');
+    errU.classList.remove('show'); errP.classList.remove('show'); errC.style.display='none';
+
+    let ok = true;
+    if (!u) { errU.classList.add('show'); ok = false; }
+    if (!p) { errP.classList.add('show'); ok = false; }
+    if (!ok) return;
+
+    if (u === 'jags' && p === 'choongh') {
+      Flock.login(u);
+      window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
+    } else {
+      errC.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
