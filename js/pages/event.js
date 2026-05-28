@@ -228,4 +228,9 @@ function shareEvent() {
   }
 }
 
+function renderAndMap() {
+  render();
+  initMap();
+}
+
 renderAndMap();
