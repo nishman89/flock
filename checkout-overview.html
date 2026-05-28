@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <title>Flock — Review Order</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <button class="back-btn" id="overview-back-btn" onclick="history.back()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="header-title">Review Order</span>
+    <div class="header-spacer"></div>
+  </header>
+
+  <div class="co-steps">
+    <div class="co-step done"><div class="co-step-n">✓</div><span>Your Details</span></div>
+    <div class="co-step-line done"></div>
+    <div class="co-step active"><div class="co-step-n">2</div><span>Review</span></div>
+    <div class="co-step-line"></div>
+    <div class="co-step"><div class="co-step-n">3</div><span>Confirmed</span></div>
+  </div>
+
+  <div class="content">
+    <div class="co-wrap">
+
+      <!-- Event -->
+      <div class="co-section-title">Event</div>
+      <div class="co-card" id="ov-event-card">
+        <div class="co-event-card">
+          <div class="co-event-emoji" id="ov-event-emoji"></div>
+          <div class="co-event-info">
+            <div class="co-event-name"   id="ov-event-name"></div>
+            <div class="co-event-date"   id="ov-event-detail"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your details -->
+      <div class="co-section-title">Your Details</div>
+      <div class="co-card">
+        <div class="co-ov-row"><span>Name</span>    <span id="ov-name"></span></div>
+        <div class="co-ov-row"><span>Postcode</span><span id="ov-postcode"></span></div>
+        <div class="co-ov-row"><span>Card</span>    <span id="ov-card" style="font-family:monospace"></span></div>
+      </div>
+
+      <!-- Price breakdown -->
+      <div class="co-section-title">Price Breakdown</div>
+      <div class="co-card">
+        <div class="co-ov-row"><span>Ticket price</span>  <span id="ov-ticket"></span></div>
+        <div class="co-ov-row"><span>Booking fee</span>   <span id="ov-booking"></span></div>
+        <div class="co-ov-row"><span>VAT (20%)</span>     <span id="ov-vat"></span></div>
+        <div class="co-ov-row co-ov-total"><span><strong>Total</strong></span><span id="ov-total"></span></div>
+      </div>
+
+      <button id="confirm-pay-btn" class="btn btn-primary" style="margin-top:4px">
+        Confirm &amp; Pay 🔒
+      </button>
+      <p style="text-align:center;font-size:12px;color:var(--text3);margin-top:10px">
+        Demo only — no real payment will be taken
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/pages/checkout-overview.js"></script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+</body>
+</html>

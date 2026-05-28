@@ -69,7 +69,25 @@ const Flock = {
       localStorage.setItem('flock_jags_seeded', '1');
     }
     this.setOnboarded();
+  },
+  /* ── Checkout ────────────────────────────────────────── */
+  setCheckoutEvent(id) { localStorage.setItem('flock_checkout_event', id); },
+  getCheckoutEvent()   { return localStorage.getItem('flock_checkout_event'); },
+  clearCheckoutEvent() { localStorage.removeItem('flock_checkout_event'); },
+
+  setCheckoutInfo(d)   { localStorage.setItem('flock_checkout_info', JSON.stringify(d)); },
+  getCheckoutInfo() {
+    try { return JSON.parse(localStorage.getItem('flock_checkout_info') || '{}'); } catch { return {}; }
+  },
+  clearCheckoutInfo() { localStorage.removeItem('flock_checkout_info'); },
+
+  completeCheckout() {
+    const id = this.getCheckoutEvent();
+    if (id) this.joinEvent(id);
+    this.clearCheckoutEvent();
+    this.clearCheckoutInfo();
   }
+
 };
 
 /* ══════════════════════════════════════════════════════════

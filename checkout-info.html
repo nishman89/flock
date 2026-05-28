@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <title>Flock — Checkout</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <button class="back-btn" id="checkout-back-btn" onclick="history.back()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="header-title">Checkout</span>
+    <div class="header-spacer"></div>
+  </header>
+
+  <!-- Step indicator -->
+  <div class="co-steps">
+    <div class="co-step active"><div class="co-step-n">1</div><span>Your Details</span></div>
+    <div class="co-step-line"></div>
+    <div class="co-step"><div class="co-step-n">2</div><span>Review</span></div>
+    <div class="co-step-line"></div>
+    <div class="co-step"><div class="co-step-n">3</div><span>Confirmed</span></div>
+  </div>
+
+  <div class="content">
+    <div class="co-wrap">
+
+      <!-- Event summary card -->
+      <div class="co-event-card">
+        <div class="co-event-emoji" id="co-event-emoji"></div>
+        <div class="co-event-info">
+          <div class="co-event-name"  id="co-event-name"></div>
+          <div class="co-event-date"  id="co-event-date"></div>
+        </div>
+        <div class="co-event-price" id="co-event-price"></div>
+      </div>
+
+      <!-- Demo notice -->
+      <div class="poc-notice" style="margin-bottom:16px">
+        <span class="poc-notice-icon">🔒</span>
+        <p><strong>Demo checkout</strong> — enter any card details. No payment will be taken and no data is stored on a server.</p>
+      </div>
+
+      <form id="checkout-info-form" novalidate>
+
+        <div class="co-section-title">Personal Details</div>
+        <div class="co-field-row">
+          <div class="field">
+            <label for="co-firstname">First Name *</label>
+            <input class="co-input" type="text" id="co-firstname" placeholder="Jane">
+            <span class="co-err field-error" id="err-co-firstname"></span>
+          </div>
+          <div class="field">
+            <label for="co-lastname">Last Name *</label>
+            <input class="co-input" type="text" id="co-lastname" placeholder="Smith">
+            <span class="co-err field-error" id="err-co-lastname"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="co-postcode">Postcode *</label>
+          <input class="co-input" type="text" id="co-postcode" placeholder="EC1A 1BB" style="max-width:160px">
+          <span class="co-err field-error" id="err-co-postcode"></span>
+        </div>
+
+        <div class="co-section-title" style="margin-top:20px">Payment Details</div>
+        <div class="field">
+          <label for="co-cardnum">Card Number *</label>
+          <input class="co-input" type="text" id="co-cardnum" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19">
+          <span class="co-err field-error" id="err-co-cardnum"></span>
+        </div>
+        <div class="co-field-row">
+          <div class="field">
+            <label for="co-expiry">Expiry *</label>
+            <input class="co-input" type="text" id="co-expiry" placeholder="MM/YY" inputmode="numeric" maxlength="5">
+            <span class="co-err field-error" id="err-co-expiry"></span>
+          </div>
+          <div class="field">
+            <label for="co-cvv">CVV *</label>
+            <input class="co-input" type="password" id="co-cvv" placeholder="123" inputmode="numeric" maxlength="3">
+            <span class="co-err field-error" id="err-co-cvv"></span>
+          </div>
+        </div>
+
+        <button type="submit" id="checkout-continue-btn" class="btn btn-primary" style="margin-top:8px">
+          Review Order →
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/pages/checkout-info.js"></script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+</body>
+</html>

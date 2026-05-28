@@ -1,9 +1,16 @@
 'use strict';
-const CACHE = 'flock-v1';
+const CACHE = 'flock-v2';
 const ASSETS = [
   'login.html','signup.html','onboarding.html',
   'home.html','event.html','my-events.html','profile.html',
-  'css/styles.css','js/state.js','js/data.js','manifest.json'
+  'checkout-info.html','checkout-overview.html','checkout-complete.html',
+  'css/styles.css',
+  'js/data.js','js/state.js','js/desktop-sidebar.js',
+  'js/pages/login.js','js/pages/signup.js','js/pages/onboarding.js',
+  'js/pages/home.js','js/pages/event.js','js/pages/my-events.js',
+  'js/pages/profile.js',
+  'js/pages/checkout-info.js','js/pages/checkout-overview.js','js/pages/checkout-complete.js',
+  'manifest.json'
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

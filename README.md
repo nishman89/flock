@@ -6,6 +6,23 @@ A mobile-first web app that matches you with local events based on your interest
 
 ---
 
+
+## Code Documentation
+
+For a detailed walkthrough of every file, class, method and data structure, see:
+
+📄 **[explanation-of-code.md](explanation-of-code.md)**
+
+It covers:
+- What every HTML page does
+- The full `Flock` state object API
+- How the CSS responsive strategy works
+- The data structure for events and interests
+- The end-to-end data flow from login through to checkout
+- The PWA setup (manifest, service worker, iOS meta tags)
+- The `id` attribute naming convention for test automation
+
+---
 ## Login Credentials
 
 | Field    | Value    |

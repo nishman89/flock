@@ -831,3 +831,100 @@ body {
 }
 .field-error { font-size: 12px; color: var(--err); display: none; margin-top: 3px }
 .field-error.show { display: block }
+
+/* ── Event detail page ──────────────────────────────────── */
+/* overflow managed by flex */
+    .detail-shell { min-height: 100svh; display:flex; flex-direction:column; }
+    
+    .detail-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom: 0 }
+
+/* ══════════════════════════════════════════════════════════
+   CHECKOUT PAGES
+══════════════════════════════════════════════════════════ */
+.co-wrap { max-width: 540px; margin: 0 auto; padding: 20px 16px }
+
+/* Step indicator */
+.co-steps {
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 20px; gap: 0;
+  background: var(--card); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.co-step {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  color: var(--text3); white-space: nowrap;
+}
+.co-step.active { color: var(--primary) }
+.co-step.done   { color: var(--ok) }
+.co-step-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.co-step.active .co-step-n { background: var(--primary); color: #fff; border-color: var(--primary) }
+.co-step.done   .co-step-n { background: var(--ok);      color: #fff; border-color: var(--ok) }
+.co-step-line { flex: 1; height: 2px; background: var(--border); max-width: 32px; margin: 0 4px }
+.co-step-line.done { background: var(--ok) }
+
+/* Event summary strip */
+.co-event-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 14px 16px; margin-bottom: 16px;
+}
+.co-event-emoji { font-size: 32px; flex-shrink: 0 }
+.co-event-info  { flex: 1 }
+.co-event-name  { font-family: var(--font); font-size: 15px; font-weight: 700; color: var(--text) }
+.co-event-date  { font-size: 13px; color: var(--text3); margin-top: 2px }
+.co-event-price { font-family: var(--font); font-size: 18px; font-weight: 800; color: var(--primary); flex-shrink: 0 }
+
+/* Section titles */
+.co-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--text3); margin: 0 0 8px;
+}
+
+/* Two-column field row */
+.co-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+
+/* Summary card */
+.co-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--r); margin-bottom: 16px; overflow: hidden;
+}
+.co-ov-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 16px; border-bottom: 1px solid var(--border);
+  font-size: 14px; color: var(--text2);
+}
+.co-ov-row:last-child { border-bottom: none }
+.co-ov-row span:last-child { font-weight: 600; color: var(--text) }
+.co-ov-total { font-family: var(--font); font-size: 16px !important; }
+.co-ov-total span { font-weight: 800 !important; color: var(--primary) !important }
+
+/* Confirmation page */
+.co-success-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: #E8FFF2; border: 3px solid var(--ok);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: var(--ok);
+  margin: 0 auto 20px;
+}
+.co-success-title { font-family: var(--font); font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 10px }
+.co-success-sub   { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 28px }
+
+/* Input invalid state */
+.co-input.invalid { border-color: var(--err) !important; background: #FFF5F5 }
+.co-err { font-size: 12px; color: var(--err); display: none; margin-top: 3px }
+.co-err.show { display: block }
+
+/* Pay button — orange with lock icon feel */
+.btn-pr { background: var(--primary); color: #fff; border: none }
+.btn-pr:hover { background: var(--primary-dk) }
+
+@media (min-width: 768px) {
+  .co-wrap { padding: 28px 40px }
+  .co-field-row { grid-template-columns: 1fr 1fr }
+}

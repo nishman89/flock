@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <title>Flock — Booking Confirmed</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="header-spacer"></div>
+    <span class="header-title">Booking Confirmed</span>
+    <div class="header-spacer"></div>
+  </header>
+
+  <div class="co-steps">
+    <div class="co-step done"><div class="co-step-n">✓</div><span>Your Details</span></div>
+    <div class="co-step-line done"></div>
+    <div class="co-step done"><div class="co-step-n">✓</div><span>Review</span></div>
+    <div class="co-step-line done"></div>
+    <div class="co-step done"><div class="co-step-n">✓</div><span>Confirmed</span></div>
+  </div>
+
+  <div class="content">
+    <div class="co-wrap" style="text-align:center;padding-top:32px">
+
+      <div class="co-success-icon">✓</div>
+      <h2 class="co-success-title">You're going! 🐦</h2>
+      <p class="co-success-sub">
+        Thanks <span id="confirm-name">there</span>! Your spot is confirmed.<br>
+        We'll see you at the event — get ready to meet your flock.
+      </p>
+
+      <div class="co-card" style="text-align:left;margin-bottom:24px">
+        <div class="co-ov-row">
+          <span>Booking reference</span>
+          <span id="booking-ref" style="font-family:monospace;font-weight:700;color:var(--primary)"></span>
+        </div>
+      </div>
+
+      <a href="my-events.html" id="view-my-events-btn" class="btn btn-primary" style="margin-bottom:12px;display:block">
+        View My Events
+      </a>
+      <a href="home.html" id="back-to-discover-btn" class="btn btn-ghost" style="display:block">
+        Back to Discover
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/pages/checkout-complete.js"></script>
+<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
+</body>
+</html>

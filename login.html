@@ -62,40 +62,7 @@
 </div>
 
 <script src="js/state.js"></script>
-<script>
-'use strict';
-if (Flock.getUser()) {
-  window.location.href = Flock.isOnboarded() ? 'home.html' : 'onboarding.html';
-}
-
-document.getElementById('login-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const u = document.getElementById('login-username').value.trim();
-  const p = document.getElementById('login-password').value;
-  const errU = document.getElementById('err-login-username');
-  const errP = document.getElementById('err-login-password');
-  const errG = document.getElementById('login-error');
-
-  errU.classList.remove('show'); errP.classList.remove('show'); errG.style.display = 'none';
-
-  let ok = true;
-  if (!u) { errU.classList.add('show'); ok = false; }
-  if (!p) { errP.classList.add('show'); ok = false; }
-  if (!ok) return;
-
-  if (u.toLowerCase() === 'jags' && p === 'choongh') {
-    Flock.login('jags');
-    Flock.seedJags();          // pre-load Jags' profile every login
-    window.location.href = 'home.html';
-  } else {
-    errG.style.display = 'block';
-  }
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.getElementById('login-error').style.display = 'none';
-});
-</script>
+<script src="js/pages/login.js"></script>
 <script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }</script>
 </body>
 </html>
