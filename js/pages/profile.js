@@ -91,10 +91,6 @@ function render() {
             </select>
           </div>
         </div>
-        <div class="profile-row" style="flex-wrap:wrap;gap:8px;padding:12px 16px">
-          <span class="profile-row-label" style="width:100%;margin-bottom:4px">🤝 Looking to meet</span>
-          <div style="display:flex;gap:8px">${friendOpts}</div>
-        </div>
       </div>
     </div>
 

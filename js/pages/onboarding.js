@@ -127,15 +127,6 @@ function render() {
           <div class="dist-chip ${selectedDist===d?'selected':''}" onclick="selectDist(${d},this)">${d} miles</div>
         `).join('')}
         <div class="dist-chip ${selectedDist===999?'selected':''}" onclick="selectDist(999,this)">Any</div>
-      </div>
-      <div class="field" style="margin-top:16px;margin-bottom:8px">
-        <label>I want to meet</label>
-      </div>
-      <div class="friend-chips">
-        ${['Girls','Boys','Both'].map(f => `
-          <div class="friend-chip ${selectedFriend===f?'selected':''}"
-               onclick="selectFriend('${f}',this)">${f}</div>
-        `).join('')}
       </div>`;
   }
 }
